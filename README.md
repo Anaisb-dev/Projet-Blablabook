@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # apo-blablabook
 
 ## Création BDD avec PostgreSQL
