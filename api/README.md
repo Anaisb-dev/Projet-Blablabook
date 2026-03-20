@@ -4,7 +4,7 @@
 
 - -> Connexion à psql : `sudo -i -u postgres psql`
 
-- `CREATE USER blablabook WITH PASSWORD "blablabook";`
+- `CREATE USER blablabook WITH PASSWORD '....';`
 - `CREATE DATABASE blablabook OWNER blablabook;`
 - -> Déconnexion
 
@@ -19,7 +19,7 @@ Pour se reconnecter si besoin:
 
 ## Création de tous les modèles
 
-- Dans `/models`créer `User.js`, `Book.js`, `Author.js`, `Gender.js`, `index.js`, `
+- Dans `/models`créer `User.model.js`, `Book.model.js`, `Author.model.js`, `Gender.model.js`, `index.js`, `UserBook.model.js`
 - Dans `index.js` définir les associations
 
 ## Création des tables
