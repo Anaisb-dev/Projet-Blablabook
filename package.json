@@ -20,5 +20,8 @@
   "homepage": "https://github.com/O-clock-Helsinki/apo-blablabook#readme",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
