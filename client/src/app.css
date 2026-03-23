@@ -1,17 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Radley:ital@0;1&display=swap');
 
-:root {
-    --primary-color : #FFF7F1;
-    --secondary-color : #F2E0D0;
-    --third-color: #BF9075;
-    --dark-color: #590212;
-    --font-title: "EB Garamond", serif;
-    --font-body: "Radley", serif;
-    --font-size: 16px;
-}
+@import "tailwindcss";
 
-body {
-    background-color: var(--primary-color);
-}
 
