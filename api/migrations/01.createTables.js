@@ -1,8 +1,8 @@
-import { User, Book, Author, Gender, sequelize } from "./models/index.js";
+import { User, Book, Author, Gender, sequelize } from "../models/index.js";
 
 // Relations
-User.belongsToMany(Book, { through: "user_book" });
-Book.belongsToMany(User, { through: "user_book" });
+User.belongsToMany(Book, { through: "UserBook" });
+Book.belongsToMany(User, { through: "UserBook" });
 Book.belongsToMany(Author, { through: "book_author" });
 Author.belongsToMany(Book, { through: "book_author" });
 Book.belongsToMany(Gender, { through: "gender_book" });

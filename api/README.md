@@ -24,4 +24,12 @@ Pour se reconnecter si besoin:
 
 ## Création des tables
 
-- Dans `/migrations` créer `create-table.js`
+- Dans `/migrations` créer `01.createTables.js`
+- Lancer le script `npm run db:create` 
+
+## Seed
+
+`npm install argon2`
+
+- Créer un fichier `02.seedTables.js`
+- lancer le script `npm run db:seed`

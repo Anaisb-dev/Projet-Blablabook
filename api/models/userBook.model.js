@@ -5,6 +5,16 @@ export class UserBook extends Model { }
 
 UserBook.init(
     {
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
+    book_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
         status: {
             type: DataTypes.STRING,
             allowNull: false,

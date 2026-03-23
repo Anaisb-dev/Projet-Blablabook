@@ -6,7 +6,7 @@ export class Book extends Model { }
 Book.init(
     {
         code_isbn: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
@@ -15,7 +15,8 @@ Book.init(
             allowNull: false,
         },
         year: {
-            type: DataTypes.INTEGER(7),
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
         page_number: {
             type: DataTypes.INTEGER,
