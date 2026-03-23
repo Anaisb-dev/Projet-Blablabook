@@ -5,6 +5,3 @@
 
 <!-- HTML -->
 <Layout />
-<h1 class="text-red-500">Test Tailwind</h1>
-
-<!-- CSS -->

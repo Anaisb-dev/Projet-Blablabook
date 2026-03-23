@@ -8,19 +8,29 @@
 </script>
 
 <!-- HTML -->
-<LogoIcon width={70} height={48} />
-<BrandName />
-<ThemeToggle />*
-
-<header>
-    <!-- Version Mobile -->
-    <div class="mobile">
-        <DropdownMenu />
+<header class="flex items-center justify-between p-4">
+    <!-- Gauche -->
+    <div class="flex items-center gap-2">
+        <LogoIcon width={70} height={48} />
     </div>
 
-    <!-- Version Desktop -->
-    <div class="desktop">
-        <NavigationMenu />
+    <div class="absolute left-1/2 -translate-x-1/2">
+        <BrandName />
+    </div>
+
+    <!-- Droite -->
+    <div class="flex items-center gap-4">
+        <ThemeToggle />
+
+        <!-- Mobile -->
+        <div class="block md:hidden">
+            <DropdownMenu />
+        </div>
+
+        <!-- Desktop -->
+        <div class="hidden md:block">
+            <NavigationMenu />
+        </div>
     </div>
 </header>
 

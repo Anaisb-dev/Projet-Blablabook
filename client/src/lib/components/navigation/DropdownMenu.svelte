@@ -1,14 +1,14 @@
 <!-- JS -->
 <script>
-    import { Avatar, DropdownMenu } from "bits-ui";
-    import Icon from "@iconify/svelte";
-</script>
+    import { DropdownMenu } from "bits-ui";
+    import Icon from "@iconify/svelte";    
+    </script>
 
 <DropdownMenu.Root>
-    <DropdownMenu.Trigger>
+    <DropdownMenu.Trigger class="text-2xl">
         ☰
     </DropdownMenu.Trigger>
-    <DropdownMenu.Content>
+    <DropdownMenu.Content class="w-[90vw] h-[80vh]">
         <DropdownMenu.Item>
             <Icon icon="ph:house" />
             Accueil
