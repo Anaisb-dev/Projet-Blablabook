@@ -9,8 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@iconify/svelte": "^5.2.1",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "svelte": "^5.53.12",
     "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "bits-ui": "^2.16.3",
+    "tailwindcss": "^4.2.2"
   }
 }
