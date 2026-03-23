@@ -1,10 +1,9 @@
 <!-- JS -->
 <script>
-  import LogoIcon from './lib/components/ui/LogoIcon.svelte';
+  import Layout from "./lib/components/layout/Layout.svelte";
 </script>
 
 <!-- HTML -->
-  <h1>Test</h1>
-  <LogoIcon size={48} />
+<Layout />
 
 <!-- CSS -->

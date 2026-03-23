@@ -1,7 +1,8 @@
 <!-- JS -->
 <script>
-    export let size = 24; // taille par défaut de l'icône (modifiable depuis l'extérieur du composant)
+    export let width = 40;
+    export let height = 40;
 </script>
 
 <!-- HTML -->
-<img src="/logo.png" alt="Logo BlablaBook" style="width: {size}px; height: {size}px;"/>
+<img src="/logo.png" alt="Logo BlablaBook" style="width: {width}px; height: {height}px;"/>

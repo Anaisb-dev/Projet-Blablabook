@@ -4,8 +4,6 @@
 </script>
 
 <!-- HTML -->
-    <h1> test </h1>
-    <LogoIcon size={48} />
-
+    <LogoIcon width={70} height={48} />
 <!-- CSS-->
 
