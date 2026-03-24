@@ -4,18 +4,18 @@
 </script>
 
 <!-- HTML -->
+
 <Button>
-	Toggle
 </Button>
 
-<!-- CSS -->
 <style>
 	:global(body) {
-		background-color: #f2eee2;
+		background-color: #FFF7F1;
+		color: #BF9075;
 		transition: background-color 0.3s
 	}
 	:global(body.dark-mode) {
-		background-color: #1d3040;
-		color: #bfc2c7;
+		background-color: #590212;
+		color: #BF9075;
 	}
 </style>

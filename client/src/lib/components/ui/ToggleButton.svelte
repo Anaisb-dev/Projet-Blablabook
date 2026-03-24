@@ -1,30 +1,17 @@
 <script>
-    import Icon from "@iconify/svelte";
+	import Icon from "@iconify/svelte";
 
-    let isDark = false;
+	let isDark = false;
 
-    function toggle() {
-        isDark = !isDark;
-        document.body.classList.toggle("dark-mode", isDark);
-    }
+	function toggle() {
+		isDark = !isDark;
+		window.document.body.classList.toggle("dark-mode");
+	}
 </script>
 
 <button onclick={toggle}>
-    <Icon icon= {isDark ? "stash:sun-light" : "stash:moon-light"}/> 
+	<Icon
+		icon={isDark ? "si:sun-fill" : "si:moon-fill"}
+		class={`text-2xl ${isDark ? "text-[#BF9075]" : "text-[#590212]"}`}
+	/>
 </button>
-
-<style>
-	button {
-		background-color: #f76027;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		padding: 0.5rem;
-		text-transform: uppercase;
-		
-	}
-	:global(body.dark-mode) button {
-		background-color: #0084f6;
-		color: white;
-	}
-</style>

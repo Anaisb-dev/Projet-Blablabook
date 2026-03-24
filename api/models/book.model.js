@@ -16,11 +16,23 @@ Book.init(
         },
         year: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+        },
+        summary: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+        summary: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         page_number: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        cover_image: {
+            type: DataTypes.STRING, // URL de l'image
+            allowNull: true,
         },
     },
     {

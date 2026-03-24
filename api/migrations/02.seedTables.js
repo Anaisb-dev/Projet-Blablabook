@@ -1,4 +1,4 @@
-import { User, Book, Author, Gender, UserBook, sequelize} from "../models/index.js";
+import { User, Book, Author, Gender, sequelize} from "../models/index.js";
 import argon2 from "argon2";
 
 console.log("Ajout de livres de test...");
@@ -7,14 +7,18 @@ const book1 = await Book.create({
     code_isbn: 2290391174,
     title: "La femme de ménage",
     year: 2023,
-    page_number: 416
+    summary: "Un roman poignant qui explore les complexités de la vie à travers les yeux d'une femme de ménage. Entre les secrets du passé et les défis du présent, ce livre nous plonge dans une histoire riche en émotions.",
+    page_number: 416,
+    cover_image: "https://cdn.cultura.com/cdn-cgi/image/width=830/media/pim/TITELIVE/45_9782290391174_1_75.jpg"
 });
 
 const book2 = await Book.create({
     code_isbn: 2075187541,
     title: "Harry Potter à l'école des sorciers",
     year: 1997,
-    page_number: 309
+    summary: "Le premier tome de la célèbre série Harry Potter, où le jeune sorcier découvre ses pouvoirs et son destin à l'école de magie de Poudlard. Un classique de la littérature jeunesse qui a captivé des millions de lecteurs à travers le monde.",
+    page_number: 309,
+    cover_image: "https://m.media-amazon.com/images/I/81jVPDq3HKL._AC_UF1000,1000_QL80_.jpg"
 });
 
 console.log("Ajout d'auteurs de test...");
