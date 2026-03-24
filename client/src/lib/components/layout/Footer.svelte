@@ -2,8 +2,8 @@
   class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 text-sm"
 >
   <img
-    src="/Logo.png"
-    alt="Logo"
+    src="/logo.png"
+    alt="Logo BlablaBook"
     class="hidden md:block"
     width="40"
     height="40"

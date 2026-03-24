@@ -8,7 +8,7 @@
 </script>
 
 <!-- HTML -->
-<header class="flex items-center justify-between p-4">
+<header class="flex items-center justify-between p-4 border-b border-[#F2E0D0]">
     <!-- Logo et Nom de la Marque -->
     <div class="flex items-center gap-2">
         <LogoIcon width={70} height={48} />

@@ -1,9 +1,11 @@
 <!-- JS -->
 <script>
   import Layout from "./lib/components/layout/Layout.svelte";
-  import BookGrid from "./lib/components/LibrarySection/BookGrid.svelte";
+  import LibrarySection from "./lib/components/LibrarySection/LibrarySection.svelte";
 </script>
 
 <!-- HTML -->
-<Layout />
-<BookGrid />
+<Layout>
+  <LibrarySection />
+</Layout>
+
