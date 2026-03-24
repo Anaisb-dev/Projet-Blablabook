@@ -5,7 +5,7 @@
     export let description ="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 </script>
 
-<div class="w-fit rounded-2xl border p-3">
+<div class="w-[250px] rounded-2xl border p-3">
 	<img
 		src={cover}
 		alt={title}
