@@ -5,6 +5,7 @@
     import DropdownMenu from "../navigation/DropdownMenu.svelte";
     import NavigationMenu from "../navigation/NavigationMenu.svelte";
     import ThemeToggle from "../ui/ThemeToggle.svelte";
+
 </script>
 
 <!-- HTML -->

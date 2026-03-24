@@ -1,4 +1,4 @@
-import { User, Book, Author, Gender, UserBook, sequelize} from "../models/index.js";
+import { User, Book, Author, Gender, sequelize} from "../models/index.js";
 import argon2 from "argon2";
 
 console.log("Ajout de livres de test...");

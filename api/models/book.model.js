@@ -16,7 +16,11 @@ Book.init(
         },
         year: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+        },
+        summary: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         summary: {
             type: DataTypes.TEXT,
@@ -29,7 +33,7 @@ Book.init(
         cover_image: {
             type: DataTypes.STRING, // URL de l'image
             allowNull: true,
-},
+        },
     },
     {
         sequelize,
