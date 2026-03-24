@@ -4,7 +4,6 @@
   import LibrarySection from "./lib/components/LibrarySection/LibrarySection.svelte";
 </script>
 
-<!-- HTML -->
 <Layout>
   <LibrarySection />
 </Layout>

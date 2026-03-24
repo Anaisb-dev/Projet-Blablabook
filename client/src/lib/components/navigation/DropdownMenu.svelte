@@ -8,7 +8,7 @@
     <DropdownMenu.Trigger class="text-2xl">
         ☰
     </DropdownMenu.Trigger>
-    <DropdownMenu.Content class="w-[100vw] h-[80vh] p-10 flex flex-col gap-4">
+    <DropdownMenu.Content class="w-[100vw] h-[100vh] p-10 flex flex-col gap-4 bg-[#FFF7F1]">
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
             <Icon icon="ph:house" />
             Accueil
