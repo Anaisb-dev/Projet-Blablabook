@@ -1,7 +1,7 @@
 // Router concernant les livres
 
 import express from "express";
-import { searchBooks } from "../controllers/book.controller.js";
+import { searchBooks, getBookById } from "../controllers/book.controller.js";
 
 const router = express.Router();
 
@@ -13,9 +13,7 @@ router.get('/', (req, res) => {
 router.get('/search', searchBooks);
 // Rechercher un livre via Google Books
 
-router.get('/:id', (req, res) => {
-    res.send("Détail du livre OK");
-});
+router.get('/:id', getBookById);
 // La page détail d'un livre via son id
 
 
