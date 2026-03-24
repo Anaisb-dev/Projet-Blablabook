@@ -1,9 +1,8 @@
 <!-- JS-->
 <script>
-    export let name = "BlablaBook";
 </script>
 
 <!-- HTML -->
-    <p>{name}</p>
-
-<!-- CSS -->
+<p class="text-2xl font-bold">
+    <span class="text-[#BF9075]">Blabla</span><span class="text-[#590212]">Book</span>
+</p>
