@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:sequelize": "node test-sequelize.js",
     "db:create": "node migrations/01.createTables.js",
@@ -28,5 +30,8 @@
     "express": "^5.2.1",
     "pg": "^8.20.0",
     "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
