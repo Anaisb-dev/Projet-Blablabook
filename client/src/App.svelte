@@ -1,10 +1,9 @@
 <script>
   import Layout from "./lib/components/layout/Layout.svelte";
   import LibrarySection from "./lib/components/LibrarySection/LibrarySection.svelte";
-   import { onMount } from "svelte";
+  import { onMount } from "svelte";
   import { searchBooks, getRandomBooks } from "../services/bookService.js";
-  
-</script>
+  //import { getBookDetail } from "../services/bookService.js";
 
 
     let query = "";
@@ -51,16 +50,20 @@
   <div>
     {#each books as book}
       <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-        <h3>{book.title}</h3>
+      <!-- Lien cliquable sur le titre -->
+    <h3>
+      <a href={`/books/${book.google_book_id}`} style="text-decoration:none; color:blue;">
+        {book.title}
+      </a>
+    </h3>
 
         {#if book.cover_image}
           <img src={book.cover_image} alt="cover" width="100" />
         {/if}
-
+        
         <p><strong>Année :</strong> {book.year}</p>
         <p><strong>Pages :</strong> {book.page_number}</p>
-
-        <p>{book.summary}</p>
+        <p><strong>Résumé :</strong> {book.summary}</p>
       </div>
     {/each}
   </div>
