@@ -8,11 +8,12 @@
   let books = [];
   let loading = false;
 
-  async function handleSearch() {
-    if (!query) return;
+  async function handleSearch(event) {
+    const q = event?.detail?.query ?? query;
+    if (!q) return;
 
     loading = true;
-    books = await searchBooks(query);
+    books = await searchBooks(q);
     loading = false;
   }
 
@@ -25,7 +26,7 @@
 </script>
 
 <Layout>
-  <LibrarySection />
+  <LibrarySection on:search={handleSearch} />
 
   <h1>BlablaBook</h1>
 
