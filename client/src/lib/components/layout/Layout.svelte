@@ -9,7 +9,7 @@
 
 <!-- HTML -->
 <header class="flex items-center justify-between p-4">
-    <!-- Gauche -->
+    <!-- Logo et Nom de la Marque -->
     <div class="flex items-center gap-2">
         <LogoIcon width={70} height={48} />
     </div>
@@ -18,41 +18,19 @@
         <BrandName />
     </div>
 
-    <!-- Droite -->
+    <!-- Theme et Menu de navigation mobile, tablette et desktop -->
     <div class="flex items-center gap-4">
         <ThemeToggle />
 
-        <!-- Mobile -->
-        <div class="block md:hidden">
+        <!-- Mobile et tablette -->
+        <div class="block lg:hidden"> <!-- lg = 1024px (invisible en grand écran)-->
             <DropdownMenu />
         </div>
 
         <!-- Desktop -->
-        <div class="hidden md:block">
+        <div class="hidden lg:block"> <!-- invisible en petit écran, visible en grand écran -->
             <NavigationMenu />
         </div>
     </div>
 </header>
 
-<!-- CSS-->
-<style>
-    /* Version Mobile */
-    .desktop {
-        display: none;
-    }
-
-    .mobile {
-        display: block;
-    }
-
-    /* Version Desktop */
-    @media (min-width: 768px) {
-        .mobile {
-            display: none;
-        }
-
-        .desktop {
-            display: block;
-        }
-    }
-</style>
