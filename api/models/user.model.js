@@ -5,7 +5,7 @@ export class User extends Model {}
 
 User.init(
   {
-    pseudo: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
