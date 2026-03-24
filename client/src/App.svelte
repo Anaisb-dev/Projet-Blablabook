@@ -1,6 +1,11 @@
 <script>
-  import { onMount } from "svelte";
+  import Layout from "./lib/components/layout/Layout.svelte";
+  import LibrarySection from "./lib/components/LibrarySection/LibrarySection.svelte";
+   import { onMount } from "svelte";
   import { searchBooks, getRandomBooks } from "../services/bookService.js";
+  
+</script>
+
 
     let query = "";
   let books = [];
@@ -23,6 +28,9 @@
 
 </script>
 
+<Layout>
+  <LibrarySection />
+</Layout>
 <h1>BlablaBook</h1>
 
 <input

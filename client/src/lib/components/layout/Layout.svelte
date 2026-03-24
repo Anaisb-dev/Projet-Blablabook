@@ -1,5 +1,6 @@
-<!-- JS-->
 <script>
+    import Header from "./Header.svelte";
+    import Footer from "./Footer.svelte";
     import LogoIcon from "../ui/LogoIcon.svelte";
     import BrandName from "../ui/BrandName.svelte";
     import DropdownMenu from "../navigation/DropdownMenu.svelte";
@@ -8,52 +9,11 @@
 
 </script>
 
-<!-- HTML -->
-<header class="flex items-center justify-between p-4">
-    <!-- Gauche -->
-    <div class="flex items-center gap-2">
-        <LogoIcon width={70} height={48} />
-    </div>
-
-    <div class="absolute left-1/2 -translate-x-1/2">
-        <BrandName />
-    </div>
-
-    <!-- Droite -->
-    <div class="flex items-center gap-4">
-        <ThemeToggle />
-
-        <!-- Mobile -->
-        <div class="block md:hidden">
-            <DropdownMenu />
-        </div>
-
-        <!-- Desktop -->
-        <div class="hidden md:block">
-            <NavigationMenu />
-        </div>
-    </div>
-</header>
-
-<!-- CSS-->
-<style>
-    /* Version Mobile */
-    .desktop {
-        display: none;
-    }
-
-    .mobile {
-        display: block;
-    }
-
-    /* Version Desktop */
-    @media (min-width: 768px) {
-        .mobile {
-            display: none;
-        }
-
-        .desktop {
-            display: block;
-        }
-    }
-</style>
+<div class="min-h-screen flex flex-col">
+    <Header />
+    <!-- Contenu entre Header et Footer -->
+        <main class="flex-1">
+            <slot /> <!-- Slot = emplacement où s’affiche le contenu passé dans <Layout> -->
+        </main>
+    <Footer />
+</div>
