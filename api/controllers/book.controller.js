@@ -1,13 +1,13 @@
-import "dotenv/config";
 import fetch from "node-fetch";
+import { StatusCodes } from "http-status-codes";
 
-// GET /books/search?query=...
+// Rechercher des livres via l'API Google Books
 export async function searchBooks(req, res) {
     try {
         const { query } = req.query;
 
         if (!query) {
-            return res.status(400).json({ error: "Query is required" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Query is required" });
         }
 
         const response = await fetch(
@@ -17,7 +17,7 @@ export async function searchBooks(req, res) {
         const books = data.items || [];
 
         // Ne garder que les infos essentielles
-        const simplifiedBooks = books.slice(0, 5) // Limite de 5 livres max
+        const simplifiedBooks = books.slice(0, 10) // Limite de 10 livres max
         .map(book => {
         const info = book.volumeInfo;
         // Trouver le ISBN
@@ -40,7 +40,7 @@ export async function searchBooks(req, res) {
         res.json(simplifiedBooks);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erreur API Google Books" });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur API Google Books" });
     }
 }
 
@@ -49,7 +49,7 @@ export async function getBookById(req, res) {
     try {
         const { id } = req.params;
 
-        if (!id) return res.status(400).json({ error: "Book ID is required" });
+        if (!id) return res.status(StatusCodes.BAD_REQUEST).json({ error: "Book ID is required" });
 
         const response = await fetch(
             `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
@@ -75,7 +75,7 @@ export async function getBookById(req, res) {
         res.json(bookDetail);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erreur lors de la récupération du livre" });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur lors de la récupération du livre" });
     }
 }
 
