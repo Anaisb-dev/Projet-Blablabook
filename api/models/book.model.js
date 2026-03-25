@@ -5,6 +5,11 @@ export class Book extends Model { }
 
 Book.init(
     {
+        google_book_id: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
         code_isbn: {
             type: DataTypes.STRING,
             allowNull: false,

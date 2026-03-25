@@ -1,4 +1,4 @@
-# apo-blablaboo 📚
+# apo-blablabook 📚
 
 BlablaBook est une plateforme en ligne de gestion de bibliothèque personnelle. Elle permet à des lecteurs confirmés ou encore novices de partager leur lectures et de gérer leur propre bibliothèque.
 

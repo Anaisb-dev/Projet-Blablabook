@@ -13,3 +13,7 @@ export const getRandomBooks = async () => {
 
     return await searchBooks(randomKeyword);
 };
+
+export const getBookDetail = async (id) => {
+    return await api(`/books/${id}`, "GET");
+};

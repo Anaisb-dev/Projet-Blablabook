@@ -1,4 +1,5 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import SearchBar from "../ui/SearchBar.svelte";
     import BookGrid from "./BookGrid.svelte";
 
