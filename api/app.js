@@ -17,7 +17,7 @@ app.use(cors());
 /* ROUTES PUBLIQUES */
 
 // Auth (login / register)
-//app.use("/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 // Gestion des livres
 app.use("/books", bookRoutes);
