@@ -6,7 +6,7 @@
 
   const routes = {
     "/": LibrarySection,
-    "/book": LibrarySection,
+    "/books": LibrarySection,
     "/register": RegisterForm,
     "*": LibrarySection // fallback (si aucune route ne correspond on affiche cette page à changer par une page 404)
   };
