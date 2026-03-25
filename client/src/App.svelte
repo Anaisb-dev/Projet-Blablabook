@@ -8,7 +8,7 @@
     "/": LibrarySection,
     "/book": LibrarySection,
     "/register": RegisterForm,
-    "*": LibrarySection // fallback
+    "*": LibrarySection // fallback (si aucune route ne correspond on affiche cette page à changer par une page 404)
   };
 </script>
 
