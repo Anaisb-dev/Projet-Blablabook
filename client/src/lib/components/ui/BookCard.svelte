@@ -1,4 +1,8 @@
 <script>
+	import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
+  
 	export let id;
 	export let title = "Titre du livre";
 	export let author = "Nom de l’auteur";
