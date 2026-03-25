@@ -58,7 +58,9 @@ export async function getBookById(req, res) {
         const data = await response.json();
         const info = data.volumeInfo;
 
-        const isbn = info.industryIdentifiers?.find(i => i.type === "ISBN_13")?.identifier || null;
+       // Vérifie que industryIdentifiers existe avant de prendre l'ISBN
+        const isbn = info.industryIdentifiers?.[0]?.identifier || null;
+
         const year = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4)) : null;
 
         const bookDetail = {
