@@ -22,7 +22,7 @@ router.get('/books', fakeAuth, getUserBooks);
 // router.get('/books/:id', fakeAuth, getUserBookById);
 router.get("/books", (req, res) => {
     console.log("Route /users/books appelée ✅");
-    res.json([]);
+    res.json([{ id: 1, title: "Livre test" }]);
 });
 // Récupérer un livre via son id (ex: page détail d'un livre)
 router.patch('/books/:id', fakeAuth, updateUserBook);
