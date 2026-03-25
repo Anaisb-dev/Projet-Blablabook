@@ -1,8 +1,16 @@
 <script>
+	export let id;
 	export let title = "Titre du livre";
 	export let author = "Nom de l’auteur";
 	export let cover = "/book.jpg";
-    export let description ="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+	export let description =
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+		
+		
+		function handleClick(){
+			dispatch("select", {id});
+		}
+
 </script>
 
 <div class="w-[250px] rounded-2xl border p-3">
@@ -17,11 +25,12 @@
 		<p class="text-xs">{author}</p>
 	</div>
     
-    <p class="mt-2 text-xs text-gray-500 line-clamp-3">
+	<p class="mt-2 text-xs text-gray-500 line-clamp-3">
 		{description}
 	</p>
-
-	<button class="mt-3 w-full rounded-xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1]">
+<!-- bouton affiche la page bookdetail-->
+	<button class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1]"
+	on:click={handleClick}>
 		Voir plus
 	</button>
 </div>
