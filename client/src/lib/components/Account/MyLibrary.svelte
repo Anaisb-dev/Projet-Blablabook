@@ -2,6 +2,7 @@
     import Button from "../ui/Button.svelte";
     import Icon from "@iconify/svelte";
     import BookCard from "../ui/BookCard.svelte";
+    import {fly} from "svelte/transition";
 
     let books = [
         {
@@ -39,20 +40,29 @@
     // Variables et Fonction pour supprimer un livre de la bibliothèque et avoir un message d'annulation de suppression
     let lastDeletedBook = null;
     let showDeleteMessage = false;
+    let progressBar = 100;
 
     function deleteBook(id) {
-        const bookToDelete = books.find((book) => book.id === id);
+        const bookToDelete = books.find((book) => book.id === id); // Trouve le livre à supprimer pour pouvoir le remettre en ligne si besoin
 
-        lastDeletedBook = bookToDelete;
+        lastDeletedBook = bookToDelete; // Stocke le livre supprimé pour pouvoir le remettre en ligne si besoin
 
-        books = books.filter((book) => book.id !== id);
+        books = books.filter((book) => book.id !== id); // Supprime le livre de la liste des livres
 
-        showDeleteMessage = true;
+        showDeleteMessage = true; // Affiche le message de suppression
+        
+        const interval = setInterval(() => {
+		progressBar -= 2; // vitesse (100 → 0 en ~5s)
+
+		if (progressBar <= 0) {
+			clearInterval(interval);
+		}
+	}, 100);
 
         setTimeout(() => {
             showDeleteMessage = false;
             lastDeletedBook = null;
-        }, 5000);
+        }, 5000); // Cache le message de suppression après 5 secondes et réinitialise le livre supprimé
     }
 
     // Remettre en ligne le livre qui vient d'être supprimé
@@ -64,7 +74,6 @@
 	showDeleteMessage = false;
 	lastDeletedBook = null;
 }
-
 </script>
 
 <div
@@ -137,10 +146,21 @@
 
 <!-- Message de suppression -->
 {#if showDeleteMessage}
-	<div class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-2 rounded-lg flex items-center gap-3 shadow-lg">
-		<span>Livre supprimé</span>
-		<button class="underline" on:click={restoreDeletedBook}>
-			Annuler
-		</button>
+	<div 
+        in:fly={{ y: 20, duration: 300 }}
+        out:fly={{ y: -20, duration: 300 }}
+        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-2 rounded-lg flex items-center gap-3 shadow-lg">
+            <span>Le livre "{lastDeletedBook.title}" a été supprimé de votre bibliothèque</span>
+            <button class="underline" on:click={restoreDeletedBook}>
+                Annuler
+            </button>
+
+            <!-- Barre de progression -->
+		<div class="w-full h-[4px] bg-gray-300 rounded overflow-hidden">
+			<div
+				class="h-full bg-[#F2E0D0] transition-all duration-100"
+				style="width: {progressBar}%"
+			></div>
+		</div>
 	</div>
 {/if}
