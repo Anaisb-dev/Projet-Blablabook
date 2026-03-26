@@ -20,4 +20,6 @@
 
 <Checkbox />
 <Button> Créer un compte </Button>
-
+<p class="text-center text-sm mt-4">
+    Vous avez déjà un compte ? <a href="/#/login" class="text-[#590212] hover:underline">Connectez-vous</a>
+</p>
