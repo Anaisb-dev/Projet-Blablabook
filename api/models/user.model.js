@@ -7,7 +7,8 @@ User.init(
   {
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     last_name: {
       type: DataTypes.STRING,
@@ -16,7 +17,10 @@ User.init(
       type: DataTypes.STRING
     },
     bio: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      validate: {
+        len: [0, 250]
+      }
     },
     email: {
       type: DataTypes.STRING,

@@ -3,7 +3,8 @@ POST {{BASE_URL}}/auth/register
 Content-Type: application/json
 
 {
-    "username": "te",
-    "email": "testuser",
-    "password": "test"
+    "username": "princillia-bamana",
+    "email": "example@ample.com",
+    "password": "Tttttt@7",
+    "confirmPassword": "Tttttt@7"
 }
