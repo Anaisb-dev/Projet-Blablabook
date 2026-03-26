@@ -27,10 +27,6 @@ Book.init(
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        summary: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-        },
         page_number: {
             type: DataTypes.INTEGER,
             allowNull: false,

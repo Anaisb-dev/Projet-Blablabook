@@ -19,11 +19,7 @@ router.patch('/settings', fakeAuth, updateSettings);
 // Modification des infos perso de l'utilisateur
 router.get('/books', fakeAuth, getUserBooks);
 // Afficher tous les livres de l'utilisateur
-// router.get('/books/:id', fakeAuth, getUserBookById);
-router.get("/books", (req, res) => {
-    console.log("Route /users/books appelée ✅");
-    res.json([{ id: 1, title: "Livre test" }]);
-});
+router.get('/books/:id', fakeAuth, getUserBookById);
 // Récupérer un livre via son id (ex: page détail d'un livre)
 router.patch('/books/:id', fakeAuth, updateUserBook);
 // Modifier le statut d'un livre présent dans notre compte
