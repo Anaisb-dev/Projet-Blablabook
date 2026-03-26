@@ -30,7 +30,7 @@ export async function registerUser(req, res) {
         console.error(error);
         
         if (error.name === "SequelizeUniqueConstraintError") {
-            return res.status(StatusCodes.CONFLICT).json({error: `Field already exists: ${error.errors[0].path}`});
+            return res.status(StatusCodes.CONFLICT).json({error: `Ce contenu existe déjà : ${error.errors[0].path}`});
         }
         // "error.errors[0].path", je retourne un tableau des erreurs, je prends la 1ere erreur et je récupére le champs concerné,
         // il sera donc évolutif suivant le cas rencontré : mail, username déjà existant dans la bdd
