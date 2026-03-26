@@ -1,29 +1,35 @@
 // Router concernant l'utilisateur
 
 import express from "express";
+import { getProfile, 
+    getSettings, 
+    updateSettings, 
+    getUserBooks, 
+    getUserBookById, 
+    updateUserBook,
+    deleteUserBook,fakeAuth } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.get('/profile');
+router.get('/profile', fakeAuth, getProfile);
 // Compte de l'utilisateur
-router.get('/settings');
+router.get('/settings', fakeAuth, getSettings);
 // Infos perso de l'utilisateur
-router.patch('/settings');
+router.patch('/settings', fakeAuth, updateSettings);
 // Modification des infos perso de l'utilisateur
-router.get('/books');
+router.get('/books', fakeAuth, getUserBooks);
 // Afficher tous les livres de l'utilisateur
-router.get('/books/:id');
+// router.get('/books/:id', fakeAuth, getUserBookById);
+router.get("/books", (req, res) => {
+    console.log("Route /users/books appelée ✅");
+    res.json([{ id: 1, title: "Livre test" }]);
+});
 // Récupérer un livre via son id (ex: page détail d'un livre)
-router.patch('/books/:id')
+router.patch('/books/:id', fakeAuth, updateUserBook);
 // Modifier le statut d'un livre présent dans notre compte
-router.delete('/books/:id');
+router.delete('/books/:id', fakeAuth, deleteUserBook);
 // Permet de supprimer un livre de sa bibliothèque
 
-
-/* Voir avec Aleth
-router.post('/books');
-Ajout d'un livre à sa bibliothèque
-*/
 
 
 export default router;

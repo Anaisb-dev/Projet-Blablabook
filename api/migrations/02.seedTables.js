@@ -60,6 +60,9 @@ await chloe.addBook(book2, {
     through: { status: "lu" } 
 });
 
+console.log("Chloé ID:", chloe.id);
+console.log("Book1 ID:", book1.id);
+console.log("Book2 ID:", book2.id);
 
 console.log("✅ Migration OK ! Fermeture de la base..."); // On ferme le tunnel de connexion pour que le script s'arrête bien
 await sequelize.close();
