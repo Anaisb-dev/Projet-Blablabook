@@ -50,19 +50,11 @@
         books = books.filter((book) => book.id !== id); // Supprime le livre de la liste des livres
 
         showDeleteMessage = true; // Affiche le message de suppression
-        
-        const interval = setInterval(() => {
-		progressBar -= 2; // vitesse (100 → 0 en ~5s)
-
-		if (progressBar <= 0) {
-			clearInterval(interval);
-		}
-	}, 100);
 
         setTimeout(() => {
             showDeleteMessage = false;
             lastDeletedBook = null;
-        }, 5000); // Cache le message de suppression après 5 secondes et réinitialise le livre supprimé
+        }, 8000); // Cache le message de suppression après 8 secondes et réinitialise le livre supprimé
     }
 
     // Remettre en ligne le livre qui vient d'être supprimé
@@ -81,7 +73,7 @@
 >
     <!-- À lire -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "to-read"}
         on:click={() => (activeFilter = "to-read")}
     >
@@ -93,7 +85,7 @@
 
     <!-- En cours -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "reading"}
         on:click={() => (activeFilter = "reading")}
     >
@@ -105,7 +97,7 @@
 
     <!-- Lu -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "finished"}
         on:click={() => (activeFilter = "finished")}
     >
@@ -115,9 +107,9 @@
         </div>
     </Button>
 
-    <!-- Tous -->
+    <!-- Tous les livres -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "all"}
         on:click={() => (activeFilter = "all")}
     >
