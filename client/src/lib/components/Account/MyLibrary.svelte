@@ -155,7 +155,7 @@
                 Annuler
             </button>
 
-            <!-- Barre de progression -->
+            <!-- Barre progression -->
 		<div class="w-full h-[4px] bg-gray-300 rounded overflow-hidden">
 			<div
 				class="h-full bg-[#F2E0D0] transition-all duration-100"
