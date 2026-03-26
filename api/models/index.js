@@ -8,18 +8,23 @@ import { UserBook } from "../models/userBook.model.js";
 
 // Relations N:N
 User.belongsToMany(Book, {
-    through: "user_book",
+    through: UserBook,
     foreignKey: "user_id", // clé étrangère du modèle d'origine
     otherKey: "book_id", // clé étrangère du modèle cible
     as: "books"
 });
 
 Book.belongsToMany(User, {
-    through: "user_book",
+    through: UserBook,
     foreignKey: "book_id",
     otherKey: "user_id",
     as: "users"
 });
+
+UserBook.belongsTo(User, { foreignKey: "user_id", as: "user" });
+UserBook.belongsTo(Book, { foreignKey: "book_id", as: "book" });
+User.hasMany(UserBook, { foreignKey: "user_id" });
+Book.hasMany(UserBook, { foreignKey: "book_id" });
 
 Book.belongsToMany(Author, {
     through: "book_author",
