@@ -1,6 +1,6 @@
 <script>
     import Button from "../ui/Button.svelte";
-        import Icon from "@iconify/svelte";   
+    import Icon from "@iconify/svelte";   
 
     const username = "John Doe";
     const bio =
