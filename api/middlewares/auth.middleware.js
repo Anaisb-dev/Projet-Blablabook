@@ -12,7 +12,7 @@ export function validateUserRegistration(req, res, next) {
         username: Joi.string()
             .pattern(/^[a-zA-Z0-9_.-]+$/)
             // .pattern = minuscule, majuscule, chiffre + _, -, . autorisé dans le username
-            .min(3).max(15)
+            .min(3).max(30)
             .required(),
 
         email: Joi.string()
