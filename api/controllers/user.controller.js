@@ -1,5 +1,7 @@
+import fetch from "node-fetch";
 import { StatusCodes } from "http-status-codes";
 import { User, UserBook, Book, Author } from "../models/index.js";
+
 
 
 export function fakeAuth(req, res, next) {
@@ -133,6 +135,83 @@ export async function updateUserBook(req, res) {
         res.json(userBook);
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+    }
+}
+
+
+ // Ajouter un livre Google à la bibliothèque privée de l'utilisateur connecté
+
+export async function addGoogleBookToLibrary(req, res) {
+    try {
+        const googleBookId = req.params.googleBookId; // depuis l'URL (via page détail bibliothèque publique)
+        const { status = "à lire" } = req.body;
+        const userId = req.user.id;
+
+        if (!googleBookId) {
+            return res.status(400).json({ error: "L'id du livre Google est requis" });
+        }
+
+        // Récupère les infos depuis Google Books
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
+        const googleBook = await response.json();
+
+        if (!googleBook || !googleBook.volumeInfo) {
+            return res.status(404).json({ error: "Livre introuvable via Google Books" });
+        }
+
+        // On récupère l'ISBN principal du livre si disponible, sinon on prend l'ID Google Books comme identifiant unique
+        const isbn = googleBook.volumeInfo.industryIdentifiers?.[0]?.identifier || googleBook.id;
+
+        // Cherche d'abord par Google Book ID
+        let book = await Book.findOne({ where: { google_book_id: googleBook.id } });
+
+        // puis on cherche par ISBN
+        if (!book) {
+            book = await Book.findOne({ where: { code_isbn: isbn } });
+        }
+
+        // Si toujours pas trouvé, on crée le livre
+        if (!book) {
+            book = await Book.create({
+                title: googleBook.volumeInfo.title,
+                summary: googleBook.volumeInfo.description || "",
+                year: googleBook.volumeInfo.publishedDate?.split("-")[0] || null,
+                page_number: googleBook.volumeInfo.pageCount || null,
+                cover_image: googleBook.volumeInfo.imageLinks?.thumbnail || null,
+                google_book_id: googleBook.id || null,
+                code_isbn: isbn,
+            });
+        } else {
+            // Si le livre existe mais que google_book_id est null, on l'ajoute
+            if (!book.google_book_id) {
+                book.google_book_id = googleBook.id;
+                await book.save();
+            }
+        }
+
+        // Associe les auteurs
+        if (googleBook.volumeInfo.authors?.length) {
+            for (const authorName of googleBook.volumeInfo.authors) {
+                const [firstName, ...rest] = authorName.split(" ");
+                const lastName = rest.join(" ");
+                const [author] = await Author.findOrCreate({
+                    where: { first_name: firstName, last_name: lastName }
+                });
+                await book.addAuthor(author);
+            }
+        }
+
+        // Ajoute le livre à la bibliothèque de l'utilisateur
+        await UserBook.findOrCreate({
+            where: { user_id: userId, book_id: book.id },
+            defaults: { status }
+        });
+
+        res.status(201).json({ message: "Livre ajouté à la bibliothèque", book });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erreur serveur" });
     }
 }
 

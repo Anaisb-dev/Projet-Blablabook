@@ -7,7 +7,7 @@ import { getProfile,
     getUserBooks, 
     getUserBookById, 
     updateUserBook,
-    deleteUserBook,fakeAuth } from "../controllers/user.controller.js";
+    deleteUserBook,fakeAuth,addGoogleBookToLibrary } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -23,6 +23,8 @@ router.get('/books/:id', fakeAuth, getUserBookById);
 // Récupérer un livre via son id (ex: page détail d'un livre)
 router.patch('/books/:id', fakeAuth, updateUserBook);
 // Modifier le statut d'un livre présent dans notre compte
+router.post('/books/:googleBookId', fakeAuth, addGoogleBookToLibrary);
+// Ajouter un livre à sa bibliothèque via googlebookapi
 router.delete('/books/:id', fakeAuth, deleteUserBook);
 // Permet de supprimer un livre de sa bibliothèque
 
