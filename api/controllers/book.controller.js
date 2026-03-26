@@ -34,6 +34,7 @@ export async function searchBooks(req, res) {
         summary: info.description || "Pas de description",
         page_number: info.pageCount || 0, // 0 si inconnu
         cover_image: info.imageLinks?.thumbnail || null,
+        genres: info.categories || [],
     };
 });
 
@@ -72,6 +73,7 @@ export async function getBookById(req, res) {
             page_number: info.pageCount || 0,
             cover_image: info.imageLinks?.thumbnail || null,
             authors: info.authors || [],
+            genres: info.categories || [],
         };
 
         res.json(bookDetail);

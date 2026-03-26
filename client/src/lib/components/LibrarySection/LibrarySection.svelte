@@ -38,11 +38,10 @@
     });
 </script>
 
-<h1 class="text-2xl font-bold mb-4 text-center p-10"> Bibliothèque </h1>
-
 {#if selectedBookId}
     <BookDetail bookId={selectedBookId} on:back={handleBack} />
 {:else}
+    <h1 class="text-2xl font-bold mb-4 text-center p-10"> Bibliothèque </h1>
     <SearchBar on:search={(e) => handleSearch(e.detail.query)} />
     <BookGrid {books} on:select={handleSelect} />
 {/if}
