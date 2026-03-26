@@ -44,7 +44,7 @@ await Gender.create({ name: "Poésie" });
 console.log("Ajout de users de test");
 
 const chloe = await User.create({ 
-    pseudo: "Chloé",
+    username: "Chloé",
     last_name: "Da Silva",
     first_name: "Chloé",
     email: "chloe@test.com", 
@@ -60,6 +60,9 @@ await chloe.addBook(book2, {
     through: { status: "lu" } 
 });
 
+console.log("Chloé ID:", chloe.id);
+console.log("Book1 ID:", book1.id);
+console.log("Book2 ID:", book2.id);
 
 console.log("✅ Migration OK ! Fermeture de la base..."); // On ferme le tunnel de connexion pour que le script s'arrête bien
 await sequelize.close();

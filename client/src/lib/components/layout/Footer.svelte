@@ -13,6 +13,9 @@
     <a href="#contact" class="hover:underline">Contact</a>
     <a href="#faq" class="hover:underline">FAQ</a>
     <a href="#mentions" class="hover:underline">Mentions légales</a>
+    <a href="#conditions" class="hover:underline">Conditions générales</a>
+    <a href="#mentions" class="hover:underline">Politique de confidentialité</a>
+    <a href="#mentions" class="hover:underline">Politique des cookies</a>
   </nav>
 
   <div class="flex items-center justify-center gap-4 md:justify-end">
