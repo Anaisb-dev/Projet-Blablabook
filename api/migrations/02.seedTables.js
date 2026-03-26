@@ -44,7 +44,7 @@ await Gender.create({ name: "Poésie" });
 console.log("Ajout de users de test");
 
 const chloe = await User.create({ 
-    pseudo: "Chloé",
+    username: "Chloé",
     last_name: "Da Silva",
     first_name: "Chloé",
     email: "chloe@test.com", 

@@ -7,19 +7,22 @@ User.init(
   {
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     last_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     first_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
+    },
+    bio: {
+      type: DataTypes.TEXT
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     password: {
       type: DataTypes.TEXT,
