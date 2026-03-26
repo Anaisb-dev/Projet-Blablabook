@@ -41,10 +41,40 @@ export function validateUserRegistration(req, res, next) {
 
 export function validateUserLogin(req, res, next) {
     const userLoginSchema = Joi.object({
-        username: Joi.string().required(),
+        identifier: Joi.string().required(),
         password: Joi.string().required()
     });
 
     checkBody(userLoginSchema, req.body, res, next);
 };
 
+// Ce middleware va verifier si il y a un token dans la requete
+// Et si le token est valide
+export function authenticate(req, res, next) {
+    // Ici, on recupere le token si il existe
+    const authHeader = req.headers.authorization;
+
+    // Si le token n'existe pas ou qu'il ne commence pas par Bearer
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "Authorization token missing or invalid" });
+    }
+
+    // On separer notre chaine de caractere sur espace, et on garde la partie apres.
+    // On recupere uniquement le token
+    const token = authHeader.split(" ")[1];
+
+    try {
+        // JWT verifie que le token est valide et qu'il n'est pas expiré
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // Ici, on ajoute a la requete l'id de l'utilisateur connecté
+        //@TODO Verifier que l'user_id correspond a un utilisateur existant
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "Invalid or expired token" });
+    }
+}
