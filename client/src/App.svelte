@@ -6,6 +6,7 @@
   import RegisterForm from "./lib/components/RegisterForm/RegisterForm.svelte";
   import LoginForm from "./lib/components/LoginForm/LoginForm.svelte";
   import Account from "./lib/components/Account/Account.svelte";
+  import Setting from "./lib/components/Account/Setting.svelte";
 
   const routes = {
     "/": HomePage,
@@ -13,6 +14,7 @@
     "/register": RegisterForm,
     "/login": LoginForm,
     "/profile": Account,
+    "/settings": Setting,
     "*": HomePage // page 404 a faire pour le moment on redirige vers l'accueil
   };
 </script>
