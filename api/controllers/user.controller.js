@@ -3,23 +3,30 @@ import { StatusCodes } from "http-status-codes";
 import { User, UserBook, Book, Author } from "../models/index.js";
 
 
+// Fonction test pour afficher tous les users
+export async function getAllUsers(req, res) {
+    try {
+        const users = await User.findAll();
 
-export function fakeAuth(req, res, next) {
-    // Simulation d'utilisateur connecté (Chloé)
-    req.user = {
-        id: 1,
-        username: "Chloé",
-        email: "chloe@test.com"
-    };
-    next();
+        return res.json(users);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
 }
 
 // Afficher le profil de l'utilisateur connecté
 export async function getProfile(req, res) {
     try {
+<<<<<<< HEAD
         const users = await User.findAll();
 
         return res.json(users);
+=======
+        const user = await User.findByPk(req.user.id, {
+    attributes: ["id", "username", "email"] // info à afficher
+});
+        res.json(user);
+>>>>>>> 351bdaaba2ad0ddf0895464f8babf00c1f39162e
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }

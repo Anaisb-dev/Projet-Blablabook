@@ -47,8 +47,6 @@ export function validateUserLogin(req, res, next) {
     checkBody(userLoginSchema, req.body, res, next);
 };
 
-// Ce middleware va verifier si il y a un token dans la requete
-// Et si le token est valide
 export function authenticate(req, res, next) {
     // Ici, on recupere le token si il existe
     const authHeader = req.headers.authorization;
@@ -76,4 +74,4 @@ export function authenticate(req, res, next) {
             .status(StatusCodes.UNAUTHORIZED)
             .json({ error: "Invalid or expired token" });
     }
-}
+};

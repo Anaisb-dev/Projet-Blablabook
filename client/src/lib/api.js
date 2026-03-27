@@ -3,10 +3,7 @@
 const api = async (
     endpoint,
     method = "GET",
-    body = null
-) => {
-
-    const token = localStorage.getItem("token"); // on récupère le token
+    body = null) => {
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method,

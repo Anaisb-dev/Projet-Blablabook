@@ -7,9 +7,13 @@ import { getProfile,
     getUserBooks, 
     getUserBookById, 
     updateUserBook,
-    deleteUserBook,addGoogleBookToLibrary } from "../controllers/user.controller.js";
+    deleteUserBook,addGoogleBookToLibrary, 
+    getAllUsers} from "../controllers/user.controller.js";
 
 const router = express.Router();
+
+router.get('/all', getAllUsers);
+// route test all user
 
 router.get('/profile', getProfile);
 // Compte de l'utilisateur

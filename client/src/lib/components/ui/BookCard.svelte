@@ -19,7 +19,7 @@
 
 </script>
 
-<div class="w-[250px] rounded-2xl border p-3">
+<div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
 	<img
 		src={cover}
 		alt={title}
@@ -32,16 +32,18 @@
 	</div>
     
 	{#if showDescription}
-	<p class="mt-2 text-xs text-gray-500 line-clamp-3">
+	<p class="mt-2 text-xs text-gray-500 line-clamp-3 flex-grow">
 		{description}
 	</p>
 	{/if}
 
-	{#if showButton}
-<!-- bouton affiche la page bookdetail-->
-	<button class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1]"
-	on:click={handleClick}>
-		Voir plus
-	</button>
-	{/if}
+	<div class="flex justify-end">
+		{#if showButton}
+	<!-- bouton affiche la page bookdetail-->
+		<button class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] cursor-pointer hover:bg-[#590212] hover:text-white transition"
+		on:click={handleClick}>
+			Voir plus
+		</button>
+		{/if}
+	</div>	
 </div>

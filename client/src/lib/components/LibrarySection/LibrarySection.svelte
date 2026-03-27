@@ -43,6 +43,8 @@
 {#if selectedBookId}
     <BookDetail bookId={selectedBookId} on:back={handleBack} />
 {:else}
+    <div class="flex justify-center mb-10">
     <SearchBar on:search={(e) => handleSearch(e.detail.query)} />
-    <BookGrid {books} on:select={handleSelect} />
+    </div>
+        <BookGrid {books} on:select={handleSelect} />
 {/if}
