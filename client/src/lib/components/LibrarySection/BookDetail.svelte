@@ -27,7 +27,7 @@
     }
 
     function addToPersonalLibrary() {
-        // a faire : appeler l'API pour ajouter le livre à la bibliothèque personnelle
+        // a faire : appeler l'API pour ajouter le livre à la bibliothèque perso
         console.log("Ajouter à ma bibliothèque", bookId);
     }
 </script>
