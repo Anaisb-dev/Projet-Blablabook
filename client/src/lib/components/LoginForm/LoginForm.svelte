@@ -19,7 +19,7 @@
         errorMessage = "";
 
         try {
-            const data = await loginUser(username, password);
+            const data = await loginUser({ username, password });
             localStorage.setItem("token", data.token);
             window.location.href = "/profile";
         } catch (err) {

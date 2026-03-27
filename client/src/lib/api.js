@@ -1,23 +1,19 @@
 // On récupère la fonction pour appeller le backend
 
-const api = async (
-    endpoint,
-    method = "GET",
-    body = null) => {
-
+export default async function api(endpoint, method = "GET", body) {
     const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method,
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: body ? JSON.stringify(body) : null,
+        body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-        throw new Error("Erreur API");
+        throw new Error(`Failed to fetch ${endpoint}: ${response.statusText}`);
     }
 
-    return response.json();
-};
-
-export default api;
+    const data = await response.json();
+    return data;
+}

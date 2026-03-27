@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { StatusCodes } from "http-status-codes";
 import { User, UserBook, Book, Author } from "../models/index.js";
 

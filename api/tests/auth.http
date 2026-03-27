@@ -7,9 +7,9 @@ Content-Type: application/json
 
 {
     "username": "cloee",
-    "email": "cloee@ample.com",
-    "password": "Ccccccccc@8",
-    "confirmPassword": "Ccccccccc@8"
+    "email": "cloeeda@ample.com",
+    "password": "Azerty@8",
+    "confirmPassword": "Azerty@8"
 }
 
 ### Login
@@ -18,5 +18,5 @@ Content-Type: application/json
 
 {
     "identifier": "cloee",
-    "password": "Ccccccccc@8"
+    "password": "Azerty@8"
 }
