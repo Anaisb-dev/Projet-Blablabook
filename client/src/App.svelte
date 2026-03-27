@@ -13,7 +13,7 @@
     "/register": RegisterForm,
     "/login": LoginForm,
     "/profile": Account,
-    "*": HomePage // page 404 a faire pour le moment on redirige vers l'accueil
+    //"*": HomePage // page 404 a faire pour le moment on redirige vers l'accueil
   };
 </script>
 
