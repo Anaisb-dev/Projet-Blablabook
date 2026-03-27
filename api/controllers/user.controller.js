@@ -17,7 +17,9 @@ export function fakeAuth(req, res, next) {
 // Afficher le profil de l'utilisateur connecté
 export async function getProfile(req, res) {
     try {
-        res.json(req.user);
+        const users = await User.findAll();
+
+        return res.json(users);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
