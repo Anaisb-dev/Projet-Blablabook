@@ -23,15 +23,21 @@ const book2 = await Book.create({
 
 console.log("Ajout d'auteurs de test...");
 
-await Author.create({
+const author1 = await Author.create({
     last_name: "McFadden",
     first_name: "Freida"
 });
 
-await Author.create({
+const author2 = await Author.create({
     last_name: "Rowling",
     first_name: "J.K."
 });
+
+console.log("Association auteurs ↔ livres");
+
+// Association auteurs / livres
+await book1.addAuthor(author1);
+await book2.addAuthor(author2);  
 
 console.log("Ajout des genres de livres...");
 

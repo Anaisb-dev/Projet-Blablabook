@@ -29,12 +29,12 @@ User.init(
     },
     password: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: false
     },
   },
   {
     sequelize,
     modelName: "User",
-    tableName: "user"
+    tableName: "users"
   },
 );
