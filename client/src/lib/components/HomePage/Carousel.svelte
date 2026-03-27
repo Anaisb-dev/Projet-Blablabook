@@ -47,7 +47,7 @@
 		}
 	}
 </script>
-<!--bouton gaaucche et droite -->
+<!--bouton gauche et droite -->
 <div class="carousel">
 	<button class="nav left" on:click={prev} aria-label="Précedent">‹</button>
 	<button class="nav right" on:click={next} aria-label="Suivant">›</button>
