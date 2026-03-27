@@ -1,4 +1,4 @@
-<!-- <script>
+<script>
     import { Toggle } from "bits-ui";
     import Icon from "@iconify/svelte";
 
@@ -24,9 +24,9 @@
     >
         <Icon icon="material-symbols-light:lock-outline" />
     </Toggle.Root>
-</div> -->
+</div>
 
-<script>
+<!-- <script>
     import { createEventDispatcher } from 'svelte';
     export let value = "";
 
@@ -44,4 +44,4 @@
     value={value}
     on:input={handleInput}
     class="flex items-center gap-2 border rounded-xl w-[300px] h-[40px] bg-white mx-auto mb-4 p-4"
-/>
+/> -->
