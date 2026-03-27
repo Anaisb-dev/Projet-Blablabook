@@ -15,7 +15,10 @@
     </div>
 
     <div class="absolute left-1/2 -translate-x-1/2">
-        <BrandName />
+        <a href="/">
+            <LogoIcon width={40} height={28} />
+            <BrandName />
+        </a>
     </div>
 
     <!-- Theme et Menu de navigation mobile, tablette et desktop -->
