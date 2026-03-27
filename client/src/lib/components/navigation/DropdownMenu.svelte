@@ -14,16 +14,22 @@
             Accueil
         </DropdownMenu.Item>
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
+            <a href="/#/library">
             <Icon icon="ph:books-thin" />
             Bibliothèque
+            </a>
         </DropdownMenu.Item>
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
+            <a href="/#/login">
             <Icon icon="ph:sign-in" />
             Se Connecter
+            </a>
         </DropdownMenu.Item>
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
+            <a href="/#/register">
             <Icon icon="ph:user-plus" />
             Créer un compte
+            </a>
         </DropdownMenu.Item>
     </DropdownMenu.Content>
 </DropdownMenu.Root>

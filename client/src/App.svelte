@@ -5,6 +5,7 @@
   import LibrarySection from "./lib/components/LibrarySection/LibrarySection.svelte";
   import RegisterForm from "./lib/components/RegisterForm/RegisterForm.svelte";
   import LoginForm from "./lib/components/LoginForm/LoginForm.svelte";
+  import Account from "./lib/components/Account/Account.svelte";
 
   const routes = {
     "/": HomePage,
@@ -12,6 +13,8 @@
     "/register": RegisterForm,
     "/login": LoginForm,
     "*": HomePage // page 404a faire pour le moment on redirige vers l'accueil
+    "/profile": Account,
+    "*": LibrarySection // fallback (si aucune route ne correspond on affiche cette page à changer par une page 404)
   };
 </script>
 

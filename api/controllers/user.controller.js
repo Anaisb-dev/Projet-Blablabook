@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { User, UserBook, Book } from "../models/index.js";
+import { User, UserBook, Book, Author } from "../models/index.js";
 
 
 export function fakeAuth(req, res, next) {
@@ -49,15 +49,23 @@ export async function getUserBooks(req, res) {
     try {
         const books = await UserBook.findAll({
             where: { user_id: req.user.id },
-            include: [{ model: Book, as: "book" }]
+            attributes: ["status"], // on garde l'attribut status de UserBook
+            include: [{
+                model: Book,
+                as: "book",
+                attributes: ["id", "title", "summary", "cover_image"] // on garde seulement ces attributs du livre
+            }]
         });
-        
-console.log("req.user:", req.user);
-const test = await UserBook.findAll();
-console.log("UserBook.findAll():", test);
-        res.json(books);
-    } catch (err) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+
+        const result = books.map(b => ({
+            status: b.status,
+            ...b.book.toJSON()
+        }));
+
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erreur serveur" });
     }
 }
 
@@ -71,15 +79,33 @@ export async function getUserBookById(req, res) {
                 user_id: req.user.id,
                 book_id: id
             },
-            include: ["book"] // relation Sequelize
+            attributes: ["status"],
+            include: [{
+                model: Book,
+                as: "book",
+                attributes: ["id", "title", "summary", "cover_image"], // on affiche seulement ces attributs du livre
+                include: [{
+                    model: Author,
+                    as: "authors",
+                    attributes: ["last_name", "first_name"], // adapte selon ton modèle
+                    through: { attributes: [] } //  supprime le bloc book_author
+                }]
+            }]
         });
 
         if (!userBook) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé dans ta bibliothèque" });
         }
 
-        res.json(userBook);
+        const result = {
+            status: userBook.status,
+            ...userBook.book.toJSON()
+        };
+
+        res.json(result);
+
     } catch (err) {
+        console.error(err);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
 }

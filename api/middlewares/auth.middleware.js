@@ -38,3 +38,13 @@ export function validateUserRegistration(req, res, next) {
     checkBody(userRegisterSchema, req.body, res, next);
 };
 
+
+export function validateUserLogin(req, res, next) {
+    const userLoginSchema = Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required()
+    });
+
+    checkBody(userLoginSchema, req.body, res, next);
+};
+
