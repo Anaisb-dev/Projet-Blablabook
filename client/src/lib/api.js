@@ -1,11 +1,11 @@
 // On récupère la fonction pour appeller le backend
 
 const api = async (
-    endpoint, 
-    method = "GET", 
+    endpoint,
+    method = "GET",
     body = null) => {
-    
-        const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method,
         headers: {
             "Content-Type": "application/json",
