@@ -9,7 +9,6 @@ const api = async (
         method,
         headers: {
             "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }) // ajout dynamique
         },
         body: body ? JSON.stringify(body) : null,
     });

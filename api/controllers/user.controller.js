@@ -17,16 +17,10 @@ export async function getAllUsers(req, res) {
 // Afficher le profil de l'utilisateur connecté
 export async function getProfile(req, res) {
     try {
-<<<<<<< HEAD
-        const users = await User.findAll();
-
-        return res.json(users);
-=======
         const user = await User.findByPk(req.user.id, {
     attributes: ["id", "username", "email"] // info à afficher
 });
         res.json(user);
->>>>>>> 351bdaaba2ad0ddf0895464f8babf00c1f39162e
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
