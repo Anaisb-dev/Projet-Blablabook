@@ -40,7 +40,11 @@
     // Variables et Fonction pour supprimer un livre de la bibliothèque et avoir un message d'annulation de suppression
     let lastDeletedBook = null;
     let showDeleteMessage = false;
-    let progressBar = 100;
+    let progressBar = 0;
+
+    let interval;
+    let startTime;
+    const duration = 7000; // Durée du message de suppression en millisecondes
 
     function deleteBook(id) {
         const bookToDelete = books.find((book) => book.id === id); // Trouve le livre à supprimer pour pouvoir le remettre en ligne si besoin
@@ -50,19 +54,28 @@
         books = books.filter((book) => book.id !== id); // Supprime le livre de la liste des livres
 
         showDeleteMessage = true; // Affiche le message de suppression
-        
-        const interval = setInterval(() => {
-		progressBar -= 2; // vitesse (100 → 0 en ~5s)
 
-		if (progressBar <= 0) {
-			clearInterval(interval);
-		}
-	}, 100);
+        progressBar = 0;
+        startTime = Date.now();
+
+        clearInterval(interval);
+
+        interval = setInterval(() => {
+            const timePassed = Date.now() - startTime;
+            const progress = (timePassed / duration) * 100; //
+
+            progressBar = progress;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 50);
 
         setTimeout(() => {
             showDeleteMessage = false;
             lastDeletedBook = null;
-        }, 5000); // Cache le message de suppression après 5 secondes et réinitialise le livre supprimé
+            clearInterval(interval);
+        }, duration); // Cache le message de suppression après 8 secondes et réinitialise le livre supprimé
     }
 
     // Remettre en ligne le livre qui vient d'être supprimé
@@ -81,7 +94,7 @@
 >
     <!-- À lire -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "to-read"}
         on:click={() => (activeFilter = "to-read")}
     >
@@ -93,7 +106,7 @@
 
     <!-- En cours -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "reading"}
         on:click={() => (activeFilter = "reading")}
     >
@@ -105,7 +118,7 @@
 
     <!-- Lu -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "finished"}
         on:click={() => (activeFilter = "finished")}
     >
@@ -115,9 +128,9 @@
         </div>
     </Button>
 
-    <!-- Tous -->
+    <!-- Tous les livres -->
     <Button
-        variant="iconText"
+        variant="myLibraryButton"
         active={activeFilter === "all"}
         on:click={() => (activeFilter = "all")}
     >
@@ -128,6 +141,7 @@
     </Button>
 </div>
 
+<!--Affichage des livres et bouton de suppression-->
 <div
     class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-3 justify-items-center w-fit mx-auto mt-10 mb-20"
 >
@@ -144,23 +158,24 @@
     {/each}
 </div>
 
-<!-- Message de suppression -->
+<!-- Message de suppression avec annulation et barre de progression -->
 {#if showDeleteMessage}
 	<div 
         in:fly={{ y: 20, duration: 300 }}
         out:fly={{ y: -20, duration: 300 }}
-        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-2 rounded-lg flex items-center gap-3 shadow-lg">
-            <span>Le livre "{lastDeletedBook.title}" a été supprimé de votre bibliothèque</span>
-            <button class="underline" on:click={restoreDeletedBook}>
+        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-3 rounded-lg shadow-lg w-[300px]">
+
+        <div class="flex items-center justify-between">
+            <span>Le livre "{lastDeletedBook.title}" a été supprimé</span>
+            <button class="underline cursor-pointer" on:click={restoreDeletedBook}>
                 Annuler
             </button>
-
-            <!-- Barre de progression -->
-		<div class="w-full h-[4px] bg-gray-300 rounded overflow-hidden">
-			<div
-				class="h-full bg-[#F2E0D0] transition-all duration-100"
-				style="width: {progressBar}%"
-			></div>
-		</div>
+        </div>
+        <div class="w-full h-[4px] bg-[#2A0D14] rounded overflow-hidden mt-2">
+            <div
+                class="h-full bg-[#FF6B6B] transition-all duration-50"
+                style="width: {progressBar}%"
+            ></div>
+        </div>
 	</div>
 {/if}
