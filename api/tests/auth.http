@@ -6,10 +6,10 @@ POST {{BASE_URL}}/auth/register
 Content-Type: application/json
 
 {
-    "username": "princillia-bamana",
-    "email": "example@ample.com",
-    "password": "Tttttt@7",
-    "confirmPassword": "Tttttt@7"
+    "username": "cloddd",
+    "email": "clod@ample.com",
+    "password": "Ccccccccc@7",
+    "confirmPassword": "Ccccccccc@7"
 }
 
 ### Login
@@ -17,6 +17,6 @@ POST {{BASE_URL}}/auth/login
 Content-Type: application/json
 
 {
-    "identifier": "princillia-bamana",
-    "password": "Tttttt@7"
+    "identifier": "cloddd",
+    "password": "Ccccccccc@7"
 }
