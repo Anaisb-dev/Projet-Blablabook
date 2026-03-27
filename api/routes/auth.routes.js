@@ -2,14 +2,14 @@
 
 import express from "express";
 import { loginUser, registerUser } from "../controllers/auth.controller.js";
-import { validateUserRegistration } from "../middlewares/auth.middleware.js";
+import { validateUserRegistration, validateUserLogin } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 router.post('/register', validateUserRegistration, registerUser);
 // Route qui permet de s'inscrire
 
-router.post('/login', loginUser);
+router.post('/login', validateUserLogin, loginUser);
 // Route qui permet de se connecter
 
 export default router;
