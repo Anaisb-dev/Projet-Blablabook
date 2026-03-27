@@ -141,6 +141,7 @@
     </Button>
 </div>
 
+<!--Affichage des livres et bouton de suppression-->
 <div
     class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-3 justify-items-center w-fit mx-auto mt-10 mb-20"
 >
