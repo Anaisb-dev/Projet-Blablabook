@@ -11,12 +11,13 @@
 <header class="flex items-center justify-between p-4 border-b border-[#F2E0D0]">
     <!-- Logo et Nom de la Marque -->
     <div class="flex items-center gap-2">
+        <a href="/">
         <LogoIcon width={70} height={48} />
+        </a>
     </div>
 
     <div class="absolute left-1/2 -translate-x-1/2">
         <a href="/">
-            <LogoIcon width={40} height={28} />
             <BrandName />
         </a>
     </div>
