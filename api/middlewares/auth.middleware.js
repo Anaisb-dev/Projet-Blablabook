@@ -4,7 +4,6 @@ import Joi from "joi";
 import "dotenv/config";
 import { checkBody } from "../utils/checkBody.util.js";
 import { StatusCodes } from "http-status-codes";
-import { User } from "../models/index.js";
 import jwt from "jsonwebtoken";
 
 export function validateUserRegistration(req, res, next) {

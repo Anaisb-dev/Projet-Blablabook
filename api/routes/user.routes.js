@@ -7,7 +7,7 @@ import { getProfile,
     getUserBooks, 
     getUserBookById, 
     updateUserBook,
-    deleteUserBook,fakeAuth,addGoogleBookToLibrary } from "../controllers/user.controller.js";
+    deleteUserBook,addGoogleBookToLibrary } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
