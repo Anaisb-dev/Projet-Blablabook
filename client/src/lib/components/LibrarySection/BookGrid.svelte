@@ -12,7 +12,10 @@
 	}
 </script>
 
-<div class="flex flex-wrap justify-center gap-6 p-4">
+<div class="flex flex-wrap justify-center gap-6 p-4 lg:grid lg:grid-cols-5 lg:gap-6 lg:max-w-[1400px] lg:mx-auto">
+	{#if books.length === 0}
+		<p class="text-gray-500">Aucun livre trouvé.</p>
+	{/if}
 	{#each books as book}
 		<BookCard
 			id={book.google_book_id}
