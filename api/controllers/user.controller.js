@@ -145,10 +145,12 @@ export async function updateUserBook(req, res) {
 
 export async function addGoogleBookToLibrary(req, res) {
     try {
+        
         const googleBookId = req.params.googleBookId; // depuis l'URL (via page détail bibliothèque publique)
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
-
+        console.log("User:", req.user);
+console.log("GoogleBookId:", req.params.googleBookId);
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }

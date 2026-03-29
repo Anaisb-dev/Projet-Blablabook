@@ -1,6 +1,6 @@
 export const authStore = $state({ user: null, token: null });
 
-export const setAuth = (user, token) => {
+export const setAuth = (/** @type {any} */ user, /** @type {string} */ token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
     authStore.user = user;

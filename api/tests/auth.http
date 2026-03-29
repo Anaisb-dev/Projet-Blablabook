@@ -1,15 +1,15 @@
 @BASE_URL=http://localhost:3000
 
-
+### Register User
 
 POST {{BASE_URL}}/auth/register
 Content-Type: application/json
 
 {
-    "username": "cloee",
-    "email": "cloeeda@ample.com",
-    "password": "Azerty@8",
-    "confirmPassword": "Azerty@8"
+    "username": "chloeda",
+    "email": "chloeda@gmail.com",
+    "password": "Azerty@89",
+    "confirmPassword": "Azerty@89"
 }
 
 ### Login
@@ -17,6 +17,6 @@ POST {{BASE_URL}}/auth/login
 Content-Type: application/json
 
 {
-    "identifier": "cloee",
-    "password": "Azerty@8"
+    "identifier": "pppppppp",
+    "password": "Ppppp1234@"
 }

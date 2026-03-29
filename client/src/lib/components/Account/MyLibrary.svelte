@@ -7,21 +7,21 @@
     let books = [
         {
             id: 1,
-            cover: "book.jpg",
+            cover: "../../../public/book.jpg",
             title: "Atomic Habits",
             author: "James Clear",
             status: "to-read",
         },
         {
             id: 2,
-            cover: "book.jpg",
+            cover: "../../../public/book.jpg",
             title: "Deep Work",
             author: "Cal Newport",
             status: "to-read",
         },
         {
             id: 3,
-            cover: "book.jpg",
+            cover: "../../../public/book.jpg",
             title: "Clean Code",
             author: "Robert C. Martin",
             status: "reading",
