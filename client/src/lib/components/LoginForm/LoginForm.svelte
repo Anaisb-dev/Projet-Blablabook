@@ -4,13 +4,13 @@
     import Button from "../ui/Button.svelte";
     import { loginUser } from "../../../../services/auth.service.js";
 
-    let username = "";
+    let identifier = "";
     let password = "";
-    let loading = false;
     let errorMessage = "";
+    let loading = false;
 
-    async function handleLogin() {
-        if (!username || !password) {
+    const handleLogin = async () => {
+        if (!identifier || !password) {
             errorMessage = "Merci de remplir tous les champs";
             return;
         }
@@ -19,15 +19,15 @@
         errorMessage = "";
 
         try {
-            const data = await loginUser(username, password);
-            localStorage.setItem("token", data.token);
-            window.location.href = "/profile";
+            await loginUser(identifier.toString(), password.toString());
+        window.location.hash = "/profile";
         } catch (err) {
-            errorMessage = err.message || "Erreur lors de la connexion";
+            console.error("Erreur login :", err);
+            errorMessage = err.message || "Identifiants invalides";
         } finally {
             loading = false;
         }
-    }
+    };
 </script>
 
 <h1 class="text-2xl font-bold mb-4 text-center p-10">Connexion</h1>
@@ -36,12 +36,12 @@
     <p class="text-red-500 text-center mb-4">{errorMessage}</p>
 {/if}
 
-<p class="text-center">Nom d'utilisateur</p>
-<Input placeholder="Entrez votre username" bind:value={username} />
+<p class="text-center">Nom d'utilisateur ou email</p>
+<Input placeholder="Entrez votre identifiant" bind:value={identifier} />
 
 <p class="text-center">Mot de passe</p>
 <PasswordInput bind:value={password} />
 
-<Button on:click={handleLogin} active={loading}>
+<Button on:click={handleLogin} disabled={loading}>
     {#if loading}Connexion...{:else}Se connecter{/if}
 </Button>

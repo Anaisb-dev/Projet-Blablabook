@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { StatusCodes } from "http-status-codes";
 
 // Rechercher des livres via l'API Google Books

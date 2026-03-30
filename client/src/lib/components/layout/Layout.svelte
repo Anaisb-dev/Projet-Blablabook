@@ -6,7 +6,14 @@
     import DropdownMenu from "../navigation/DropdownMenu.svelte";
     import NavigationMenu from "../navigation/NavigationMenu.svelte";
     import ThemeToggle from "../ui/ThemeToggle.svelte";
+    import { onMount } from "svelte";
+    import { getAuth } from "../store/auth.svelte";
 
+
+    onMount(() => {
+        getAuth();
+    });
+    
 </script>
 
 <div class="min-h-screen flex flex-col">

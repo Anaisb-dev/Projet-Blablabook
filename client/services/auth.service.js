@@ -1,9 +1,32 @@
 import api from "../src/lib/api";
+import { setAuth } from "../src/lib/components/store/auth.svelte";
 
-export const registerUser = async (user) => {
-    return await api("/auth/register", "POST", user);
+// Inscription + connexion automatique
+export const registerUser = async ({ username, email, password, confirmPassword }) => {
+    const data = await api("/auth/register", "POST", { username, email, password, confirmPassword });
+
+    // Si le backend renvoie jwt + user
+    if (data.jwt && data.user) {
+        setAuth(data.user, data.jwt);
+    }
+
+    return data;
 };
 
-export const loginUser = async (username, password) => {
-    return await api("/auth/login", "POST", { username, password });
+// Login
+export const loginUser = async (identifier, password) => {
+    const data = await api("/auth/login", "POST", { identifier, password });
+
+    console.log("USER RECU :", data.user); 
+
+    if (data.jwt && data.user) {
+        setAuth(data.user, data.jwt);
+    }
+
+    return data;
+};
+
+// Logout
+export const logoutUser = () => {
+    localStorage.removeItem("token");
 };
