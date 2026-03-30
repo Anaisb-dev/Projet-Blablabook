@@ -9,7 +9,7 @@ export const registerUser = async ({ username, email, password, confirmPassword 
     if (data.jwt && data.user) {
         setAuth(data.user, data.jwt);
     }
-
+    
     return data;
 };
 
