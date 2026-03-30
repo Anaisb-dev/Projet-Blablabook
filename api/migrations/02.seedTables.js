@@ -23,15 +23,21 @@ const book2 = await Book.create({
 
 console.log("Ajout d'auteurs de test...");
 
-await Author.create({
+const author1 = await Author.create({
     last_name: "McFadden",
     first_name: "Freida"
 });
 
-await Author.create({
+const author2 = await Author.create({
     last_name: "Rowling",
     first_name: "J.K."
 });
+
+console.log("Association auteurs ↔ livres");
+
+// Association auteurs / livres
+await book1.addAuthor(author1);
+await book2.addAuthor(author2);  
 
 console.log("Ajout des genres de livres...");
 
@@ -60,6 +66,9 @@ await chloe.addBook(book2, {
     through: { status: "lu" } 
 });
 
+console.log("Chloé ID:", chloe.id);
+console.log("Book1 ID:", book1.id);
+console.log("Book2 ID:", book2.id);
 
 console.log("✅ Migration OK ! Fermeture de la base..."); // On ferme le tunnel de connexion pour que le script s'arrête bien
 await sequelize.close();

@@ -5,7 +5,7 @@
     let checked = false;
 </script>
 
-<div class="flex items-center justify-center gap-3 pt-8">
+<div class="flex items-center justify-center gap-3">
     <Checkbox.Root
         id="terms"
         name="terms"
