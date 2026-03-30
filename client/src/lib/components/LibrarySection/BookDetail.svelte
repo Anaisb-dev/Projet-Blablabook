@@ -36,9 +36,9 @@
     <p class="text-center">Chargement du livre...</p>
 {:else if error}
     <p class="text-center text-red-500">{error}</p>
-    <button class="mt-4 underline" on:click={goBack}>Retour à la liste</button>
+    <button class="mt-4 underline p-4 cursor-pointer" on:click={goBack}>Retour à la liste</button>
 {:else}
-    <button class="mb-4 underline" on:click={goBack}>← Retour à la liste</button>
+    <button class="mb-4 underline p-4 cursor-pointer" on:click={goBack}>← Retour à la liste</button>
 
     <div class="max-w-4xl mx-auto p-4">
         <div class="mb-4">
