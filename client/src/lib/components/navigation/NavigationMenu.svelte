@@ -1,8 +1,10 @@
 <script>
     import { authStore, clearAuth } from "../store/auth.svelte";
+    import { push } from "svelte-spa-router";
 
     function logout() {
         clearAuth();
+        push("/#/login");
     }
 </script>
 
