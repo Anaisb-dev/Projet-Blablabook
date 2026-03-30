@@ -24,13 +24,26 @@ export async function registerUser(req, res) {
             email,
             password: hashedPassword,
         });
-        // Création de l'user avec l'envoi de ses informations
-        res.status(StatusCodes.CREATED).json({ id: userCreate.id, username: userCreate.username });
-        // Renvoie de l'id et de l'username
+        // Génère le token directement après création
+        const token = jwt.sign({ id: userCreate.id }, process.env.JWT_SECRET, {
+            expiresIn: "2h",
+        });
+
+        // Renvoie le token + l'utilisateur
+        res.status(StatusCodes.CREATED).json({
+            jwt: token,
+            user: {
+                id: userCreate.id,
+                username: userCreate.username,
+                email: userCreate.email,
+                first_name: userCreate.first_name,
+                last_name: userCreate.last_name,
+            },
+        });
+
     } catch (error) {
         console.error(error);
 
-          // Gestion des doublons Sequelize
         if (error.name === "SequelizeUniqueConstraintError") {
             const field = error.errors?.[0]?.path || "champ inconnu";
             return res.status(StatusCodes.CONFLICT).json({
@@ -38,18 +51,16 @@ export async function registerUser(req, res) {
             });
         }
 
-        // Gestion des erreurs de validation Joi (ou autre structure)
         if (error.details) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 error: "Validation failed",
                 details: error.details,
             });
         }
-        // "error.errors[0].path", je retourne un tableau des erreurs, je prends la 1ere erreur et je récupére le champs concerné,
-        // il sera donc évolutif suivant le cas rencontré : mail, username déjà existant dans la bdd
+
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
     }
-};
+}
 
 
 export async function loginUser(req, res) {
@@ -77,5 +88,14 @@ export async function loginUser(req, res) {
         // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 2h
     });
 
-    res.status(StatusCodes.OK).json({ token });
-};
+       // renvoie token + user pour le frontend
+    res.status(StatusCodes.OK).json({
+        jwt: token,           // le token
+        user: {
+            id: user.id,
+            username: user.username,
+            email: user.email
+            // ajoute d'autres infos si tu veux
+        }
+});
+}

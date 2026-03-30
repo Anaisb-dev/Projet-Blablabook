@@ -20,7 +20,7 @@
 
         try {
             await loginUser(identifier.toString(), password.toString());
-        window.location.href = "users/#/profile";
+        window.location.hash = "/profile";
         } catch (err) {
             console.error("Erreur login :", err);
             errorMessage = err.message || "Identifiants invalides";

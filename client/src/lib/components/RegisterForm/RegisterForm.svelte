@@ -25,7 +25,7 @@
 
         try {
             await registerUser({ username, email, password, confirmPassword });
-        window.location.href = "users/#/profile";
+        window.location.hash = "/profile";
         } catch (err) {
             console.error("Erreur inscription :", err);
             error = err.message || "Erreur lors de l'inscription";

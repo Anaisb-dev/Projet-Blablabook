@@ -1,91 +1,78 @@
 <script>
-    import Button from "../ui/Button.svelte";
-    import Icon from "@iconify/svelte";
-    import BookCard from "../ui/BookCard.svelte";
-    import {fly} from "svelte/transition";
+import { onMount } from "svelte";
+import { authStore } from "../store/auth.svelte";
+import api from "../../api.js";
 
-    let books = [
-        {
-            id: 1,
-            cover: "../../../public/book.jpg",
-            title: "Atomic Habits",
-            author: "James Clear",
-            status: "to-read",
-        },
-        {
-            id: 2,
-            cover: "../../../public/book.jpg",
-            title: "Deep Work",
-            author: "Cal Newport",
-            status: "to-read",
-        },
-        {
-            id: 3,
-            cover: "../../../public/book.jpg",
-            title: "Clean Code",
-            author: "Robert C. Martin",
-            status: "reading",
-        },
-    ];
+import Button from "../ui/Button.svelte";
+import Icon from "@iconify/svelte";
+import BookCard from "../ui/BookCard.svelte";
+import {fly} from "svelte/transition";
 
-    // Filtre pour afficher les livres selon leur statut
-    let activeFilter = "to-read";
+let user = null;
+let books = [];
+let activeFilter = "to-read";
+let lastDeletedBook = null;
+let showDeleteMessage = false;
+let progressBar = 0;
+let interval;
+let startTime;
+const duration = 7000;
 
-    // Pour mettre à jour la liste des livres affichés en fonction du filtre actif
-    $: filteredBooks =
-        activeFilter === "all"
-            ? books
-            : books.filter((book) => book.status === activeFilter);
+onMount(async () => {
+if (!authStore.user) {
+// Redirection si pas connecté
+window.location.href = "/#/login";
+} else {
+user = authStore.user;
 
-    // Variables et Fonction pour supprimer un livre de la bibliothèque et avoir un message d'annulation de suppression
-    let lastDeletedBook = null;
-    let showDeleteMessage = false;
-    let progressBar = 0;
+// Récupération des livres de l'utilisateur
+try {
+books = await api(`/users/${user.id}/books`, "GET");
+} catch (err) {
+console.error("Erreur récupération livres :", err);
+}
+}
+});
 
-    let interval;
-    let startTime;
-    const duration = 7000; // Durée du message de suppression en millisecondes
+// Filtre pour afficher les livres selon leur statut
+$: filteredBooks =
+activeFilter === "all"
+? books
+: books.filter((book) => book.status === activeFilter);
 
-    function deleteBook(id) {
-        const bookToDelete = books.find((book) => book.id === id); // Trouve le livre à supprimer pour pouvoir le remettre en ligne si besoin
+function deleteBook(id) {
+const bookToDelete = books.find((book) => book.id === id);
+lastDeletedBook = bookToDelete;
+books = books.filter((book) => book.id !== id);
 
-        lastDeletedBook = bookToDelete; // Stocke le livre supprimé pour pouvoir le remettre en ligne si besoin
+showDeleteMessage = true;
+progressBar = 0;
+startTime = Date.now();
 
-        books = books.filter((book) => book.id !== id); // Supprime le livre de la liste des livres
+clearInterval(interval);
+interval = setInterval(() => {
+const timePassed = Date.now() - startTime;
+const progress = (timePassed / duration) * 100;
+progressBar = progress;
 
-        showDeleteMessage = true; // Affiche le message de suppression
+if (progress >= 100) {
+clearInterval(interval);
+}
+}, 50);
 
-        progressBar = 0;
-        startTime = Date.now();
+setTimeout(() => {
+showDeleteMessage = false;
+lastDeletedBook = null;
+clearInterval(interval);
+}, duration);
+}
 
-        clearInterval(interval);
-
-        interval = setInterval(() => {
-            const timePassed = Date.now() - startTime;
-            const progress = (timePassed / duration) * 100; //
-
-            progressBar = progress;
-
-            if (progress >= 100) {
-                clearInterval(interval);
-            }
-        }, 50);
-
-        setTimeout(() => {
-            showDeleteMessage = false;
-            lastDeletedBook = null;
-            clearInterval(interval);
-        }, duration); // Cache le message de suppression après 8 secondes et réinitialise le livre supprimé
-    }
-
-    // Remettre en ligne le livre qui vient d'être supprimé
-    function restoreDeletedBook() {
-	if (lastDeletedBook) {
-		books = [...books, lastDeletedBook];
-	}
-
-	showDeleteMessage = false;
-	lastDeletedBook = null;
+function restoreDeletedBook() {
+if (lastDeletedBook) {
+books = [...books, lastDeletedBook];
+}
+showDeleteMessage = false;
+lastDeletedBook = null;
 }
 </script>
 
