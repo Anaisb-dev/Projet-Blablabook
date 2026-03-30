@@ -6,7 +6,7 @@
 	export let id;
 	export let title = "Titre du livre";
 	export let author = "Nom de l’auteur";
-	export let cover = "/book.jpg";
+	export let cover;
 	export let description =
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 	
@@ -18,7 +18,6 @@
 		}
 
 </script>
-
 <div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
 	<img
 		src={cover}

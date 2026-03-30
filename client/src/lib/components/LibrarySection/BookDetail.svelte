@@ -1,16 +1,18 @@
 <script>
-    import { onMount } from "svelte";
-    import { createEventDispatcher } from "svelte";
-    import { getBookDetail } from "../../../../services/bookService.js";
+    import { onMount, createEventDispatcher } from "svelte";
+    import { getBookDetail, addBookToPersonalLibrary } from "../../../../services/bookService.js";
+    import { authStore } from "../store/auth.svelte";
 
     export let bookId;
 
     let book = null;
     let loading = true;
     let error = "";
+    let message = "";
 
     const dispatch = createEventDispatcher();
 
+    // Charger le livre
     onMount(async () => {
         try {
             book = await getBookDetail(bookId);
@@ -22,13 +24,25 @@
         }
     });
 
-    function goBack() {
-        dispatch("back");
+    // Ajouter à la bibliothèque
+    async function handleAdd() {
+        if (!authStore.user) {
+            message = "Tu dois être connecté !";
+            return;
+        }
+
+        try {
+            await addBookToPersonalLibrary(bookId);
+            message = "Livre ajouté à ta bibliothèque";
+        } catch (err) {
+            console.error(err);
+            message = "Erreur lors de l'ajout";
+        }
     }
 
-    function addToPersonalLibrary() {
-        // a faire : appeler l'API pour ajouter le livre à la bibliothèque perso
-        console.log("Ajouter à ma bibliothèque", bookId);
+    // Retour
+    function goBack() {
+        dispatch("back");
     }
 </script>
 
@@ -55,7 +69,7 @@
 
                 <button
                     class="rounded-xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] flex items-center justify-center gap-1"
-                    on:click={addToPersonalLibrary}
+                    on:click={handleAdd}
                 >
                     <span class="text-lg font-bold md:hidden">+</span>
                     <span class="hidden md:inline">Ajouter à ma bibliothèque</span>

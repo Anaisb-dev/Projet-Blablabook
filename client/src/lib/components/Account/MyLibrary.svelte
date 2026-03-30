@@ -6,7 +6,7 @@ import api from "../../api.js";
 import Button from "../ui/Button.svelte";
 import Icon from "@iconify/svelte";
 import BookCard from "../ui/BookCard.svelte";
-import {fly} from "svelte/transition";
+import { fly } from "svelte/transition";
 
 let user = null;
 let books = [];
@@ -19,60 +19,65 @@ let startTime;
 const duration = 7000;
 
 onMount(async () => {
-if (!authStore.user) {
-// Redirection si pas connecté
-window.location.href = "/#/login";
-} else {
-user = authStore.user;
+    // authStore
+    if (!authStore.user) {
+        window.location.href = "/#/login";
+        return;
+    }
 
-// Récupération des livres de l'utilisateur
-try {
-books = await api(`/users/${user.id}/books`, "GET");
-} catch (err) {
-console.error("Erreur récupération livres :", err);
-}
-}
+    user = authStore.user;
+
+    try {
+        // route
+        const data = await api("/users/books", "GET");
+        console.log("BOOKS API :", data);
+        books = data;
+
+    } catch (err) {
+        console.error("Erreur récupération livres :", err);
+    }
 });
 
-// Filtre pour afficher les livres selon leur statut
+// Filtre
 $: filteredBooks =
-activeFilter === "all"
-? books
-: books.filter((book) => book.status === activeFilter);
+    activeFilter === "all"
+        ? books
+        : books.filter((book) => book.status === activeFilter);
 
+// suppression (frontend uniquement pour l'instant)
 function deleteBook(id) {
-const bookToDelete = books.find((book) => book.id === id);
-lastDeletedBook = bookToDelete;
-books = books.filter((book) => book.id !== id);
+    const bookToDelete = books.find((book) => book.id === id);
+    lastDeletedBook = bookToDelete;
+    books = books.filter((book) => book.id !== id);
 
-showDeleteMessage = true;
-progressBar = 0;
-startTime = Date.now();
+    showDeleteMessage = true;
+    progressBar = 0;
+    startTime = Date.now();
 
-clearInterval(interval);
-interval = setInterval(() => {
-const timePassed = Date.now() - startTime;
-const progress = (timePassed / duration) * 100;
-progressBar = progress;
+    clearInterval(interval);
 
-if (progress >= 100) {
-clearInterval(interval);
-}
-}, 50);
+    interval = setInterval(() => {
+        const timePassed = Date.now() - startTime;
+        progressBar = (timePassed / duration) * 100;
 
-setTimeout(() => {
-showDeleteMessage = false;
-lastDeletedBook = null;
-clearInterval(interval);
-}, duration);
+        if (progressBar >= 100) clearInterval(interval);
+    }, 50);
+
+    setTimeout(() => {
+        showDeleteMessage = false;
+        lastDeletedBook = null;
+        clearInterval(interval);
+    }, duration);
 }
 
+// annuler suppression
 function restoreDeletedBook() {
-if (lastDeletedBook) {
-books = [...books, lastDeletedBook];
-}
-showDeleteMessage = false;
-lastDeletedBook = null;
+    if (lastDeletedBook) {
+        books = [...books, lastDeletedBook];
+    }
+
+    showDeleteMessage = false;
+    lastDeletedBook = null;
 }
 </script>
 
@@ -82,8 +87,8 @@ lastDeletedBook = null;
     <!-- À lire -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "to-read"}
-        on:click={() => (activeFilter = "to-read")}
+        active={activeFilter === "à lire"}
+        on:click={() => (activeFilter = "à lire")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="solar:book-bold" class="w-5 h-5" />
@@ -94,8 +99,8 @@ lastDeletedBook = null;
     <!-- En cours -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "reading"}
-        on:click={() => (activeFilter = "reading")}
+        active={activeFilter === "en cours"}
+        on:click={() => (activeFilter = "en cours")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="mdi:book-open-page-variant" class="w-5 h-5" />
@@ -106,8 +111,8 @@ lastDeletedBook = null;
     <!-- Lu -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "finished"}
-        on:click={() => (activeFilter = "finished")}
+        active={activeFilter === "lu"}
+        on:click={() => (activeFilter = "lu")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="garden:book-closed-fill-12" class="w-5 h-5" />

@@ -23,6 +23,7 @@
 		<BookCard
 			id={book.google_book_id}
 			title={book.title}
+			author={book.author}
 			cover={book.cover_image}
 			description={book.summary}
 			on:select={handleSelect}
