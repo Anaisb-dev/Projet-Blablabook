@@ -9,7 +9,6 @@
         clearAuth();
         push("/#/login");
     }
-
 </script>
 
 <DropdownMenu.Root>
@@ -18,7 +17,6 @@
     </DropdownMenu.Trigger>
 
     <DropdownMenu.Content class="w-[100vw] h-[100vh] p-10 flex flex-col gap-4 bg-[#FFF7F1]">
-
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
             <a href="/#/home" class="flex items-center justify-center gap-2 w-full">
                 <Icon icon="ph:house" />
