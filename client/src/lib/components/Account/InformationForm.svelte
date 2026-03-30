@@ -3,39 +3,129 @@
     import TextArea from "../ui/TextArea.svelte";
     import PasswordInput from "../ui/PasswordInput.svelte";
     import Button from "../ui/Button.svelte";
+    import { push } from "svelte-spa-router"; // Pour permettre de retourner à la bibliothèque après modification des infos
+    import { AlertDialog } from "bits-ui";
 
     // Faux utilisateur
     let user = {
-    username: "johndoe",
-    last_name: "Doe",
-    first_name: "John",
-    email: "john.doe@gmail.com",
-    bio: "Passionné de lecture et de voyages. J'aime découvrir de nouveaux auteurs et partager mes coups de cœur littéraires avec mes amis."
-};
+        username: "johndoe",
+        last_name: "Doe",
+        first_name: "John",
+        email: "john.doe@gmail.com",
+        bio: "Passionné de lecture et de voyages. J'aime découvrir de nouveaux auteurs et partager mes coups de cœur littéraires avec mes amis.",
+    };
+
+    let open = $state(false);
+    let isDeleted = $state(false);
+
+    function goToLibrary() {
+        let userId = 1; // fausse id pour le moment, à remplacer par l'id réel de l'utilisateur connecté
+        push(`/profile`); // /#/profile/${userId}
+    }
+
+    function handleDeleteAccount() {
+        isDeleted = true;
+    }
 </script>
 
-<h1 class="text-2xl font-bold mb-4 text-center p-10"> Mes informations </h1>
-<div class="border p-4 rounded-xl w-2/3 mx-auto bg-white">
+<h1 class="text-2xl font-bold mb-4 text-center p-10">Mes informations</h1>
+
+<button class="mt-4 underline p-4 cursor-pointer" onclick={goToLibrary}>
+    ←Retourner dans Ma Bibliothèque
+</button>
+
+<div class="border p-4 rounded-xl bg-white mt-10 ml-5 mr-6 lg:w-2/3 lg:mx-auto">
     <p class="text-center">Email</p>
     <Input bind:value={user.email} />
+
     <p class="text-center">Pseudo</p>
     <Input bind:value={user.username} />
+
     <p class="text-center">Nom</p>
     <Input bind:value={user.last_name} />
+
     <p class="text-center">Prénom</p>
     <Input bind:value={user.first_name} />
+
     <p class="text-center">Bio</p>
     <TextArea bind:value={user.bio} />
-    <Button> Enregistrer les modifications </Button>
+
+    <Button>Enregistrer les modifications</Button>
 </div>
 
-<div class="border p-4 rounded-xl w-2/3 mx-auto bg-white mt-10">
-    <h2 class="text-2xl font-bold mb-4 text-center  pb-1">Modifier mon mot de passe</h2>
+<div class="border p-4 rounded-xl bg-white mt-10 ml-5 mr-6 lg:w-2/3 lg:mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-center pb-1">
+        Modifier mon mot de passe
+    </h2>
+
     <p class="text-center">Nouveau mot de passe</p>
     <PasswordInput />
+
     <p class="text-center">Confirmer le nouveau mot de passe</p>
     <PasswordInput />
+
     <Button>Modifier le mot de passe</Button>
 </div>
 
-<Button>Supprimer mon compte</Button>
+<div class="flex items-center justify-center">
+    <button
+        class="mt-10 w-[250px] rounded-xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] flex items-center justify-center mx-auto cursor-pointer hover:bg-[#590212]"
+        onclick={() => open = true}
+    >
+        Supprimer mon compte
+    </button>
+
+    <AlertDialog.Root bind:open>
+        <AlertDialog.Portal>
+            <AlertDialog.Overlay class="fixed inset-0 bg-black/80" />
+
+            <AlertDialog.Content class="fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-xl shadow-lg">
+                {#if !isDeleted}
+                    <div class="flex flex-col gap-4 pb-6">
+                        <AlertDialog.Title class="text-lg font-bold text-center">
+                            Supprimer mon compte
+                        </AlertDialog.Title>
+
+                        <AlertDialog.Description class="text-center">
+                            Cette action est irréversible. Voulez-vous vraiment supprimer votre compte ?
+                        </AlertDialog.Description>
+                    </div>
+
+                    <div class="flex w-full items-center justify-center gap-2">
+                        <AlertDialog.Cancel
+                            class="w-full border rounded-lg p-2 cursor-pointer hover:bg-[#F2E0D0]"
+                        >
+                            Annuler
+                        </AlertDialog.Cancel>
+
+                        <button
+                            class="w-full border rounded-lg p-2 cursor-pointer text-white bg-[#BF9075] hover:bg-[#590212]"
+                            onclick={handleDeleteAccount}
+                        >
+                            Supprimer mon compte
+                        </button>
+                    </div>
+                {:else}
+                    <div class="flex flex-col gap-4 pb-6">
+                        <AlertDialog.Title class="text-lg font-bold text-center">
+                            Compte supprimé
+                        </AlertDialog.Title>
+
+                        <AlertDialog.Description class="text-center">
+                            Votre compte a bien été supprimé.
+                        </AlertDialog.Description>
+                    </div>
+
+                    <div class="flex w-full items-center justify-center">
+                        <button
+                            class="w-full border rounded-lg p-2 cursor-pointer text-white bg-[#BF9075] hover:bg-[#590212]"
+                            onclick={() => push("/")}
+                        >
+                            Retour à l’accueil
+                        </button>
+                    </div>
+                {/if}
+            </AlertDialog.Content>
+        </AlertDialog.Portal>
+    </AlertDialog.Root>
+</div>
