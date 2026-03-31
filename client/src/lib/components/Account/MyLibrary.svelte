@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { authStore } from "../store/auth.svelte";
     import api from "../../api.js";
-    import { deleteBookFromPersonalLibrary, getUserBookDetail } from "../../../../services/bookService.js";
+    import { deleteBookFromPersonalLibrary } from "../../../../services/bookService.js";
 
     import Button from "../ui/Button.svelte";
     import Icon from "@iconify/svelte";
