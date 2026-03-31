@@ -27,8 +27,9 @@
     bio: ""
     });
 
-    let newPassword =""; // Novueau mot de passe
-    let confirmNewPassword = ""; // Confirmer le nouveau mot de passe 
+    let newPassword = $state(""); // Nouveau mot de passe
+    let confirmNewPassword = $state(""); // Confirmer le nouveau mot de passe 
+    let passwordError = $state("");
     let open = $state(false); // État pour contrôler l'ouverture du dialogue de confirmation de suppression de compte
     let isDeleted = $state(false); // État pour indiquer si le compte a été supprimé, utilisé pour afficher un message de confirmation après suppression
 
@@ -70,35 +71,52 @@
         push(`/profile`); // /#/profile/${userId}
     }
 
-    async function handlePasswordUpdate() {
-        if (!newPassword) {
-            alert("Veuillez saisir un nouveau mot de passe");
-            return; // 
-        }
+async function handlePasswordUpdate() {
+    passwordError = "";
 
-        if (!confirmNewPassword) {
-            alert("Veuillez confirmer votre mot de passe");
-            return;
-        } 
+    const error = validatePassword(newPassword);
 
-        if (newPassword !== confirmNewPassword) {
-            alert("Les mots de passe ne correspondent pas");
-            return;
-        }
-
-        try {
-            await updatePassword(newPassword);
-            alert("Mot de passe mis à jour avec succès");
-
-            // reset champs
-            newPassword = "";
-            confirmNewPassword = "";
-
-        } catch (err) {
-            console.error(err);
-            alert("Erreur lors de la mise à jour du mot de passe");
-        }
+    if (error) {
+        passwordError = error;
+        return;
     }
+
+    if (!confirmNewPassword) {
+        passwordError = "Veuillez confirmer votre mot de passe";
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        passwordError = "Les mots de passe ne correspondent pas";
+        return;
+    }
+
+    try {
+        await updatePassword(newPassword, confirmNewPassword);
+
+        alert("Mot de passe mis à jour avec succès");
+
+        newPassword = "";
+        confirmNewPassword = "";
+        passwordError = "";
+
+    } catch (err) {
+        console.error(err);
+        passwordError = "Erreur lors de la mise à jour du mot de passe";
+    }
+}
+
+function validatePassword(password) {
+    if (!password) return "Veuillez saisir un mot de passe";
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@*._-]).{8,}$/;
+
+    if (!regex.test(password)) {
+        return "Le mot de passe doit contenir au moins 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial (@*._-)";
+    }
+
+    return "";
+}
 
 
     function handleDeleteAccount() {
@@ -140,6 +158,11 @@
 
     <p class="text-center">Nouveau mot de passe</p>
     <PasswordInput bind:value={newPassword} />
+    {#if passwordError}
+        <p class="text-red-500 text-sm mt-2 text-center">
+            {passwordError}
+        </p>
+    {/if}
 
     <p class="text-center">Confirmer le nouveau mot de passe</p>
     <PasswordInput bind:value={confirmNewPassword} />

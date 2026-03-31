@@ -19,8 +19,11 @@ export const updateUser = async (data) => {
 };
 
 // Modifier le mot de passe de l'utilisateur connecté
-export const updatePassword = async (password) => {
-    return await api("/users/password", "PATCH", { password });
+export const updatePassword = async (password, confirmPassword) => {
+    return await api("/users/password", "PATCH", {
+        password,
+        confirmPassword
+    });
 };
 
 
