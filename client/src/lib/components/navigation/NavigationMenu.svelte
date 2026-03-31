@@ -12,6 +12,7 @@
     <ul class="flex items-center gap-4">
         <li><a href="#/">Accueil</a></li>
         <li><a href="#/books">Bibliothèque</a></li>
+        <li><a href="#/faq">FAQ</a></li>
 
         {#if authStore.token}
             <li><a href="#/profile">Mon Compte</a></li>

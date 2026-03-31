@@ -10,6 +10,7 @@
   import Setting from "./lib/components/Account/Setting.svelte";
   import NotFound from "./lib/components/NotFound/NotFound.svelte";
   import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
+  import FAQ from "./lib/components/FAQ/FAQ.svelte";
 
   const routes = {
     "/": HomePage,
@@ -20,6 +21,7 @@
     "/profile": Account,
     "/settings": Setting,
     "/contact": ContactForm,
+    "/faq": FAQ,
     "*": NotFound // Route pour les pages non trouvées
   };
 </script>
