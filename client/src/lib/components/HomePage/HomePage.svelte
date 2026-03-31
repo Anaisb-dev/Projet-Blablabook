@@ -6,6 +6,7 @@
 
 	let books = [];
 
+	// récupérer des livres aléatoires pour le carrousel
 	onMount(async () => {
 		try {
 			books = await getRandomBooks();
@@ -15,20 +16,28 @@
 	});
 </script>
 
+<section class="flex flex-col md:flex-row items-center gap-4 mt-6 mb-8">
+	<img src="/photo-home-page.jpg" alt="Accueil" class="w-full md:w-1/2 h-120 object-cover rounded-lg"
+	/>
 
-<img src="/assets/homepage.jpg" alt="Accueil" class="w-full h-64 object-cover rounded-lg mb-6" />
+	<div class="w-full md:w-1/2">
+		<h2 class="text-4xl font-bold mb-4">blalbabook</h2>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur laborum repellendus illo similique
+			maiores fuga sequi quaerat praesentium, voluptas distinctio optio culpa omnis tempora ratione quibusdam
+			placeat officia corporis dolorum.
+		</p>
+	</div>
+</section>
 
-<h2>blalbabook</h2>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur laborum repellendus illo similique maiores fuga sequi quaerat praesentium, voluptas distinctio optio culpa omnis tempora ratione quibusdam placeat officia corporis dolorum.</p>
 
-
-<h2>titre</h2>
+<h3 class="text-4xl font-bold text-center my-8">Livre aléatoire</h3>
 
 
 <!-- Carousel de livres -->
 
 {#if books.length}
-	<Carousel autoplay={2000} itemsVisible={3} totalItems={books.length}>
+	<Carousel autoplay={4000} itemsVisible={4} totalItems={books.length}>
 		{#each books as book}
 			<BookCard
 				id={book.google_book_id}
@@ -42,4 +51,5 @@
 {/if}
 
 <style>
+
 </style>

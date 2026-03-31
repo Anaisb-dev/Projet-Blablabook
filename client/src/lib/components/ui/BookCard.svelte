@@ -1,8 +1,4 @@
 <script>
-	import { createEventDispatcher } from "svelte";
-
-    const dispatch = createEventDispatcher();
-
 	export let id;
 	export let title = "Titre du livre";
 	export let author = "Nom de l’auteur";
@@ -12,11 +8,6 @@
 	
 	export let showDescription = true;
 	export let showButton = true;
-		
-		function handleClick(){
-			dispatch("select", {id});
-		}
-
 </script>
 
 <div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
@@ -39,11 +30,13 @@
 
 	<div class="flex justify-end">
 		{#if showButton}
-	<!-- bouton affiche la page bookdetail-->
-		<button class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] cursor-pointer hover:bg-[#590212] hover:text-white transition"
-		on:click={handleClick}>
-			Voir plus
-		</button>
+			<!-- bouton ouvre la page de détail du livre -->
+			<a
+				href={`#/books/${id}`}
+				class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] cursor-pointer hover:bg-[#590212] hover:text-white transition text-center"
+			>
+				Voir plus
+			</a>
 		{/if}
 	</div>	
 </div>
