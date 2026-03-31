@@ -66,7 +66,7 @@ export async function registerUser(req, res) {
             });
         }
 
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Erreur serveur" });
     }
 }
 
@@ -87,13 +87,14 @@ export async function loginUser(req, res) {
     });
 
     if (!user || !await argon2.verify(user.password, req.body.password)) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Invalid username or password" });
+        return res.status(StatusCodes.UNAUTHORIZED).json(
+            { message: "Identifiant ou mot de passe invalide." });
     }
     // Si l'utilisateur n'existe pas OU que le mot de passe est incorrect, on retourne un statut "Non authorisé"
 
     if (!user.is_verified) {
         return res.status(StatusCodes.FORBIDDEN).json(
-            { error: "Veuillez confirmer votre email" }
+            { message: "Veuillez valider votre compte avant de pouvoir vous connecter." }
         );
     } // On vérifie que l'user à bien confirmer son inscription (cliqué sur le mail de confirmation)
 
