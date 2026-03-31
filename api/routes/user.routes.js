@@ -24,7 +24,7 @@ router.get('/profile', getProfile);
 router.get('/settings', getSettings);
 // Infos perso de l'utilisateur
 
-router.patch('/settings', updateSettings, validateUserSettings);
+router.patch('/settings', authenticate, validateUserSettings, updateSettings);
 // Modification des infos perso de l'utilisateur
 
 router.patch('/password', authenticate, validatePasswordUpdate, updatePassword);
