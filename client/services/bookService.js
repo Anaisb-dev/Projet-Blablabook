@@ -19,6 +19,5 @@ export const getBookDetail = async (id) => {
 
 // Ajouter un livre Google à la bibliothèque
 export const addBookToPersonalLibrary = async (googleBookId, status = "à lire") => {
-    console.log("IMAGE LINKS:", googleBook.volumeInfo.imageLinks);
     return await api(`/users/books/${googleBookId}`, "POST", { status });
 };

@@ -20,7 +20,7 @@
 </script>
 <div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
 	<img
-		src={cover}
+		src={cover || "https://via.placeholder.com/150"}
 		alt={title}
 		class="w-[250px] aspect-[2/3] rounded-xl object-cover"
 	/> <!-- aspect-[2/3], 200px de largeur, 300px de hauteur-->
@@ -40,7 +40,7 @@
 		{#if showButton}
 	<!-- bouton affiche la page bookdetail-->
 		<button class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] cursor-pointer hover:bg-[#590212] hover:text-white transition"
-		on:click={handleClick}>
+		on:click|stopPropagation={handleClick}>
 			Voir plus
 		</button>
 		{/if}

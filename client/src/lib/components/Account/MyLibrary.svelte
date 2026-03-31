@@ -1,84 +1,84 @@
 <script>
-import { onMount } from "svelte";
-import { authStore } from "../store/auth.svelte";
-import api from "../../api.js";
+    import { onMount } from "svelte";
+    import { authStore } from "../store/auth.svelte";
+    import api from "../../api.js";
 
-import Button from "../ui/Button.svelte";
-import Icon from "@iconify/svelte";
-import BookCard from "../ui/BookCard.svelte";
-import { fly } from "svelte/transition";
+    import Button from "../ui/Button.svelte";
+    import Icon from "@iconify/svelte";
+    import BookCard from "../ui/BookCard.svelte";
+    import { fly } from "svelte/transition";
 
-let user = null;
-let books = [];
-let activeFilter = "to-read";
-let lastDeletedBook = null;
-let showDeleteMessage = false;
-let progressBar = 0;
-let interval;
-let startTime;
-const duration = 7000;
+    let user = null;
+    let books = [];
+    let activeFilter = "to-read";
+    let lastDeletedBook = null;
+    let showDeleteMessage = false;
+    let progressBar = 0;
+    let interval;
+    let startTime;
+    const duration = 7000;
 
-onMount(async () => {
-    // authStore
-    if (!authStore.user) {
-        window.location.href = "/#/login";
-        return;
+    onMount(async () => {
+        // authStore
+        if (!authStore.user) {
+            window.location.href = "/#/login";
+            return;
+        }
+
+        user = authStore.user;
+
+        try {
+            // route
+            const data = await api("/users/books", "GET");
+            console.log("BOOKS API :", data);
+            books = data;
+        } catch (err) {
+            console.error("Erreur récupération livres :", err);
+        }
+    });
+
+    // Filtre
+    $: filteredBooks =
+        activeFilter === "all"
+            ? books
+            : books.filter((book) => book.status === activeFilter);
+
+    // suppression (frontend uniquement pour l'instant)
+    function deleteBook(id) {
+        const bookToDelete = books.find((book) => book.id === id);
+        lastDeletedBook = bookToDelete;
+        books = books.filter((book) => book.id !== id);
+
+        showDeleteMessage = true;
+        progressBar = 0;
+        startTime = Date.now();
+
+        clearInterval(interval);
+
+        interval = setInterval(() => {
+            const timePassed = Date.now() - startTime;
+            progressBar = (timePassed / duration) * 100;
+
+            if (progressBar >= 100) clearInterval(interval);
+        }, 50);
+
+        setTimeout(() => {
+            showDeleteMessage = false;
+            lastDeletedBook = null;
+            clearInterval(interval);
+        }, duration);
     }
 
-    user = authStore.user;
+    // annuler suppression
+    function restoreDeletedBook() {
+        if (lastDeletedBook) {
+            books = [...books, lastDeletedBook];
+        }
 
-    try {
-        // route
-        const data = await api("/users/books", "GET");
-        console.log("BOOKS API :", data);
-        books = data;
-
-    } catch (err) {
-        console.error("Erreur récupération livres :", err);
-    }
-});
-
-// Filtre
-$: filteredBooks =
-    activeFilter === "all"
-        ? books
-        : books.filter((book) => book.status === activeFilter);
-
-// suppression (frontend uniquement pour l'instant)
-function deleteBook(id) {
-    const bookToDelete = books.find((book) => book.id === id);
-    lastDeletedBook = bookToDelete;
-    books = books.filter((book) => book.id !== id);
-
-    showDeleteMessage = true;
-    progressBar = 0;
-    startTime = Date.now();
-
-    clearInterval(interval);
-
-    interval = setInterval(() => {
-        const timePassed = Date.now() - startTime;
-        progressBar = (timePassed / duration) * 100;
-
-        if (progressBar >= 100) clearInterval(interval);
-    }, 50);
-
-    setTimeout(() => {
         showDeleteMessage = false;
         lastDeletedBook = null;
-        clearInterval(interval);
-    }, duration);
-}
-
-// annuler suppression
-function restoreDeletedBook() {
-    if (lastDeletedBook) {
-        books = [...books, lastDeletedBook];
     }
 
-    showDeleteMessage = false;
-    lastDeletedBook = null;
-}
 </script>
 
 <div
@@ -139,7 +139,15 @@ function restoreDeletedBook() {
 >
     {#each filteredBooks as book}
         <div class="relative">
-            <BookCard {...book} />
+            <BookCard
+                id={book.id}
+                title={book.title}
+                author={book.authors
+                    ?.map((a) => a.first_name + " " + a.last_name)
+                    .join(", ")}
+                cover={book.cover_image}
+                description={book.summary}
+            />
             <button
                 class="absolute top-2 right-2 z-10 w-[40px] h-[40px] rounded-xl border bg-white flex items-center justify-center hover:bg-[#F2E0D0] cursor-pointer"
                 on:click={() => deleteBook(book.id)}
@@ -152,14 +160,17 @@ function restoreDeletedBook() {
 
 <!-- Message de suppression avec annulation et barre de progression -->
 {#if showDeleteMessage}
-	<div 
+    <div
         in:fly={{ y: 20, duration: 300 }}
         out:fly={{ y: -20, duration: 300 }}
-        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-3 rounded-lg shadow-lg w-[300px]">
-
+        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-3 rounded-lg shadow-lg w-[300px]"
+    >
         <div class="flex items-center justify-between">
             <span>Le livre "{lastDeletedBook.title}" a été supprimé</span>
-            <button class="underline cursor-pointer" on:click={restoreDeletedBook}>
+            <button
+                class="underline cursor-pointer"
+                on:click={restoreDeletedBook}
+            >
                 Annuler
             </button>
         </div>
@@ -169,5 +180,5 @@ function restoreDeletedBook() {
                 style="width: {progressBar}%"
             ></div>
         </div>
-	</div>
+    </div>
 {/if}
