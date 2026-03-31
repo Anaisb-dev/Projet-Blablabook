@@ -11,6 +11,7 @@ import { getProfile,
     getAllUsers} from "../controllers/user.controller.js";
 import { updatePassword } from "../controllers/user.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
+import { validateUserSettings, validatePasswordUpdate} from "../middlewares/user.middleware.js"
 
 const router = express.Router();
 
@@ -23,10 +24,10 @@ router.get('/profile', getProfile);
 router.get('/settings', getSettings);
 // Infos perso de l'utilisateur
 
-router.patch('/settings', updateSettings);
+router.patch('/settings', updateSettings, validateUserSettings);
 // Modification des infos perso de l'utilisateur
 
-router.patch('/password', authenticate, updatePassword);
+router.patch('/password', authenticate, validatePasswordUpdate, updatePassword);
 // Modification du mot de passe avec hash de l'utilisateur
 
 router.get('/books', getUserBooks);
