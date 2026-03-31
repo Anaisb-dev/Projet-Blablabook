@@ -1,17 +1,20 @@
 <script>
     import { onMount } from "svelte";
-    import { createEventDispatcher } from "svelte";
     import { getBookDetail } from "../../../../services/bookService.js";
 
-    export let bookId;
+    // params est fourni automatiquement par svelte-spa-router pour la route /books/:id
+    export let params;
+
+    let bookId;
 
     let book = null;
     let loading = true;
     let error = "";
 
-    const dispatch = createEventDispatcher();
-
+    // récupère l'id depuis l'URL et charge le détail du livre
     onMount(async () => {
+        bookId = params?.id;
+
         try {
             book = await getBookDetail(bookId);
         } catch (err) {
@@ -21,10 +24,6 @@
             loading = false;
         }
     });
-
-    function goBack() {
-        dispatch("back");
-    }
 
     function addToPersonalLibrary() {
         // a faire : appeler l'API pour ajouter le livre à la bibliothèque perso
@@ -36,9 +35,9 @@
     <p class="text-center">Chargement du livre...</p>
 {:else if error}
     <p class="text-center text-red-500">{error}</p>
-    <button class="mt-4 underline p-4 cursor-pointer" on:click={goBack}>Retour à la liste</button>
+    <a class="mt-4 underline p-4 cursor-pointer inline-block" href="#/books">Retour à la liste</a>
 {:else}
-    <button class="mb-4 underline p-4 cursor-pointer" on:click={goBack}>← Retour à la liste</button>
+    <a class="mb-4 underline p-4 cursor-pointer inline-block" href="#/books">← Retour à la liste</a>
 
     <div class="max-w-4xl mx-auto p-4">
         <div class="mb-4">
