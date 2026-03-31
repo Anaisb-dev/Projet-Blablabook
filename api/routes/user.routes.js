@@ -9,6 +9,8 @@ import { getProfile,
     updateUserBook,
     deleteUserBook,addGoogleBookToLibrary, 
     getAllUsers} from "../controllers/user.controller.js";
+import { updatePassword } from "../controllers/user.controller.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -23,6 +25,9 @@ router.get('/settings', getSettings);
 
 router.patch('/settings', updateSettings);
 // Modification des infos perso de l'utilisateur
+
+router.patch('/password', authenticate, updatePassword);
+// Modification du mot de passe avec hash de l'utilisateur
 
 router.get('/books', getUserBooks);
 // Afficher tous les livres de l'utilisateur

@@ -67,6 +67,7 @@ clearInterval(interval);
 }, duration);
 }
 
+
 function restoreDeletedBook() {
 if (lastDeletedBook) {
 books = [...books, lastDeletedBook];

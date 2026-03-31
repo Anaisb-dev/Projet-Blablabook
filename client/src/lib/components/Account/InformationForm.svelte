@@ -6,8 +6,19 @@
     import { push } from "svelte-spa-router"; // Pour permettre de retourner à la bibliothèque après modification des infos
     import { AlertDialog } from "bits-ui";
     import { authStore } from "../store/auth.svelte";
+    import { updateUser } from "../../../../services/user.services.js";
+    import { updatePassword } from "../../../../services/user.services.js";
 
-    // Données utilisateur fictives pour pré-remplir les champs du formulaire
+    // Stocker les informations originelles de l'utilisateur, utilisé pour réinitialiser le formulaire en cas d'erreur de validation
+    let originalUser = $state({
+    username: "",
+    last_name: "",
+    first_name: "",
+    email: "",
+    bio: ""
+    });
+
+    // Stocker les informations de l'utilisateur et contrôler l'ouverture du dialogue de confirmation de suppression de compte
     let user = $state({
     username: "",
     last_name: "",
@@ -16,26 +27,79 @@
     bio: ""
     });
 
-    // Simuler la récupération des données utilisateur depuis le store authStore
-    $effect(() => {
-        if (authStore.user) {
-            user = {
-                username: authStore.user.username || "",
-                last_name: authStore.user.last_name || "",
-                first_name: authStore.user.first_name || "",
-                email: authStore.user.email || "",
-                bio: authStore.user.bio || ""
-            };
-        }
-    });
-
+    let newPassword =""; // Novueau mot de passe
+    let confirmNewPassword = ""; // Confirmer le nouveau mot de passe 
     let open = $state(false); // État pour contrôler l'ouverture du dialogue de confirmation de suppression de compte
     let isDeleted = $state(false); // État pour indiquer si le compte a été supprimé, utilisé pour afficher un message de confirmation après suppression
+
+    // Simuler la récupération des données utilisateur depuis le store authStore
+    $effect(() => {
+    if (authStore.user) {
+        const data = {
+            username: authStore.user.username || "",
+            last_name: authStore.user.last_name || "",
+            first_name: authStore.user.first_name || "",
+            email: authStore.user.email || "",
+            bio: authStore.user.bio || ""
+        };
+
+        user = data; // pré-remplir le formulaire avec les données de l'utilisateur
+        originalUser = data; // stocker les données originales pour pouvoir les réinitialiser en cas d'annulation
+    }
+});
+
+    // Fonction pour gérer la mise à jour des informations utilisateur
+    async function handleUpdate() {
+        // Validation pour s'assurer que les champs obligatoires sont remplis avant de tenter de mettre à jour le profil
+    if (!user.email.trim() || !user.username.trim()) {
+        alert("Le pseudo et l’email sont obligatoires.");
+        user = { ...originalUser }; // Réinitialiser les champs du formulaire avec les données originales en cas d'erreur de validation
+        return;
+    }
+    try {
+        await updateUser(user);
+        alert("Profil mis à jour !");
+    } catch (err) {
+        console.error(err);
+        alert("Erreur lors de la mise à jour");
+    }
+}
 
     function goToLibrary() {
         let userId = 1; // fausse id pour le moment, à remplacer par l'id réel de l'utilisateur connecté
         push(`/profile`); // /#/profile/${userId}
     }
+
+    async function handlePasswordUpdate() {
+        if (!newPassword) {
+            alert("Veuillez saisir un nouveau mot de passe");
+            return; // 
+        }
+
+        if (!confirmNewPassword) {
+            alert("Veuillez confirmer votre mot de passe");
+            return;
+        } 
+
+        if (newPassword !== confirmNewPassword) {
+            alert("Les mots de passe ne correspondent pas");
+            return;
+        }
+
+        try {
+            await updatePassword(newPassword);
+            alert("Mot de passe mis à jour avec succès");
+
+            // reset champs
+            newPassword = "";
+            confirmNewPassword = "";
+
+        } catch (err) {
+            console.error(err);
+            alert("Erreur lors de la mise à jour du mot de passe");
+        }
+    }
+
 
     function handleDeleteAccount() {
         isDeleted = true;
@@ -64,7 +128,9 @@
     <p class="text-center">Bio</p>
     <TextArea bind:value={user.bio} />
 
-    <Button>Enregistrer les modifications</Button>
+    <Button on:click={handleUpdate}>
+    Enregistrer les modifications
+    </Button>
 </div>
 
 <div class="border p-4 rounded-xl bg-white mt-10 ml-5 mr-6 lg:w-2/3 lg:mx-auto">
@@ -73,12 +139,12 @@
     </h2>
 
     <p class="text-center">Nouveau mot de passe</p>
-    <PasswordInput />
+    <PasswordInput bind:value={newPassword} />
 
     <p class="text-center">Confirmer le nouveau mot de passe</p>
-    <PasswordInput />
+    <PasswordInput bind:value={confirmNewPassword} />
 
-    <Button>Modifier le mot de passe</Button>
+    <Button on:click={handlePasswordUpdate}>Modifier le mot de passe</Button>
 </div>
 
 <div class="flex items-center justify-center">

@@ -1,14 +1,20 @@
 export default async function api(endpoint, method = "GET", body) {
+    const token = localStorage.getItem("token");
 
     const headers = {
     "Content-Type": "application/json",
     // pas d'Authorization pour register/login
 };
 
+ // on ajoute Authorization UNIQUEMENT si token existe
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
 const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
     method,
     headers,
-    body: JSON.stringify(body)
+    body: body ? JSON.stringify(body) : undefined // Si body est fourni, on le stringify, sinon on met undefined pour ne pas inclure le champ body dans la requête
 });
 
     if (!response.ok) {
