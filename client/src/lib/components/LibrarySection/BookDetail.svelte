@@ -41,7 +41,6 @@
         try {
             await addBookToPersonalLibrary(idToUse);
             message = "Livre ajouté à ta bibliothèque";
-            window.location.href = "/#/books";
         } catch (err) {
             console.error(err);
             message = "Erreur lors de l'ajout";

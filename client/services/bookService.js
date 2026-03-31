@@ -13,8 +13,8 @@ export const getRandomBooks = async () => {
     return await searchBooks(randomKeyword);
 };
 
-export const getBookDetail = async (id) => {
-    return await api(`/books/${id}`, "GET");
+export const getBookDetail = async (googleBookId) => {
+    return await api(`/books/${googleBookId}`, "GET");
 };
 
 // Ajouter un livre Google à la bibliothèque
@@ -25,3 +25,7 @@ export const addBookToPersonalLibrary = async (googleBookId, status = "à lire")
 export const deleteBookFromPersonalLibrary = async (id) => {
     return await api(`/users/books/${id}`, "DELETE");
 };
+
+// export const getUserBookDetail = async (id) => {
+//     return await api(`/books/${id}`, "GET");
+// };

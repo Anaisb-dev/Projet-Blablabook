@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { authStore } from "../store/auth.svelte";
     import api from "../../api.js";
-    import { deleteBookFromPersonalLibrary } from "../../../../services/bookService.js";
+    import { deleteBookFromPersonalLibrary, getUserBookDetail } from "../../../../services/bookService.js";
 
     import Button from "../ui/Button.svelte";
     import Icon from "@iconify/svelte";
@@ -17,7 +17,7 @@
     let progressBar = 0;
     let interval;
     let startTime;
-    const duration = 7000;
+    const duration = 3000;
 
     onMount(async () => {
         // authStore
@@ -43,32 +43,6 @@
         activeFilter === "all"
             ? books
             : books.filter((book) => book.status === activeFilter);
-
-    // suppression (frontend uniquement pour l'instant)
-    // function deleteBook(id) {
-    //     const bookToDelete = books.find((book) => book.id === id);
-    //     lastDeletedBook = bookToDelete;
-    //     books = books.filter((book) => book.id !== id);
-
-    //     showDeleteMessage = true;
-    //     progressBar = 0;
-    //     startTime = Date.now();
-
-    //     clearInterval(interval);
-
-    //     interval = setInterval(() => {
-    //         const timePassed = Date.now() - startTime;
-    //         progressBar = (timePassed / duration) * 100;
-
-    //         if (progressBar >= 100) clearInterval(interval);
-    //     }, 50);
-
-    //     setTimeout(() => {
-    //         showDeleteMessage = false;
-    //         lastDeletedBook = null;
-    //         clearInterval(interval);
-    //     }, duration);
-    // }
 
     async function deleteBook(id) {
     const bookToDelete = books.find((book) => book.id === id);
@@ -177,8 +151,10 @@
 >
     {#each filteredBooks as book}
         <div class="relative">
+        {console.log("book.google_book_id", book.google_book_id)}
             <BookCard
                 id={book.id}
+                googleId={book.google_book_id}
                 title={book.title}
                 author={book.authors
                     ?.map((a) => a.first_name + " " + a.last_name)

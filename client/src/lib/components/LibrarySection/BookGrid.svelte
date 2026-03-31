@@ -1,8 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 	import BookCard from "../ui/BookCard.svelte";
-	import Button from "../ui/Button.svelte";
-	import Icon from "@iconify/svelte";
 	import { addBookToPersonalLibrary } from "../../../../services/bookService.js";
 
 	// Données des livres à afficher depuis l'API Google Books
@@ -33,7 +31,8 @@
 	{#each books as book}
 		<div class="relative">
 			<BookCard
-				id={book.google_book_id}
+				id={book.id}
+				googleId={book.google_book_id}
 				title={book.title || book.volumeInfo?.title}
 				author={book.author || book.volumeInfo?.authors?.join(", ")}
 				cover={book.cover_image ||
@@ -42,8 +41,7 @@
 				on:select={handleSelect}
 			/>
 			<button
-				//on:click={() => dispatch("add", { id: book.id })}
-				on:click={() => handleAdd(book.google_book_id)}
+				on:click|stopPropagation={() => handleAdd(book.google_book_id)}
 				class="absolute top-2 right-2 z-10 w-8 h-8 rounded-xl bg-[#BF9075] text-white flex items-center justify-center shadow hover:scale-105 transition cursor-pointer hover:bg-[#590212]"
 			>
 				+

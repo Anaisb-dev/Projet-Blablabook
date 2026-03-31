@@ -102,9 +102,14 @@ export async function getUserBookById(req, res) {
         }
 
         const result = {
-            status: userBook.status,
-            ...userBook.book.toJSON()
-        };
+    status: userBook.status,
+    id: userBook.book.id,
+    title: userBook.book.title,
+    summary: userBook.book.summary,
+    cover_image: userBook.book.cover_image,
+    google_book_id: userBook.book.google_book_id, // <--- ajouter ça !
+    authors: userBook.book.authors // si tu veux
+};
 
         res.json(result);
 
