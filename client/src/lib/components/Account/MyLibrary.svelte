@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { authStore } from "../store/auth.svelte";
     import api from "../../api.js";
+    import { deleteBookFromPersonalLibrary } from "../../../../services/bookService.js";
 
     import Button from "../ui/Button.svelte";
     import Icon from "@iconify/svelte";
@@ -44,30 +45,67 @@
             : books.filter((book) => book.status === activeFilter);
 
     // suppression (frontend uniquement pour l'instant)
-    function deleteBook(id) {
-        const bookToDelete = books.find((book) => book.id === id);
-        lastDeletedBook = bookToDelete;
-        books = books.filter((book) => book.id !== id);
+    // function deleteBook(id) {
+    //     const bookToDelete = books.find((book) => book.id === id);
+    //     lastDeletedBook = bookToDelete;
+    //     books = books.filter((book) => book.id !== id);
 
-        showDeleteMessage = true;
-        progressBar = 0;
-        startTime = Date.now();
+    //     showDeleteMessage = true;
+    //     progressBar = 0;
+    //     startTime = Date.now();
 
+    //     clearInterval(interval);
+
+    //     interval = setInterval(() => {
+    //         const timePassed = Date.now() - startTime;
+    //         progressBar = (timePassed / duration) * 100;
+
+    //         if (progressBar >= 100) clearInterval(interval);
+    //     }, 50);
+
+    //     setTimeout(() => {
+    //         showDeleteMessage = false;
+    //         lastDeletedBook = null;
+    //         clearInterval(interval);
+    //     }, duration);
+    // }
+
+    async function deleteBook(id) {
+    const bookToDelete = books.find((book) => book.id === id);
+    lastDeletedBook = bookToDelete;
+
+    // suppression visuelle immédiate
+    books = books.filter((book) => book.id !== id);
+
+    showDeleteMessage = true;
+    progressBar = 0;
+    startTime = Date.now();
+
+    clearInterval(interval);
+
+    interval = setInterval(() => {
+        const timePassed = Date.now() - startTime;
+        progressBar = (timePassed / duration) * 100;
+
+        if (progressBar >= 100) clearInterval(interval);
+    }, 50);
+
+    // appel backend après délai
+    setTimeout(async () => {
+        if (lastDeletedBook) {
+            try {
+                await deleteBookFromPersonalLibrary(id);
+                console.log("Suppression backend OK");
+            } catch (e) {
+                console.error("Erreur suppression backend :", e);
+            }
+        }
+
+        showDeleteMessage = false;
+        lastDeletedBook = null;
         clearInterval(interval);
-
-        interval = setInterval(() => {
-            const timePassed = Date.now() - startTime;
-            progressBar = (timePassed / duration) * 100;
-
-            if (progressBar >= 100) clearInterval(interval);
-        }, 50);
-
-        setTimeout(() => {
-            showDeleteMessage = false;
-            lastDeletedBook = null;
-            clearInterval(interval);
-        }, duration);
-    }
+    }, duration);
+}
 
     // annuler suppression
     function restoreDeletedBook() {

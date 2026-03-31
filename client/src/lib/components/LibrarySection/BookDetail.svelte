@@ -1,21 +1,29 @@
 <script>
-    import { onMount, createEventDispatcher } from "svelte";
-    import { getBookDetail, addBookToPersonalLibrary } from "../../../../services/bookService.js";
+    import { onMount } from "svelte";
+    import {
+        getBookDetail,
+        addBookToPersonalLibrary,
+    } from "../../../../services/bookService.js";
     import { authStore } from "../store/auth.svelte";
 
-    export let bookId;
+    export let params; // vient de la route
+    export let bookId = null; // optionnel, si tu passes directement depuis props
 
+    let idToUse = bookId || params?.id; // Priorité au prop, sinon route
     let book = null;
     let loading = true;
     let error = "";
     let message = "";
 
-    const dispatch = createEventDispatcher();
-
-    // Charger le livre
     onMount(async () => {
+        if (!idToUse) {
+            error = "ID du livre manquant";
+            loading = false;
+            return;
+        }
+
         try {
-            book = await getBookDetail(bookId);
+            book = await getBookDetail(idToUse);
         } catch (err) {
             console.error(err);
             error = "Impossible de charger le détail du livre.";
@@ -24,7 +32,6 @@
         }
     });
 
-    // Ajouter à la bibliothèque
     async function handleAdd() {
         if (!authStore.user) {
             message = "Tu dois être connecté !";
@@ -32,17 +39,17 @@
         }
 
         try {
-            await addBookToPersonalLibrary(bookId);
+            await addBookToPersonalLibrary(idToUse);
             message = "Livre ajouté à ta bibliothèque";
+            window.location.href = "/#/books";
         } catch (err) {
             console.error(err);
             message = "Erreur lors de l'ajout";
         }
     }
 
-    // Retour
     function goBack() {
-        dispatch("back");
+        window.history.back();
     }
 </script>
 
@@ -50,9 +57,13 @@
     <p class="text-center">Chargement du livre...</p>
 {:else if error}
     <p class="text-center text-red-500">{error}</p>
-    <button class="mt-4 underline p-4 cursor-pointer" on:click={goBack}>Retour à la liste</button>
+    <button class="mt-4 underline p-4 cursor-pointer" on:click={goBack}
+        >Retour à la liste</button
+    >
 {:else}
-    <button class="mb-4 underline p-4 cursor-pointer" on:click={goBack}>← Retour à la liste</button>
+    <button class="mb-4 underline p-4 cursor-pointer" on:click={goBack}
+        >← Retour à la liste</button
+    >
 
     <div class="max-w-4xl mx-auto p-4">
         <div class="mb-4">
@@ -72,8 +83,13 @@
                     on:click={handleAdd}
                 >
                     <span class="text-lg font-bold md:hidden">+</span>
-                    <span class="hidden md:inline">Ajouter à ma bibliothèque</span>
+                    <span class="hidden md:inline"
+                        >Ajouter à ma bibliothèque</span
+                    >
                 </button>
+                {#if message}
+                    <p class="text-green-600 mt-2">{message}</p>
+                {/if}
             </div>
         </div>
 
@@ -90,13 +106,17 @@
                 {#if book.year || book.page_number}
                     <p class="text-sm mb-2">
                         {#if book.year}Année : {book.year}{/if}
-                        {#if book.year && book.page_number} • {/if}
+                        {#if book.year && book.page_number}
+                            •
+                        {/if}
                         {#if book.page_number}Pages : {book.page_number}{/if}
                     </p>
                 {/if}
 
                 {#if book.genres && book.genres.length}
-                    <p class="text-sm mb-2">Genre(s) : {book.genres.join(", ")}</p>
+                    <p class="text-sm mb-2">
+                        Genre(s) : {book.genres.join(", ")}
+                    </p>
                 {/if}
 
                 <h3 class="text-sm font-semibold mt-4 mb-1">Résumé</h3>

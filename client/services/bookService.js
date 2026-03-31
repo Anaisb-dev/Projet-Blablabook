@@ -21,3 +21,7 @@ export const getBookDetail = async (id) => {
 export const addBookToPersonalLibrary = async (googleBookId, status = "à lire") => {
     return await api(`/users/books/${googleBookId}`, "POST", { status });
 };
+// Supprimer un livre de la bibliothèque personnelle
+export const deleteBookFromPersonalLibrary = async (id) => {
+    return await api(`/users/books/${id}`, "DELETE");
+};

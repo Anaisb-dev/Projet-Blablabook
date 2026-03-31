@@ -150,7 +150,7 @@ export async function addGoogleBookToLibrary(req, res) {
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
         console.log("User:", req.user);
-console.log("GoogleBookId:", req.params.googleBookId);
+        console.log("GoogleBookId:", req.params.googleBookId);
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }

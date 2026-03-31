@@ -74,7 +74,7 @@ export async function getBookById(req, res) {
             authors: info.authors || [],
             genres: info.categories || [],
         };
-        console.log(bookDetail)
+        
         res.json(bookDetail);
     } catch (error) {
         console.error(error);

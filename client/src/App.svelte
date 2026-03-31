@@ -9,10 +9,12 @@
   import Setting from "./lib/components/Account/Setting.svelte";
   import NotFound from "./lib/components/NotFound/NotFound.svelte";
   import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
+  import BookDetail from "./lib/components/LibrarySection/BookDetail.svelte";
 
   const routes = {
     "/": HomePage,
     "/books": LibrarySection,
+    "/books/:id": BookDetail,
     "/register": RegisterForm,
     "/login": LoginForm,
     "/profile": Account,
