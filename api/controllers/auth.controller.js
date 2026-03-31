@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 import { User } from "../models/index.js";
 import { Op } from "sequelize";
+import { sendVerificationEmail } from "../services/mailer.js";
 
 
 // FONCTION INSCRIPTION -
@@ -24,21 +25,28 @@ export async function registerUser(req, res) {
             email,
             password: hashedPassword,
         });
-        // Génère le token directement après création
-        const token = jwt.sign({ id: userCreate.id }, process.env.JWT_SECRET, {
-            expiresIn: "2h",
-        });
 
-        // Renvoie le token + l'utilisateur
+        // Génère un token pour le login, valable 7 jours
+        const token = jwt.sign(
+            { id: userCreate.id },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
+
+        // Génére un token pour le mail de confirmation valable 1h
+        const emailToken = jwt.sign(
+            { userId: userCreate.id, type: "email_verification" },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        const link = `http://localhost:5173/confirm?token=${emailToken}`;
+
+        await sendVerificationEmail(userCreate.email, link);
+
+        // Retourne le statut compte créé mais a valider via envoie d'un email
         res.status(StatusCodes.CREATED).json({
-            jwt: token,
-            user: {
-                id: userCreate.id,
-                username: userCreate.username,
-                email: userCreate.email,
-                first_name: userCreate.first_name,
-                last_name: userCreate.last_name,
-            },
+            message: "Compte créé. Vérifie ton email pour activer ton compte"
         });
 
     } catch (error) {
@@ -83,12 +91,20 @@ export async function loginUser(req, res) {
     }
     // Si l'utilisateur n'existe pas OU que le mot de passe est incorrect, on retourne un statut "Non authorisé"
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "2h"
-        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 2h
-    });
+    if (!user.is_verified) {
+        return res.status(StatusCodes.FORBIDDEN).json(
+            { error: "Veuillez confirmer votre email" }
+        );
+    } // On vérifie que l'user à bien confirmer son inscription (cliqué sur le mail de confirmation)
 
-       // renvoie token + user pour le frontend
+    const token = jwt.sign(
+        { id: user.id },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 2h
+    );
+
+    // renvoie token + user pour le frontend
     res.status(StatusCodes.OK).json({
         jwt: token,           // le token
         user: {
@@ -97,5 +113,5 @@ export async function loginUser(req, res) {
             email: user.email
             // ajoute d'autres infos si tu veux
         }
-});
+    });
 }
