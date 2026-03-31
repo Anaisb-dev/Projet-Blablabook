@@ -16,7 +16,7 @@
         {#if authStore.token}
             <li><a href="#/profile">Mon Compte</a></li>
             <li>
-                <a href="#/" onclick={logout}>Se déconnecter</a>
+                <a href="/" onclick={logout}>Se déconnecter</a>
             </li>
         {:else}
             <li><a href="#/login">Se connecter</a></li>

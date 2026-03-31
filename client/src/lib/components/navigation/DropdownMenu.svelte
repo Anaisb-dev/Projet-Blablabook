@@ -18,7 +18,7 @@
 
     <DropdownMenu.Content class="w-[100vw] h-[100vh] p-10 flex flex-col gap-4 bg-[#FFF7F1]">
         <DropdownMenu.Item class="flex items-center p-4 justify-center gap-1 border rounded-3xl">
-            <a href="/#/home" class="flex items-center justify-center gap-2 w-full">
+            <a href="/" class="flex items-center justify-center gap-2 w-full">
                 <Icon icon="ph:house" />
                 Accueil
             </a>
@@ -41,9 +41,11 @@
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
-                class="flex items-center p-4 justify-center gap-1 border rounded-3xl cursor-pointer"
-                onclick={logout}
-            >
+                class="flex items-center p-4 justify-center gap-2 border rounded-3xl cursor-pointer"
+                onclick={() => {
+                    logout();
+                    push("/");
+                }}>
                 <Icon icon="ph:sign-out" />
                 Se déconnecter
             </DropdownMenu.Item>
