@@ -65,6 +65,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+	padding-left: 10rem;
 	}
 
 	/* Bande qui contient les slides */
@@ -74,7 +75,7 @@
     transition: transform 0.4s ease;
 	}
 
-	/* Boutons gauche / droite */
+	/* Boutons gauche et droite */
 	.nav {
     position: absolute;
     top: 50%;
