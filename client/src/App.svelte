@@ -8,6 +8,8 @@
   import LoginForm from "./lib/components/LoginForm/LoginForm.svelte";
   import Account from "./lib/components/Account/Account.svelte";
   import Setting from "./lib/components/Account/Setting.svelte";
+  import NotFound from "./lib/components/NotFound/NotFound.svelte";
+  import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
 
   const routes = {
     "/": HomePage,
@@ -17,7 +19,8 @@
     "/login": LoginForm,
     "/profile": Account,
     "/settings": Setting,
-    "*": HomePage // page 404 a faire pour le moment on redirige vers l'accueil
+    "/contact": ContactForm,
+    "*": NotFound // Route pour les pages non trouvées
   };
 </script>
 

@@ -10,7 +10,7 @@
   />
 
   <nav class="flex flex-wrap justify-center gap-4 md:flex-1">
-    <a href="#contact" class="hover:underline">Contact</a>
+    <a href="/#/contact" class="hover:underline">Contact</a>
     <a href="#faq" class="hover:underline">FAQ</a>
     <a href="#mentions" class="hover:underline">Mentions légales</a>
     <a href="#conditions" class="hover:underline">Conditions générales</a>
