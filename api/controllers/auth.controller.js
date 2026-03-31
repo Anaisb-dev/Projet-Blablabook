@@ -40,7 +40,7 @@ export async function registerUser(req, res) {
             { expiresIn: "1h" }
         );
 
-        const link = `http://localhost:5173/confirm?token=${emailToken}`;
+        const link = `http://localhost:5173/#/confirm?token=${emailToken}`;
 
         await sendVerificationEmail(userCreate.email, link);
 
