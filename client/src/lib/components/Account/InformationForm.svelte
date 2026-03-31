@@ -5,18 +5,32 @@
     import Button from "../ui/Button.svelte";
     import { push } from "svelte-spa-router"; // Pour permettre de retourner à la bibliothèque après modification des infos
     import { AlertDialog } from "bits-ui";
+    import { authStore } from "../store/auth.svelte";
 
-    // Faux utilisateur
-    let user = {
-        username: "johndoe",
-        last_name: "Doe",
-        first_name: "John",
-        email: "john.doe@gmail.com",
-        bio: "Passionné de lecture et de voyages. J'aime découvrir de nouveaux auteurs et partager mes coups de cœur littéraires avec mes amis.",
-    };
+    // Données utilisateur fictives pour pré-remplir les champs du formulaire
+    let user = $state({
+    username: "",
+    last_name: "",
+    first_name: "",
+    email: "",
+    bio: ""
+    });
 
-    let open = $state(false);
-    let isDeleted = $state(false);
+    // Simuler la récupération des données utilisateur depuis le store authStore
+    $effect(() => {
+        if (authStore.user) {
+            user = {
+                username: authStore.user.username || "",
+                last_name: authStore.user.last_name || "",
+                first_name: authStore.user.first_name || "",
+                email: authStore.user.email || "",
+                bio: authStore.user.bio || ""
+            };
+        }
+    });
+
+    let open = $state(false); // État pour contrôler l'ouverture du dialogue de confirmation de suppression de compte
+    let isDeleted = $state(false); // État pour indiquer si le compte a été supprimé, utilisé pour afficher un message de confirmation après suppression
 
     function goToLibrary() {
         let userId = 1; // fausse id pour le moment, à remplacer par l'id réel de l'utilisateur connecté
