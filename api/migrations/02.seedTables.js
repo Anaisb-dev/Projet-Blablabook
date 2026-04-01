@@ -4,6 +4,7 @@ import argon2 from "argon2";
 console.log("Ajout de livres de test...");
 
 const book1 = await Book.create({
+    google_book_id:"9sKdEAAAQBAJ",
     code_isbn: 2290391174,
     title: "La femme de ménage",
     year: 2023,
@@ -13,6 +14,7 @@ const book1 = await Book.create({
 });
 
 const book2 = await Book.create({
+    google_book_id:"nvijsUyJYR4C",
     code_isbn: 2075187541,
     title: "Harry Potter à l'école des sorciers",
     year: 1997,
