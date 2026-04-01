@@ -44,9 +44,10 @@
 		{#each books as book}
 			<BookCard
 				id={book.google_book_id}
+				googleBookId={book.google_book_id}
 				title={book.title}
 				/* auteur non disponible dans cette liste, BookCard utilise un défaut */
-				cover={book.cover_image}
+				cover={book.cover_image || book.cover}
 				description={book.summary}
 				on:select={(e) => goToDetail(e.detail.id)}
 			/>

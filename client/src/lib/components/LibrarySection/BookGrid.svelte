@@ -34,7 +34,7 @@
 		<div class="relative">
 			<BookCard
 				id={book.id}
-				googleId={book.google_book_id}
+				googleBookId={book.google_book_id}
 				title={book.title || book.volumeInfo?.title}
 				author={book.author || book.volumeInfo?.authors?.join(", ")}
 				cover={book.cover_image ||

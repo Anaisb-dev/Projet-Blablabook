@@ -57,7 +57,7 @@ export async function getUserBooks(req, res) {
             include: [{
                 model: Book,
                 as: "book",
-                attributes: ["id", "title", "summary", "cover_image"] // on garde seulement ces attributs du livre
+                attributes: ["id", "title", "google_book_id", "summary", "cover_image"] // on garde seulement ces attributs du livre
             }]
         });
 

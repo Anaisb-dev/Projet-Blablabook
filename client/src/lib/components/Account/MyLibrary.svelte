@@ -17,7 +17,7 @@
     let progressBar = 0;
     let interval;
     let startTime;
-    const duration = 3000;
+    const duration = 5000;
 
     onMount(async () => {
         // authStore
@@ -153,7 +153,7 @@
         <div class="relative">
             <BookCard
                 id={book.id}
-                googleId={book.google_book_id}
+                googleBookId={book.google_book_id}
                 title={book.title}
                 author={book.authors
                     ?.map((a) => a.first_name + " " + a.last_name)
