@@ -2,6 +2,7 @@
     import Input from "../ui/Input.svelte";
     import PasswordInput from "../ui/PasswordInput.svelte";
     import Button from "../ui/Button.svelte";
+    import Checkbox from "../ui/Checkbox.svelte";
     import { registerUser } from "../../../../services/auth.service.js";
 
     let username = "";
@@ -57,6 +58,8 @@
 
     <p class="text-center">Confirmer le mot de passe</p>
     <PasswordInput bind:value={confirmPassword} />
+
+    <Checkbox />
 
     <Button btnType="submit" disabled={loading}>
         {#if loading}Création...{:else}Créer un compte{/if}

@@ -10,10 +10,22 @@ export const searchBooks = async (query) => {
 export const getRandomBooks = async () => {
     const keywords = ["amour", "thriller", "fantasy", "cuisine", "aventure", "bien-être"];
     const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
-
     return await searchBooks(randomKeyword);
 };
 
-export const getBookDetail = async (id) => {
-    return await api(`/books/${id}`, "GET");
+export const getBookDetail = async (googleBookId) => {
+    return await api(`/books/${googleBookId}`, "GET");
+};
+
+// Ajouter un livre Google à la bibliothèque
+export const addBookToPersonalLibrary = async (googleBookId, status = "à lire") => {
+    return await api(`/users/books/${googleBookId}`, "POST", { status });
+};
+// Supprimer un livre de la bibliothèque personnelle
+export const deleteBookFromPersonalLibrary = async (id) => {
+    return await api(`/users/books/${id}`, "DELETE");
+};
+
+export const getUserBookDetail = async (id) => {
+    return await api(`/users/books/${id}`, "GET");
 };
