@@ -32,7 +32,7 @@ export function validateUserRegistration(req, res, next) {
                 'any.required': 'Veuillez confirmer le mot de passe'
                 // permet d'afficher un message côté serveur
             })
-    });
+    })
 
     checkBody(userRegisterSchema, req.body, res, next);
 };
