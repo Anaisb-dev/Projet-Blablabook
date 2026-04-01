@@ -57,7 +57,7 @@ export async function getUserBooks(req, res) {
             include: [{
                 model: Book,
                 as: "book",
-                attributes: ["id", "title", "summary", "cover_image"] // on garde seulement ces attributs du livre
+                attributes: ["id", "title", "google_book_id", "summary", "cover_image"] // on garde seulement ces attributs du livre
             }]
         });
 
@@ -101,7 +101,16 @@ export async function getUserBookById(req, res) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé dans ta bibliothèque" });
         }
 
-        const result = {
+//         const result = {
+//     status: userBook.status,
+//     id: userBook.book.id,
+//     title: userBook.book.title,
+//     summary: userBook.book.summary,
+//     cover_image: userBook.book.cover_image,
+//     google_book_id: userBook.book.google_book_id, // <--- ajouter ça !
+//     authors: userBook.book.authors // si tu veux
+// };
+    const result = {
             status: userBook.status,
             ...userBook.book.toJSON()
         };
@@ -150,7 +159,7 @@ export async function addGoogleBookToLibrary(req, res) {
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
         console.log("User:", req.user);
-console.log("GoogleBookId:", req.params.googleBookId);
+        console.log("GoogleBookId:", req.params.googleBookId);
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }

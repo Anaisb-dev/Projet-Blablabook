@@ -26,7 +26,7 @@
 
         try {
             await registerUser({ username, email, password, confirmPassword });
-        window.location.hash = "/profile";
+            success = "Compte créé avec succès ! Penses à vérifier ta boîte mail pour valider ton compte.";
         } catch (err) {
             console.error("Erreur inscription :", err);
             error = err.message || "Erreur lors de l'inscription";

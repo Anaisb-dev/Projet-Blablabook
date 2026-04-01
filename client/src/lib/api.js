@@ -1,13 +1,12 @@
 export default async function api(endpoint, method = "GET", body) {
 
-    const headers = {
-    "Content-Type": "application/json",
-    // pas d'Authorization pour register/login
-};
 
 const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
     method,
-    headers,
+    headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
     body: JSON.stringify(body)
 });
 
