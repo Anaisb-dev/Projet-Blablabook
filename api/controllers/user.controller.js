@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { User, UserBook, Book, Author } from "../models/index.js";
+import argon2 from "argon2";
 
 
 // Fonction test pour afficher tous les users
@@ -47,6 +48,30 @@ export async function updateSettings(req, res) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
 }
+
+// Modifier le mot de passe de l'utilisateur connecté
+    export async function updatePassword(req, res) {
+        try {
+            const user = await User.findByPk(req.user.id);
+            const { password } = req.body;
+
+            if (!password) {
+                return res.status(400).json({ error: "Mot de passe requis" });
+            }
+
+            // HASH OBLIGATOIRE
+            const hashedPassword = await argon2.hash(password);
+
+            // update UNIQUEMENT le password
+            await user.update({ password: hashedPassword });
+
+            res.json({ message: "Mot de passe mis à jour" });
+
+        } catch (err) {
+            console.error(err);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+        }
+    }
 
 // Afficher tous les livres de l'utilisateur connecté
 export async function getUserBooks(req, res) {
@@ -249,5 +274,30 @@ export async function deleteUserBook(req, res) {
         res.json({ message: "Livre supprimé de ta bibliothèque" });
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+    }
+}
+
+// Supprimer un compte utilisateur 
+// Supprimer le compte de l'utilisateur connecté
+export async function deleteUser(req, res) {
+    try {
+        const user = await User.findByPk(req.user.id);
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: "Utilisateur introuvable"
+            });
+        }
+
+        await user.destroy();
+
+        return res.status(StatusCodes.OK).json({
+            message: "Compte supprimé avec succès"
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            error: "Erreur serveur"
+        });
     }
 }

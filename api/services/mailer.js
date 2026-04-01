@@ -1,5 +1,7 @@
+import "dotenv/config"
 import nodemailer from "nodemailer";
 import "dotenv/config";
+
 
 export const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -10,6 +12,8 @@ export const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 });
+
+console.log('test', transporter)
 
 export async function sendVerificationEmail(to, link) {
     return transporter.sendMail({
@@ -22,3 +26,4 @@ export async function sendVerificationEmail(to, link) {
             <a href="${link}">Confirmer mon compte</a>`
     });
 };
+

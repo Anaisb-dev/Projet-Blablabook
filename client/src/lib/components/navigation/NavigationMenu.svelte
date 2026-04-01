@@ -4,7 +4,7 @@
 
     function logout() {
         clearAuth();
-        push("/#/login");
+        push("/");
     }
 </script>
 

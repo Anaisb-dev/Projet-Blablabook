@@ -91,6 +91,14 @@
         lastDeletedBook = null;
     }
 
+
+function restoreDeletedBook() {
+if (lastDeletedBook) {
+books = [...books, lastDeletedBook];
+}
+showDeleteMessage = false;
+lastDeletedBook = null;
+}
 </script>
 
 <div
