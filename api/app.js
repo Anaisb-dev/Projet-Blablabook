@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-
 app.use(cors({
     origin: 'http://localhost:5173', // ton frontend
     methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
@@ -24,10 +23,10 @@ app.use(express.json());
 /* ROUTES PUBLIQUES */
 
 // Auth (login / register)
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 -
 // Gestion des livres
-app.use("/books", bookRoutes);
+app.use("/api/books", bookRoutes);
 
 // Pages publiques (contact, faq, mentions)
 // app.use("/contact", contactRoutes);
@@ -38,7 +37,7 @@ app.use("/books", bookRoutes);
 app.use(authenticate);
 
 // Routes utilisateur
-app.use("/users", userRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

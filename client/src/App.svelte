@@ -1,4 +1,9 @@
 <script>
+
+if (window.location.pathname === "/" && !window.location.hash) {
+  window.location.hash = "#/";
+} // Permet d'avoir la meme URL qd on charge le site et qd on clique sur la page d'accueil
+
   import Router from "svelte-spa-router";
   import Layout from "./lib/components/layout/Layout.svelte";
   import HomePage from "./lib/components/HomePage/HomePage.svelte";
@@ -10,6 +15,7 @@
   import Setting from "./lib/components/Account/Setting.svelte";
   import NotFound from "./lib/components/NotFound/NotFound.svelte";
   import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
+  import ConfirmAccount from "./lib/components/ConfirmAccount/ConfirmAccount.svelte";
 
   const routes = {
     "/": HomePage,
@@ -20,6 +26,7 @@
     "/profile": Account,
     "/settings": Setting,
     "/contact": ContactForm,
+    "/confirm": ConfirmAccount,
     "*": NotFound // Route pour les pages non trouvées
   };
 </script>
