@@ -15,7 +15,7 @@
     console.log("TOKEN 👉", token);
 
     if (!token) {
-        message = "Token introuvable ❌";
+        message = "Token introuvable";
         return;
     }
 
