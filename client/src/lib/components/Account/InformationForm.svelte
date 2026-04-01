@@ -45,36 +45,121 @@
 
     // Simuler la récupération des données utilisateur depuis le store authStore
     $effect(() => {
-    if (authStore.user) {
-        const data = {
-            username: authStore.user.username || "",
-            last_name: authStore.user.last_name || "",
-            first_name: authStore.user.first_name || "",
-            email: authStore.user.email || "",
-            bio: authStore.user.bio || ""
-        };
+        if (authStore.user) {
+            const data = {
+                username: authStore.user.username || "",
+                last_name: authStore.user.last_name || "",
+                first_name: authStore.user.first_name || "",
+                email: authStore.user.email || "",
+                bio: authStore.user.bio || ""
+            };
 
-        user = data; // pré-remplir le formulaire avec les données de l'utilisateur
-        originalUser = data; // stocker les données originales pour pouvoir les réinitialiser en cas d'annulation
-    }
-});
+            user = data; // pré-remplir le formulaire avec les données de l'utilisateur
+            originalUser = data; // stocker les données originales pour pouvoir les réinitialiser en cas d'annulation
+        }
+    });
 
-    // Fonction pour gérer la mise à jour des informations utilisateur
+    // Fonction pour gérer la mise à jour des informations de l'utilisateur
     async function handleUpdate() {
+
         // Validation pour s'assurer que les champs obligatoires sont remplis avant de tenter de mettre à jour le profil
-    if (!user.email.trim() || !user.username.trim()) {
-        showUpdateMessage("Le pseudo et l’email sont obligatoires.");
-        user = { ...originalUser }; // Réinitialiser les champs du formulaire avec les données originales en cas d'erreur de validation
-        return;
+        if (!user.email.trim() || !user.username.trim()) {
+            showUpdateMessage("Le pseudo et l’email sont obligatoires.");
+            user = { ...originalUser }; // Réinitialiser les champs du formulaire avec les données originales en cas d'erreur de validation
+            return;
+        }
+
+        // Message en cas non respect des conditions du format d'email
+        const emailError = validateEmail(user.email);
+            if (emailError) {
+                showUpdateMessage(emailError);
+                user = { ...originalUser };
+                return;
+            }
+
+        try {
+            await updateUser(user);
+            showUpdateMessage("Profil mis à jour !");
+        } catch (err) {
+            console.error(err);
+            showUpdateMessage("Erreur lors de la mise à jour");
+        }
+
+        // Message en cas de non respect du format du pseudo
+        const usernameError = validateUsername(user.username)
+
+        if(usernameError) {
+            showUpdateMessage(usernameError)
+            user = { ...originalUser}
+            return;
+        }
+
+        // Message en cas de non respect du format du pseudo
+        const firstAndLastNameError = validateFirstAndLastName(user.first_name, user.last_name)
+
+        if(firstAndLastNameError) {
+            showUpdateMessage(firstAndLastNameError)
+            user= { ...originalUser}
+            return;
+        }
     }
-    try {
-        await updateUser(user);
-        showUpdateMessage("Profil mis à jour !");
-    } catch (err) {
-        console.error(err);
-        showUpdateMessage("Erreur lors de la mise à jour");
+
+    // Fonction qui vérifie si l'email respecte le bon format
+    function validateEmail(email) {
+
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!regex.test(email)) {
+            return "Format d'email invalide";
+        }
+
+        return "";
     }
-}
+
+    // Fonction qui vérifie si le pseudo respecte le bon format
+    function validateUsername(username) {
+
+        const regex =  /^[a-zA-Z0-9_.-]+$/;
+
+        if (!regex.test(username)) {
+            return "Le pseudo ne peut contenir que des lettres, des chiffres et les caractères suivants : _, -, .";
+        }
+
+        if(username.length <2) {
+            return "Le pseudo doit contenir au moins 2 caractères"
+        }
+
+        if(username.length >30) {
+            return "Le pseudo ne doit pas dépasser 30 caractères"
+        }
+
+        return "";
+    }
+
+    // Fonction qui vérifie si le prénom et le nom respecte le bon format
+    function validateFirstAndLastName(first_name, last_name) {
+        const first = first_name.trim();
+        const last = last_name.trim();
+
+        if (first !== "" && first.length < 2) {
+            return "Le prénom doit contenir au moins 2 caractères";
+        }
+
+        if (first !== "" && first.length > 30) {
+            return "Le prénom ne doit pas dépasser 30 caractères";
+        }
+
+        if (last !== "" && last.length < 2) {
+            return "Le nom doit contenir au moins 2 caractères";
+        }
+
+        if (last !== "" && last.length > 30) {
+            return "Le nom ne doit pas dépasser 30 caractères";
+        }
+
+        return "";
+    }
+
 
     // Fonction pour la gestion de la pop-up de confirmation de modifications des informations
     function showUpdateMessage(message) {
@@ -86,6 +171,18 @@
         }, 3000);
     }
 
+    // Fonction qui vérifie si le nouveau mot de passe respecte les regex
+    function validatePassword(password) {
+        if (!password) return "Veuillez saisir un mot de passe";
+
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@*._-]).{8,}$/;
+
+        if (!regex.test(password)) {
+            return "Le mot de passe doit contenir au moins 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial (@*._-)";
+        }
+
+        return "";
+    }
 
     // Fonction dédié à la modification du mot de passe
     async function handlePasswordUpdate() {
@@ -122,18 +219,6 @@
             passwordError = "Erreur lors de la mise à jour du mot de passe";
         }
     }
-// Fonction qui vérifie si le ,nouveau mot de passe respecte les regex
-function validatePassword(password) {
-    if (!password) return "Veuillez saisir un mot de passe";
-
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@*._-]).{8,}$/;
-
-    if (!regex.test(password)) {
-        return "Le mot de passe doit contenir au moins 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial (@*._-)";
-    }
-
-    return "";
-}
 
 
 // Fonction de suppression de compte
@@ -163,6 +248,9 @@ function validatePassword(password) {
 
     <p class="text-center">Bio</p>
     <TextArea bind:value={user.bio} />
+    <p class="text-sm text-center italic {user.bio.length > 240 ? 'text-red-500' : 'text-[#BF9075]'}">
+        {250 - user.bio.length} caractères restants
+    </p>
 
     <Button on:click={handleUpdate}>
     Enregistrer les modifications
