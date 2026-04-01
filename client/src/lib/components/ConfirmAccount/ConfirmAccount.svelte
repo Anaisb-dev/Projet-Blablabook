@@ -4,25 +4,50 @@
     let message = "Confirmation en cours...";
 
     onMount(async () => {
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get("token");
+    const hash = window.location.hash;
 
-        try {
-            const res = await fetch(
-                `http://localhost:3000/#/confirm?token=${token}`,
-            );
+    const queryIndex = hash.indexOf("?");
+    const queryString = queryIndex !== -1 ? hash.substring(queryIndex + 1) : "";
 
-            const data = await res.json();
-            message = data.message;
+    const params = new URLSearchParams(queryString);
+    const token = params.get("token");
 
+    console.log("TOKEN 👉", token);
+
+    if (!token) {
+        message = "Token introuvable ❌";
+        return;
+    }
+
+    try {
+        const url = `http://localhost:3000/api/auth/confirm?token=${token}`;
+        console.log("FETCH URL 👉", url);
+
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("STATUS 👉", res.status);
+
+        const data = await res.json();
+        console.log("DATA 👉", data);
+
+        message = data.message;
+
+        if (res.ok) {
             setTimeout(() => {
                 window.location.href = "#/login";
             }, 2000);
-
-        } catch (err) {
-            message = "Erreur lors de la confirmation ❌";
         }
-    });
+
+    } catch (err) {
+        console.error("FETCH ERROR 👉", err);
+        message = "Erreur lors de la confirmation ❌";
+    }
+});
 </script>
 
 <h1>{message}</h1>

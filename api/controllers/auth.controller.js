@@ -26,13 +26,6 @@ export async function registerUser(req, res) {
             password: hashedPassword,
         });
 
-        // Génère un token pour le login, valable 7 jours
-        const token = jwt.sign(
-            { id: userCreate.id },
-            process.env.JWT_SECRET,
-            { expiresIn: "7d" }
-        );
-
         // Génére un token pour le mail de confirmation valable 1h
         const emailToken = jwt.sign(
             { userId: userCreate.id, type: "email_verification" },
@@ -41,6 +34,7 @@ export async function registerUser(req, res) {
         );
 
         const link = `http://localhost:5173/#/confirm?token=${emailToken}`;
+        // Lien retourner par email pour valider le compte, il contient le "emailToken" créé plus haut
 
         await sendVerificationEmail(userCreate.email, link);
 
@@ -69,6 +63,51 @@ export async function registerUser(req, res) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Erreur serveur" });
     }
 }
+
+
+export async function confirmEmail(req, res) {
+    const { token } = req.query;
+
+    if (!token) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Authentifacion échouée." });
+        // On vérifie la présence d'un token, si ok on passe à try sinon : erreur 400
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // On vérifie que le token présent dans la requete correspond
+        console.log(decoded);
+
+        if (decoded.type !== "email_verification") {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Authentifacion échouée." });
+            // Si il ne correspond pas au type de "emailToken" plus haut : erreur 400
+        }
+
+        const user = await User.findByPk(decoded.userId);
+        // On cherche l'utilisateur par son id
+        if (!user) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Utilisateur introuvable." });
+        }   // Si l'id de l'user ne correspond pas : erreur 400
+
+        if (user.is_verified) {
+            return res.status(StatusCodes.ACCEPTED).json({ message: "Compte déjà confirmé !" });
+        }   // Si le statut de l'user est déjà vérifié alors on lui retourne ce message
+        
+        user.is_verified = true;
+        // Sinon on passe son statut en true pour valider le compte
+
+        await user.save();
+        // On sauvegarde le statut de l'utilisateur en bdd pour s'assurer que le compte est validé
+
+        return res.status(StatusCodes.ACCEPTED).json({ message: "Compte validé avec succés !" });
+        // Retourne un message pour confirmer la validation du compte
+
+    } catch (error) {
+        console.error("Erreur confirmé", error);
+
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Authentification expiré ou invalide." });
+    }
+};
 
 
 export async function loginUser(req, res) {
@@ -102,7 +141,7 @@ export async function loginUser(req, res) {
         { id: user.id },
         process.env.JWT_SECRET,
         { expiresIn: "7d" }
-        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 2h
+        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 7jours
     );
 
     // renvoie token + user pour le frontend

@@ -1,4 +1,9 @@
 <script>
+
+if (window.location.pathname === "/" && !window.location.hash) {
+  window.location.hash = "#/";
+} // Permet d'avoir la meme URL qd on charge le site et qd on clique sur la page d'accueil
+
   import Router from "svelte-spa-router";
   import Layout from "./lib/components/layout/Layout.svelte";
   import HomePage from "./lib/components/HomePage/HomePage.svelte";
