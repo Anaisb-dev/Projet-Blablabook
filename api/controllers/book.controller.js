@@ -24,7 +24,7 @@ export async function searchBooks(req, res) {
         const isbn = isbnObj ? isbnObj.identifier : book.id;
          // Extraire l'année
         const year = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4)) : null;
-
+    
         return {
         google_book_id: book.id,
         code_isbn: isbn,
@@ -37,7 +37,7 @@ export async function searchBooks(req, res) {
     };
 });
 
-        res.json(simplifiedBooks);
+    res.json(simplifiedBooks);
     } catch (error) {
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur API Google Books" });
@@ -54,9 +54,9 @@ export async function getBookById(req, res) {
         const response = await fetch(
             `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
         );
-
+        
         const data = await response.json();
-        const info = data.volumeInfo;
+        const info = data.volumeInfo || {};
 
        // Vérifie que industryIdentifiers existe avant de prendre l'ISBN
         const isbn = info.industryIdentifiers?.[0]?.identifier || null;
@@ -74,7 +74,7 @@ export async function getBookById(req, res) {
             authors: info.authors || [],
             genres: info.categories || [],
         };
-
+        
         res.json(bookDetail);
     } catch (error) {
         console.error(error);

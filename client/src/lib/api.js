@@ -1,10 +1,6 @@
 export default async function api(endpoint, method = "GET", body) {
     const token = localStorage.getItem("token");
 
-    const headers = {
-    "Content-Type": "application/json",
-    // pas d'Authorization pour register/login
-};
 
  // on ajoute Authorization UNIQUEMENT si token existe
     if (token) {

@@ -15,6 +15,7 @@ if (window.location.pathname === "/" && !window.location.hash) {
   import Setting from "./lib/components/Account/Setting.svelte";
   import NotFound from "./lib/components/NotFound/NotFound.svelte";
   import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
+  import FAQ from "./lib/components/FAQ/FAQ.svelte";
   import ConfirmAccount from "./lib/components/ConfirmAccount/ConfirmAccount.svelte";
 
   const routes = {
@@ -26,6 +27,7 @@ if (window.location.pathname === "/" && !window.location.hash) {
     "/profile": Account,
     "/settings": Setting,
     "/contact": ContactForm,
+    "/faq": FAQ,
     "/confirm": ConfirmAccount,
     "*": NotFound // Route pour les pages non trouvées
   };
