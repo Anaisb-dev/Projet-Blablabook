@@ -151,7 +151,6 @@
 >
     {#each filteredBooks as book}
         <div class="relative">
-        {console.log("book.google_book_id", book.google_book_id)}
             <BookCard
                 id={book.id}
                 googleId={book.google_book_id}

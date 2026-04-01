@@ -26,6 +26,6 @@ export const deleteBookFromPersonalLibrary = async (id) => {
     return await api(`/users/books/${id}`, "DELETE");
 };
 
-// export const getUserBookDetail = async (id) => {
-//     return await api(`/books/${id}`, "GET");
-// };
+export const getUserBookDetail = async (id) => {
+    return await api(`/users/books/${id}`, "GET");
+};

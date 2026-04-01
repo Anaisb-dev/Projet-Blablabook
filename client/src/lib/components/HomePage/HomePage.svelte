@@ -8,16 +8,15 @@
 
 	// récupérer des livres aléatoires pour le carrousel
 	onMount(async () => {
-		try {HomePage:
-
+		try {
 			books = await getRandomBooks();
 		} catch (err) {
 			console.error("Erreur lors du chargement des livres", err);
 		}
 	});
 
-	function goToDetail(googleId) {
-		window.location.href = `/#/books/${googleId}`;
+	function goToDetail(id) {
+		window.location.href = `/#/books/${id}`;
 	}
 </script>
 
@@ -44,8 +43,7 @@
 	<Carousel autoplay={4000} itemsVisible={4} totalItems={books.length}>
 		{#each books as book}
 			<BookCard
-				id={book.id}
-				googleId={book.google_book_id}
+				id={book.google_book_id}
 				title={book.title}
 				/* auteur non disponible dans cette liste, BookCard utilise un défaut */
 				cover={book.cover_image}

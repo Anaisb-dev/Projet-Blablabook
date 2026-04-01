@@ -56,7 +56,7 @@ export async function getBookById(req, res) {
         );
         
         const data = await response.json();
-        const info = data.volumeInfo;
+        const info = data.volumeInfo || {};
 
        // Vérifie que industryIdentifiers existe avant de prendre l'ISBN
         const isbn = info.industryIdentifiers?.[0]?.identifier || null;
