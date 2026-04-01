@@ -31,6 +31,10 @@ User.init(
       type: DataTypes.TEXT,
       allowNull: false
     },
+    is_verified : {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   },
   {
     sequelize,
