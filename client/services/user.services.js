@@ -26,5 +26,10 @@ export const updatePassword = async (password, confirmPassword) => {
     });
 };
 
+// Supprimer l'utilisateur connecté
+export const deleteUser = async () => {
+    return await api("/users/profile", "DELETE");
+};
+
 
 

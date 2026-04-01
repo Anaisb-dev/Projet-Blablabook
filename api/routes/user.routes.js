@@ -8,7 +8,8 @@ import { getProfile,
     getUserBookById, 
     updateUserBook,
     deleteUserBook,addGoogleBookToLibrary, 
-    getAllUsers} from "../controllers/user.controller.js";
+    getAllUsers,
+    deleteUser } from "../controllers/user.controller.js";
 import { updatePassword } from "../controllers/user.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validateUserSettings, validatePasswordUpdate} from "../middlewares/user.middleware.js"
@@ -30,6 +31,9 @@ router.patch('/settings', authenticate, validateUserSettings, updateSettings);
 router.patch('/password', authenticate, validatePasswordUpdate, updatePassword);
 // Modification du mot de passe avec hash de l'utilisateur
 
+router.delete('/profile', authenticate, deleteUser)
+// Permet de supprimer un compte
+
 router.get('/books', getUserBooks);
 // Afficher tous les livres de l'utilisateur
 
@@ -44,6 +48,8 @@ router.post('/books/:googleBookId', addGoogleBookToLibrary);
 
 router.delete('/books/:id', deleteUserBook);
 // Permet de supprimer un livre de sa bibliothèque
+
+
 
 
 
