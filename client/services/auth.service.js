@@ -4,12 +4,6 @@ import { setAuth } from "../src/lib/components/store/auth.svelte";
 // Inscription + connexion automatique
 export const registerUser = async ({ username, email, password, confirmPassword }) => {
     const data = await api("/auth/register", "POST", { username, email, password, confirmPassword });
-
-    // Si le backend renvoie jwt + user
-    if (data.jwt && data.user) {
-        setAuth(data.user, data.jwt);
-    }
-    
     return data;
 };
 
