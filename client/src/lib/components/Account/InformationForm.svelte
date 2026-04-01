@@ -3,11 +3,13 @@
     import TextArea from "../ui/TextArea.svelte";
     import PasswordInput from "../ui/PasswordInput.svelte";
     import Button from "../ui/Button.svelte";
+    import PopUp from "../ui/PopUp.svelte";
     import { push } from "svelte-spa-router"; // Pour permettre de retourner à la bibliothèque après modification des infos
     import { AlertDialog } from "bits-ui";
     import { authStore } from "../store/auth.svelte";
     import { updateUser } from "../../../../services/user.services.js";
     import { updatePassword } from "../../../../services/user.services.js";
+
 
     // Stocker les informations originelles de l'utilisateur, utilisé pour réinitialiser le formulaire en cas d'erreur de validation
     let originalUser = $state({
@@ -33,6 +35,14 @@
     let open = $state(false); // État pour contrôler l'ouverture du dialogue de confirmation de suppression de compte
     let isDeleted = $state(false); // État pour indiquer si le compte a été supprimé, utilisé pour afficher un message de confirmation après suppression
 
+    let showUpdatePopUp = $state(false); // Affichage de la pop-up 
+    let updateMessage = $state(""); // Texte afficher dans la pop-up
+
+    // Fonction pour retourner à la bibliothèque
+    function goToLibrary() {
+        push(`/profile`); 
+    }
+
     // Simuler la récupération des données utilisateur depuis le store authStore
     $effect(() => {
     if (authStore.user) {
@@ -53,59 +63,66 @@
     async function handleUpdate() {
         // Validation pour s'assurer que les champs obligatoires sont remplis avant de tenter de mettre à jour le profil
     if (!user.email.trim() || !user.username.trim()) {
-        alert("Le pseudo et l’email sont obligatoires.");
+        showUpdateMessage("Le pseudo et l’email sont obligatoires.");
         user = { ...originalUser }; // Réinitialiser les champs du formulaire avec les données originales en cas d'erreur de validation
         return;
     }
     try {
         await updateUser(user);
-        alert("Profil mis à jour !");
+        showUpdateMessage("Profil mis à jour !");
     } catch (err) {
         console.error(err);
-        alert("Erreur lors de la mise à jour");
+        showUpdateMessage("Erreur lors de la mise à jour");
     }
 }
 
-    function goToLibrary() {
-        let userId = 1; // fausse id pour le moment, à remplacer par l'id réel de l'utilisateur connecté
-        push(`/profile`); // /#/profile/${userId}
+    // Fonction pour la gestion de la pop-up de confirmation de modifications des informations
+    function showUpdateMessage(message) {
+        updateMessage = message;
+        showUpdatePopUp = true;
+
+        setTimeout(() => {
+            showUpdatePopUp = false;
+        }, 3000);
     }
 
-async function handlePasswordUpdate() {
-    passwordError = "";
 
-    const error = validatePassword(newPassword);
-
-    if (error) {
-        passwordError = error;
-        return;
-    }
-
-    if (!confirmNewPassword) {
-        passwordError = "Veuillez confirmer votre mot de passe";
-        return;
-    }
-
-    if (newPassword !== confirmNewPassword) {
-        passwordError = "Les mots de passe ne correspondent pas";
-        return;
-    }
-
-    try {
-        await updatePassword(newPassword, confirmNewPassword);
-
-        alert("Mot de passe mis à jour avec succès");
-
-        newPassword = "";
-        confirmNewPassword = "";
+    // Fonction dédié à la modification du mot de passe
+    async function handlePasswordUpdate() {
         passwordError = "";
 
-    } catch (err) {
-        console.error(err);
-        passwordError = "Erreur lors de la mise à jour du mot de passe";
-    }
-}
+        const error = validatePassword(newPassword);
 
+        if (error) {
+            passwordError = error;
+            return;
+        }
+
+        if (!confirmNewPassword) {
+            passwordError = "Veuillez confirmer votre mot de passe";
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            passwordError = "Les mots de passe ne correspondent pas";
+            return;
+        }
+
+        try {
+            await updatePassword(newPassword, confirmNewPassword);
+
+            showUpdateMessage("Mot de passe mis à jour avec succès");
+
+            newPassword = "";
+            confirmNewPassword = "";
+            passwordError = "";
+
+        } catch (err) {
+            console.error(err);
+            passwordError = "Erreur lors de la mise à jour du mot de passe";
+        }
+    }
+// Fonction qui vérifie si le ,nouveau mot de passe respecte les regex
 function validatePassword(password) {
     if (!password) return "Veuillez saisir un mot de passe";
 
@@ -119,6 +136,7 @@ function validatePassword(password) {
 }
 
 
+// Fonction de suppression de compte
     function handleDeleteAccount() {
         isDeleted = true;
     }
@@ -232,3 +250,11 @@ function validatePassword(password) {
         </AlertDialog.Portal>
     </AlertDialog.Root>
 </div>
+
+<!-- Gestion de l'affichage de la pop-up indiquant le statut des modifications  -->
+<PopUp
+    message={updateMessage}
+    show={showUpdatePopUp}
+    onClose={() => showUpdatePopUp = false}
+/>
+
