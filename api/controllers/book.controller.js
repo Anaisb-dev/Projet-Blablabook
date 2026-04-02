@@ -34,6 +34,7 @@ export async function searchBooks(req, res) {
         page_number: info.pageCount || 0, // 0 si inconnu
         cover_image: info.imageLinks?.thumbnail || null,
         genres: info.categories || [],
+        authors: info.authors || []
     };
 });
 

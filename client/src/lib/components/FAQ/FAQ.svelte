@@ -41,6 +41,7 @@
             uniquement pour le fonctionnement du service, conformément à notre politique de confidentialité.
         </p>
         </details>
+    </div>
 
     <div class="mt-8 text-center space-y-4">
         <p class="text-sm md:text-base">
@@ -50,6 +51,7 @@
             Contacter le support
         </a>
     </div>
+    
 </section>
 
 <style>

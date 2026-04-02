@@ -14,7 +14,6 @@ export async function registerUser(req, res) {
     try {
         const { username, last_name, first_name, email, password } = req.body;
         // Cette variable récupére tous les élements pour le req.body, on appelle ça la "destructuration d’objet".
-
         const hashedPassword = await argon2.hash(password);
         // Stockage du password hasher via Argon2 dans une variable
 
