@@ -140,8 +140,8 @@ export async function loginUser(req, res) {
     const token = jwt.sign(
         { id: user.id },
         process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les 7jours
+        { expiresIn: "2h" }
+        // on créée une variable pour stocker un token générer à la connexion, il utilise l'id, il expire toutes les heures
     );
 
     // renvoie token + user pour le frontend
