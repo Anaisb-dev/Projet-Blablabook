@@ -3,11 +3,14 @@
     import { authStore } from "../store/auth.svelte";
     import api from "../../api.js";
     import { deleteBookFromPersonalLibrary } from "../../../../services/bookService.js";
+    import { updateBookStatus } from "../../../../services/bookService.js";
 
     import Button from "../ui/Button.svelte";
     import Icon from "@iconify/svelte";
     import BookCard from "../ui/BookCard.svelte";
     import { fly } from "svelte/transition";
+    import BookStatusButton from "../ui/BookStatusButton.svelte";
+
 
     let user = null;
     let books = [];
@@ -30,7 +33,7 @@
 
         try {
             // route
-            const data = await api("/users/books", "GET");
+            const data = await api("/api/users/books", "GET");
             console.log("BOOKS API :", data);
             books = data;
         } catch (err) {
@@ -91,14 +94,6 @@
         lastDeletedBook = null;
     }
 
-
-function restoreDeletedBook() {
-if (lastDeletedBook) {
-books = [...books, lastDeletedBook];
-}
-showDeleteMessage = false;
-lastDeletedBook = null;
-}
 </script>
 
 <div
@@ -153,7 +148,7 @@ lastDeletedBook = null;
     </Button>
 </div>
 
-<!--Affichage des livres et bouton de suppression-->
+<!--Affichage des livres et bouton de status et bouton de suppression-->
 <div
     class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-3 justify-items-center w-fit mx-auto mt-10 mb-20"
 >
@@ -161,20 +156,40 @@ lastDeletedBook = null;
         <div class="relative">
             <BookCard
                 id={book.id}
-                googleBookId={book.google_book_id}
-                title={book.title}
-                author={book.authors
-                    ?.map((a) => a.first_name + " " + a.last_name)
-                    .join(", ")}
-                cover={book.cover_image || book.cover}
-                description={book.summary}
+				googleBookId={book.google_book_id}
+				title={book.title || book.volumeInfo?.title}
+				author={ book.authors?.join(", ") || book.volumeInfo?.authors?.join(", ") || "Auteur inconnu"}
+				cover={book.cover_image || book.volumeInfo?.imageLinks?.thumbnail}
+				description={book.summary || book.volumeInfo?.description}
             />
+
             <button
                 class="absolute top-2 right-2 z-10 w-[40px] h-[40px] rounded-xl border bg-white flex items-center justify-center hover:bg-[#F2E0D0] cursor-pointer"
                 on:click={() => deleteBook(book.id)}
             >
                 <Icon icon="iconamoon:trash-light" class="w-5 h-5" />
             </button>
+
+            <BookStatusButton
+                status={book.status}
+                id={book.id}
+                on:changeStatus={async (event) => {
+                    const { id, status } = event.detail;
+
+                    // // Mise à jour du status dans le frontend
+                    books = books.map(book =>
+                        book.id === id ? { ...book, status } : book
+                    );
+
+                    // Mise à jour du status en BDD
+                    try {
+                        await updateBookStatus(id, status);
+                        console.log("Status mis à jour en BDD");
+                    } catch (err) {
+                        console.error("Erreur update BDD", err);
+                    }
+                }}
+            />
         </div>
     {/each}
 </div>

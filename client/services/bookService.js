@@ -3,7 +3,7 @@ import api from "../src/lib/api"; // On importe la fonction pour appeler le back
 // On exporte les founctions pour pouvoir les utiliser dans le frontend
 // Fonction pour rechercher des livres
 export const searchBooks = async (query) => {
-    return await api(`/books/search?query=${query}`, "GET");
+    return await api(`/api/books/search?query=${query}`, "GET");
 };
 
 //Fonction pour récupérer des livres aléatoires
@@ -54,18 +54,24 @@ export const getRandomBooks = async () => {
 };
 
 export const getBookDetail = async (googleBookId) => {
-    return await api(`/books/${googleBookId}`, "GET");
+    return await api(`/api/books/${googleBookId}`, "GET");
 };
 
 // Ajouter un livre Google à la bibliothèque
 export const addBookToPersonalLibrary = async (googleBookId, status = "à lire") => {
-    return await api(`/users/books/${googleBookId}`, "POST", { status });
+    return await api(`/api/users/books/${googleBookId}`, "POST", { status });
 };
 // Supprimer un livre de la bibliothèque personnelle
 export const deleteBookFromPersonalLibrary = async (id) => {
-    return await api(`/users/books/${id}`, "DELETE");
+    return await api(`/api/users/books/${id}`, "DELETE");
 };
 
+// Récupérer les livres de la bibliothèque personnelle
 export const getUserBookDetail = async (id) => {
-    return await api(`/users/books/${id}`, "GET");
+    return await api(`/api/users/books/${id}`, "GET");
 };
+
+// Mettre à jour le statut d'un livre dans la bibliothèque personnelle
+export async function updateBookStatus(id, status) {
+    return await api(`/api/users/books/${id}`, "PATCH", { status });
+}
