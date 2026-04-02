@@ -154,4 +154,4 @@ export async function loginUser(req, res) {
             // ajoute d'autres infos si tu veux
         }
     });
-}
+};
