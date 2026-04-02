@@ -158,7 +158,7 @@
                 author={book.authors
                     ?.map((a) => a.first_name + " " + a.last_name)
                     .join(", ")}
-                cover={book.cover_image}
+                cover={book.cover_image || book.cover}
                 description={book.summary}
             />
             <button
