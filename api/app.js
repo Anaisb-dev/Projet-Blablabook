@@ -23,13 +23,13 @@ app.use(express.json());
 /* ROUTES PUBLIQUES */
 
 // Auth (login / register)
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 -
 // Gestion des livres
-app.use("/books", bookRoutes);
+app.use("/api/books", bookRoutes);
 
 // Pages publiques (contact, faq, mentions)
-//app.use("/contact", contactRoutes);
+//app.use("/api/contact", contactRoutes);
 
 /* ROUTES PROTEGEES */
 
@@ -37,7 +37,7 @@ app.use("/books", bookRoutes);
 app.use(authenticate);
 
 // Routes utilisateur
-app.use("/users", userRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

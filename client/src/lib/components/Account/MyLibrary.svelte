@@ -30,7 +30,7 @@
 
         try {
             // route
-            const data = await api("/users/books", "GET");
+            const data = await api("/api/users/books", "GET");
             console.log("BOOKS API :", data);
             books = data;
         } catch (err) {
