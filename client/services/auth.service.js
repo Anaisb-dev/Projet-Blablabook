@@ -1,5 +1,5 @@
 import api from "../src/lib/api";
-import { setAuth } from "../src/lib/components/store/auth.svelte";
+import { clearAuth, setAuth } from "../src/lib/components/store/auth.svelte";
 
 // Inscription
 export const registerUser = async ({ username, email, password, confirmPassword }) => {
@@ -21,12 +21,13 @@ export const loginUser = async (identifier, password) => {
         // 3. mettre à jour le store
         setAuth(user, data.jwt);
     }
-
+    console.log(data.user, data.jwt);
     return data;
 };
 
 // Logout
 export const logoutUser = () => {
-    localStorage.removeItem("token");
-    setAuth(null, null); // Supprime les informations utilisateur et le token
-};
+    clearAuth();
+}; // Ici, la déconnexion de la session déclenche la fonction clearAuth, à savoir :
+// - la suppression du token dans le localStorage ainsi que l'user qui y est rattaché
+// - restaure ces deux données au statut de NULL

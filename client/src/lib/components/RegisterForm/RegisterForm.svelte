@@ -28,8 +28,7 @@
             await registerUser({ username, email, password, confirmPassword });
             success = "Compte créé avec succès ! Penses à vérifier ta boîte mail pour valider ton compte.";
         } catch (err) {
-            console.error("Erreur inscription :", err);
-            error = err.message || "Erreur lors de l'inscription";
+            error = "Erreur lors de l'inscription";
         } finally {
             loading = false;
         }
@@ -48,10 +47,10 @@
     {/if}
 
     <p class="text-center">Pseudo</p>
-    <Input bind:value={username} />
+    <Input bind:value={username}/>
 
     <p class="text-center">Email</p>
-    <Input bind:value={email} />
+    <Input bind:value={email}/>
 
     <p class="text-center">Mot de passe</p>
     <PasswordInput bind:value={password} />
