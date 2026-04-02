@@ -5,7 +5,7 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/common.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
-// import contactRoutes from "./routes/contact.routes.js";
+//import contactRoutes from "./routes/contact.routes.js";
 import bookRoutes from "./routes/book.routes.js";
 import { authenticate } from "./middlewares/auth.middleware.js";
 
@@ -29,7 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 
 // Pages publiques (contact, faq, mentions)
-// app.use("/contact", contactRoutes);
+//app.use("/contact", contactRoutes);
 
 /* ROUTES PROTEGEES */
 
