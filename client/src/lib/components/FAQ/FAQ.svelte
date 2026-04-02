@@ -51,6 +51,7 @@
             Contacter le support
         </a>
     </div>
+    
 </section>
 
 <style>
