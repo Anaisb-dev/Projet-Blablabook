@@ -12,8 +12,6 @@ export const transporter = nodemailer.createTransport({
     }
 });
 
-console.log('test', transporter)
-
 export async function sendVerificationEmail(to, link) {
     return transporter.sendMail({
         from: process.env.EMAIL_USER,

@@ -66,6 +66,12 @@ export const deleteBookFromPersonalLibrary = async (id) => {
     return await api(`/api/users/books/${id}`, "DELETE");
 };
 
+// Récupérer les livres de la bibliothèque personnelle
 export const getUserBookDetail = async (id) => {
     return await api(`/api/users/books/${id}`, "GET");
 };
+
+// Mettre à jour le statut d'un livre dans la bibliothèque personnelle
+export async function updateBookStatus(id, status) {
+    return await api(`/api/users/books/${id}`, "PATCH", { status });
+}
