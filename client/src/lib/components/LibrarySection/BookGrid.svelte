@@ -3,6 +3,7 @@
 	import api from "../../api.js";
 	import { createEventDispatcher } from "svelte";
 	import BookCard from "../ui/BookCard.svelte";
+	import PopUp from "../ui/PopUp.svelte";
 	import Icon from "@iconify/svelte";
 	import { addBookToPersonalLibrary } from "../../../../services/bookService.js";
 	import { authStore } from "../store/auth.svelte";
@@ -14,7 +15,12 @@
 	// Livres de la bibliothèque personnelle de l'utilisateur
 	let userBooks = [];
 
-	let showAuthPopUp = false; // Affiche un message d'authentification si l'utilisateur n'est pas connecté
+	// Affiche un message d'authentification si l'utilisateur n'est pas connecté
+	let showAuthPopUp = false;
+
+	// Affiche un message de confirmation après ajout d'un livre
+	let showPopup = false;
+	let popupMessage = "";
 
 	const dispatch = createEventDispatcher();
 
@@ -30,12 +36,20 @@
 
 		// sinon, on ajoute le livre à la bibliothèque personnelle
 		try {
-			await addBookToPersonalLibrary(googleBookId);
-			alert("Livre ajouté !");
-		} catch (e) {
-			console.error(e);
-			alert("Erreur ajout");
-		}
+	await addBookToPersonalLibrary(googleBookId);
+
+	// 🔥 ON RECHARGE LA VRAIE DATA
+	userBooks = await api("/api/users/books", "GET");
+
+	popupMessage = "Livre ajouté !";
+	showPopup = true;
+
+} catch (e) {
+	console.error(e);
+
+	popupMessage = "Erreur lors de l'ajout";
+	showPopup = true;
+}
 	}
 
 	function getUserBookStatus(googleBookId) {
@@ -163,3 +177,10 @@
 		</AlertDialog.Portal>
 	</AlertDialog.Root>
 </div>
+
+<!-- Affichage du pop-up de confirmation après ajout d'un livre -->
+<PopUp
+	message={popupMessage}
+	show={showPopup}
+	onClose={() => (showPopup = false)}
+/>
