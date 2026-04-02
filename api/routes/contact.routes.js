@@ -3,7 +3,7 @@
 import express from "express";
 
 const router = express.Router();
-router.post('/');
+router.post('/contact');
 // Envoi d'un formulaire de contact
 
 
