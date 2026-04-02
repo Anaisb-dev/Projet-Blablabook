@@ -1,14 +1,19 @@
-export default async function api(endpoint, method = "GET", body) {
+export default async function api(endpoint, method = "GET", body, options = {}) {
 
+    const token = localStorage.getItem("token");
 
-const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
-    method,
-    headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-        body: body ? JSON.stringify(body) : undefined // Si le body est fourni, on le transforme en chaîne de caractère, sinon on met undefined pour ne pas inclure le champ body dans la requête
-});
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options?.withAuth === true && token && { 
+            Authorization: `Bearer ${token}` 
+        })
+    };
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
+    });
 
     if (!response.ok) {
         let errorData;
@@ -17,6 +22,6 @@ const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         throw new Error(errorData.message || `Failed to fetch ${endpoint}: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    return data;
+    return response.json();
 }
+
