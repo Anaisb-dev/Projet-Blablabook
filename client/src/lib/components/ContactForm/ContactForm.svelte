@@ -2,17 +2,66 @@
     import Input from "../ui/Input.svelte";
     import Button from "../ui/Button.svelte";
     import TextArea from "../ui/TextArea.svelte";
+    // Import du service contact pour envoyer le message au backend
+    import { sendContactMessage } from "../../../../services/contact.service.js";
+    
+    // Variables liées aux champs du formulaire et à l'état de l'envoi
+    let email = "";
+    let subject = "";
+    let message = "";
+    let error = "";
+    let success = "";
+    let loading = false;
+
+
+        // Fonction appelée lors du submit du formulaire
+    const handleSubmit = async () => {
+        // réinitialise les champs si succès ou erreur
+        error = "";
+        success = "";
+        loading = true;
+
+        try {
+            await sendContactMessage({email, subject, message });
+            success = "Message envoyé avec succès !";
+            // Réinitialisation des champs
+            email = "";
+            subject = "";
+            message = "";
+        } catch (err) {
+            console.error("Erreur message :", err);
+            error = err.message || "Erreur lors de l'envoi du message";
+        } finally {
+            // On désactive l'état loading quoi qu'il arrive
+            loading = false;
+        }
+    };
+
 </script>
 
-<h1 class="text-2xl font-bold mb-4 text-center p-10">Contact</h1>
+<!-- Formulaire de contact -->
+<form on:submit|preventDefault={handleSubmit}>
+    <h1 class="text-2xl font-bold mb-4 text-center p-10">Contact</h1>
 
-<p class="text-center">E-mail</p>
-<Input />
+    {#if error}
+        <p class="text-red-500 text-center mb-4">{error}</p>
+    {/if}
 
-<p class="text-center">Sujet</p>
-<Input />
+    {#if success}
+        <p class="text-green-500 text-center mb-4">{success}</p>
+    {/if}
 
-<p class="text-center">Message</p>
-<TextArea variant="wide"/>
+    <p class="text-center">Email</p>
+    <Input bind:value={email} />
 
-<Button>Envoyer votre message</Button>
+    <p class="text-center">Sujet</p>
+    <Input bind:value={subject} />
+
+    <p class="text-center">Message</p>
+    <TextArea bind:value={message} />
+
+    <!-- Bouton d'envoi -->
+    <Button btnType="submit" disabled={loading}>
+        {#if loading}Envoi...{:else}Envoyer{/if}
+    </Button>
+</form>

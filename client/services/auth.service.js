@@ -3,13 +3,13 @@ import { setAuth } from "../src/lib/components/store/auth.svelte";
 
 // Inscription
 export const registerUser = async ({ username, email, password, confirmPassword }) => {
-    const data = await api("/api/auth/register", "POST", { username, email, password, confirmPassword });
+    const data = await api("/api/auth/register", "POST", { username, email, password, confirmPassword },{ withAuth: false });
     return data;
 };
 
 // Login
 export const loginUser = async (identifier, password) => {
-    const data = await api("/api/auth/login", "POST", { identifier, password });
+    const data = await api("/api/auth/login", "POST", { identifier, password },{ withAuth: false });
 
     if (data.jwt) {
         // 1. stocker le token
