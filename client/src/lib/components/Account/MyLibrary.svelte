@@ -156,13 +156,11 @@
         <div class="relative">
             <BookCard
                 id={book.id}
-                googleBookId={book.google_book_id}
-                title={book.title}
-                author={book.authors
-                    ?.map((a) => a.first_name + " " + a.last_name)
-                    .join(", ")}
-                cover={book.cover_image || book.cover}
-                description={book.summary}
+				googleBookId={book.google_book_id}
+				title={book.title || book.volumeInfo?.title}
+				author={ book.authors?.join(", ") || book.volumeInfo?.authors?.join(", ") || "Auteur inconnu"}
+				cover={book.cover_image || book.volumeInfo?.imageLinks?.thumbnail}
+				description={book.summary || book.volumeInfo?.description}
             />
 
             <button
