@@ -36,27 +36,28 @@
 
 		// sinon, on ajoute le livre à la bibliothèque personnelle
 		try {
-	await addBookToPersonalLibrary(googleBookId);
+			await addBookToPersonalLibrary(googleBookId);
 
-	// 🔥 ON RECHARGE LA VRAIE DATA
-	userBooks = await api("/api/users/books", "GET");
+			// Mise à jour de la liste des livres de l'utilisateur pour afficher le status du livre ajouté
+			userBooks = await api("/api/users/books", "GET");
 
-	popupMessage = "Livre ajouté !";
-	showPopup = true;
+			popupMessage = "Livre ajouté !";
+			showPopup = true;
+		} catch (e) {
+			console.error(e);
 
-} catch (e) {
-	console.error(e);
-
-	popupMessage = "Erreur lors de l'ajout";
-	showPopup = true;
-}
+			popupMessage = "Erreur lors de l'ajout";
+			showPopup = true;
+		}
 	}
 
-	function getUserBookStatus(googleBookId) {
-		return userBooks.find((book) => book.google_book_id === googleBookId);
-	}
+	// Création d'une map pour accéder rapidement au status des livres de l'utilisateur 
+	$: userBooksMap = new Map(userBooks.map(b => [b.google_book_id, b]));
+	// Cette ligne crée une "Map" (comme un dictionnaire) à partir de userBooks
+	// Elle permet de retrouver un livre instantanément avec son google_book_id
+	// Exemple : userBooksMap.get("abc123") → retourne le livre correspondant
+	// Le "$:" signifie que cette ligne se met à jour automatiquement à chaque fois que userBooks change (réactivité Svelte)
 
-	console.log(getUserBookStatus);
 
 	// Récupération des livres de la bibliothèque personnelle de l'utilisateur pour afficher leur status
 	onMount(async () => {
@@ -93,21 +94,21 @@
 			/>
 
 			<!-- Si le livre est déjà dans la bibliothèque de l'utilisateur, on affiche son status, sinon on affiche le bouton d'ajout -->
-			{#if getUserBookStatus(book.google_book_id)}
+			{#if userBooksMap.get(book.google_book_id || book.id)}
 				<div class="absolute top-2 right-2 z-10">
 					<button
 						class="w-[110px] h-[40px] rounded-xl border bg-white flex items-center justify-center"
 					>
-						{#if getUserBookStatus(book.google_book_id).status === "à lire"}
+						{#if userBooksMap.get(book.google_book_id || book.id).status === "à lire"}
 							<Icon icon="solar:book-bold" class="w-4 h-4 mr-1" />
 							à lire
-						{:else if getUserBookStatus(book.google_book_id).status === "en cours"}
+						{:else if userBooksMap.get(book.google_book_id || book.id).status === "en cours"}
 							<Icon
 								icon="mdi:book-open-page-variant"
 								class="w-4 h-4 mr-1"
 							/>
 							en cours
-						{:else if getUserBookStatus(book.google_book_id).status === "lu"}
+						{:else if userBooksMap.get(book.google_book_id || book.id).status === "lu"}
 							<Icon
 								icon="garden:book-closed-fill-12"
 								class="w-4 h-4 mr-1"
