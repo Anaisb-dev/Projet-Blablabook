@@ -32,7 +32,7 @@ export async function registerUser(req, res) {
             { expiresIn: "1h" }
         );
 
-        const link = `http://localhost:5173/#/confirm?token=${emailToken}`;
+        const link = `${process.env.FRONTEND_URL}/#/confirm?token=${emailToken}`;
         // Lien retourner par email pour valider le compte, il contient le "emailToken" créé plus haut
 
         await sendVerificationEmail(userCreate.email, link);
