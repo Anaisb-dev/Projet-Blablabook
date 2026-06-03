@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { User, UserBook, Book, Author } from "../models/index.js";
+import argon2 from "argon2";
 
 
 // Fonction test pour afficher tous les users
@@ -48,6 +49,30 @@ export async function updateSettings(req, res) {
     }
 }
 
+// Modifier le mot de passe de l'utilisateur connecté
+    export async function updatePassword(req, res) {
+        try {
+            const user = await User.findByPk(req.user.id);
+            const { password } = req.body;
+
+            if (!password) {
+                return res.status(400).json({ error: "Mot de passe requis" });
+            }
+
+            // HASH OBLIGATOIRE
+            const hashedPassword = await argon2.hash(password);
+
+            // update UNIQUEMENT le password
+            await user.update({ password: hashedPassword });
+
+            res.json({ message: "Mot de passe mis à jour" });
+
+        } catch (err) {
+            console.error(err);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+        }
+    }
+
 // Afficher tous les livres de l'utilisateur connecté
 export async function getUserBooks(req, res) {
     try {
@@ -57,7 +82,7 @@ export async function getUserBooks(req, res) {
             include: [{
                 model: Book,
                 as: "book",
-                attributes: ["id", "title", "summary", "cover_image"] // on garde seulement ces attributs du livre
+                attributes: ["id", "title", "google_book_id", "summary", "cover_image"] // on garde seulement ces attributs du livre
             }]
         });
 
@@ -101,7 +126,16 @@ export async function getUserBookById(req, res) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé dans ta bibliothèque" });
         }
 
-        const result = {
+//         const result = {
+//     status: userBook.status,
+//     id: userBook.book.id,
+//     title: userBook.book.title,
+//     summary: userBook.book.summary,
+//     cover_image: userBook.book.cover_image,
+//     google_book_id: userBook.book.google_book_id, // <--- ajouter ça !
+//     authors: userBook.book.authors // si tu veux
+// };
+    const result = {
             status: userBook.status,
             ...userBook.book.toJSON()
         };
@@ -142,7 +176,6 @@ export async function updateUserBook(req, res) {
 
 
  // Ajouter un livre Google à la bibliothèque privée de l'utilisateur connecté
-
 export async function addGoogleBookToLibrary(req, res) {
     try {
         
@@ -150,7 +183,7 @@ export async function addGoogleBookToLibrary(req, res) {
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
         console.log("User:", req.user);
-console.log("GoogleBookId:", req.params.googleBookId);
+        console.log("GoogleBookId:", req.params.googleBookId);
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }
@@ -240,5 +273,30 @@ export async function deleteUserBook(req, res) {
         res.json({ message: "Livre supprimé de ta bibliothèque" });
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+    }
+}
+
+// Supprimer un compte utilisateur 
+// Supprimer le compte de l'utilisateur connecté
+export async function deleteUser(req, res) {
+    try {
+        const user = await User.findByPk(req.user.id);
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: "Utilisateur introuvable"
+            });
+        }
+
+        await user.destroy();
+
+        return res.status(StatusCodes.OK).json({
+            message: "Compte supprimé avec succès"
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            error: "Erreur serveur"
+        });
     }
 }

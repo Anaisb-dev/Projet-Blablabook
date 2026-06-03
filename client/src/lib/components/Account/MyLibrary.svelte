@@ -1,79 +1,99 @@
 <script>
-import { onMount } from "svelte";
-import { authStore } from "../store/auth.svelte";
-import api from "../../api.js";
+    import { onMount } from "svelte";
+    import { authStore } from "../store/auth.svelte";
+    import api from "../../api.js";
+    import { deleteBookFromPersonalLibrary } from "../../../../services/bookService.js";
+    import { updateBookStatus } from "../../../../services/bookService.js";
 
-import Button from "../ui/Button.svelte";
-import Icon from "@iconify/svelte";
-import BookCard from "../ui/BookCard.svelte";
-import {fly} from "svelte/transition";
+    import Button from "../ui/Button.svelte";
+    import Icon from "@iconify/svelte";
+    import BookCard from "../ui/BookCard.svelte";
+    import { fly } from "svelte/transition";
+    import BookStatusButton from "../ui/BookStatusButton.svelte";
 
-let user = null;
-let books = [];
-let activeFilter = "to-read";
-let lastDeletedBook = null;
-let showDeleteMessage = false;
-let progressBar = 0;
-let interval;
-let startTime;
-const duration = 7000;
 
-onMount(async () => {
-if (!authStore.user) {
-// Redirection si pas connecté
-window.location.href = "/#/login";
-} else {
-user = authStore.user;
+    let user = null;
+    let books = [];
+    let activeFilter = "to-read";
+    let lastDeletedBook = null;
+    let showDeleteMessage = false;
+    let progressBar = 0;
+    let interval;
+    let startTime;
+    const duration = 5000;
 
-// Récupération des livres de l'utilisateur
-try {
-books = await api(`/users/${user.id}/books`, "GET");
-} catch (err) {
-console.error("Erreur récupération livres :", err);
+    onMount(async () => {
+        // authStore
+        if (!authStore.user) {
+            window.location.href = "/#/login";
+            return;
+        }
+
+        user = authStore.user;
+
+        try {
+            // route
+            const data = await api("/api/users/books", "GET");
+            console.log("BOOKS API :", data);
+            books = data;
+        } catch (err) {
+            console.error("Erreur récupération livres :", err);
+        }
+    });
+
+    // Filtre
+    $: filteredBooks =
+        activeFilter === "all"
+            ? books
+            : books.filter((book) => book.status === activeFilter);
+
+    async function deleteBook(id) {
+    const bookToDelete = books.find((book) => book.id === id);
+    lastDeletedBook = bookToDelete;
+
+    // suppression visuelle immédiate
+    books = books.filter((book) => book.id !== id);
+
+    showDeleteMessage = true;
+    progressBar = 0;
+    startTime = Date.now();
+
+    clearInterval(interval);
+
+    interval = setInterval(() => {
+        const timePassed = Date.now() - startTime;
+        progressBar = (timePassed / duration) * 100;
+
+        if (progressBar >= 100) clearInterval(interval);
+    }, 50);
+
+    // appel backend après délai
+    setTimeout(async () => {
+        if (lastDeletedBook) {
+            try {
+                await deleteBookFromPersonalLibrary(id);
+                console.log("Suppression backend OK");
+            } catch (e) {
+                console.error("Erreur suppression backend :", e);
+            }
+        }
+
+        showDeleteMessage = false;
+        lastDeletedBook = null;
+        clearInterval(interval);
+    }, duration);
 }
-}
-});
 
-// Filtre pour afficher les livres selon leur statut
-$: filteredBooks =
-activeFilter === "all"
-? books
-: books.filter((book) => book.status === activeFilter);
+    // annuler suppression
+    function restoreDeletedBook() {
+        if (lastDeletedBook) {
+            books = [...books, lastDeletedBook];
+        }
 
-function deleteBook(id) {
-const bookToDelete = books.find((book) => book.id === id);
-lastDeletedBook = bookToDelete;
-books = books.filter((book) => book.id !== id);
+        showDeleteMessage = false;
+        lastDeletedBook = null;
+    }
 
-showDeleteMessage = true;
-progressBar = 0;
-startTime = Date.now();
-
-clearInterval(interval);
-interval = setInterval(() => {
-const timePassed = Date.now() - startTime;
-const progress = (timePassed / duration) * 100;
-progressBar = progress;
-
-if (progress >= 100) {
-clearInterval(interval);
-}
-}, 50);
-
-setTimeout(() => {
-showDeleteMessage = false;
-lastDeletedBook = null;
-clearInterval(interval);
-}, duration);
-}
-
-function restoreDeletedBook() {
-if (lastDeletedBook) {
-books = [...books, lastDeletedBook];
-}
-showDeleteMessage = false;
-lastDeletedBook = null;
-}
 </script>
 
 <div
@@ -82,8 +102,8 @@ lastDeletedBook = null;
     <!-- À lire -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "to-read"}
-        on:click={() => (activeFilter = "to-read")}
+        active={activeFilter === "à lire"}
+        on:click={() => (activeFilter = "à lire")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="solar:book-bold" class="w-5 h-5" />
@@ -94,8 +114,8 @@ lastDeletedBook = null;
     <!-- En cours -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "reading"}
-        on:click={() => (activeFilter = "reading")}
+        active={activeFilter === "en cours"}
+        on:click={() => (activeFilter = "en cours")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="mdi:book-open-page-variant" class="w-5 h-5" />
@@ -106,8 +126,8 @@ lastDeletedBook = null;
     <!-- Lu -->
     <Button
         variant="myLibraryButton"
-        active={activeFilter === "finished"}
-        on:click={() => (activeFilter = "finished")}
+        active={activeFilter === "lu"}
+        on:click={() => (activeFilter = "lu")}
     >
         <div class="flex items-center gap-2 cursor-pointer">
             <Icon icon="garden:book-closed-fill-12" class="w-5 h-5" />
@@ -128,33 +148,65 @@ lastDeletedBook = null;
     </Button>
 </div>
 
-<!--Affichage des livres et bouton de suppression-->
+<!--Affichage des livres et bouton de status et bouton de suppression-->
 <div
     class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-3 justify-items-center w-fit mx-auto mt-10 mb-20"
 >
     {#each filteredBooks as book}
         <div class="relative">
-            <BookCard {...book} />
+            <BookCard
+                id={book.id}
+				googleBookId={book.google_book_id}
+				title={book.title || book.volumeInfo?.title}
+				author={ book.authors?.join(", ") || book.volumeInfo?.authors?.join(", ") || "Auteur inconnu"}
+				cover={book.cover_image || book.volumeInfo?.imageLinks?.thumbnail}
+				description={book.summary || book.volumeInfo?.description}
+            />
+
             <button
                 class="absolute top-2 right-2 z-10 w-[40px] h-[40px] rounded-xl border bg-white flex items-center justify-center hover:bg-[#F2E0D0] cursor-pointer"
                 on:click={() => deleteBook(book.id)}
             >
                 <Icon icon="iconamoon:trash-light" class="w-5 h-5" />
             </button>
+
+            <BookStatusButton
+                status={book.status}
+                id={book.id}
+                on:changeStatus={async (event) => {
+                    const { id, status } = event.detail;
+
+                    // // Mise à jour du status dans le frontend
+                    books = books.map(book =>
+                        book.id === id ? { ...book, status } : book
+                    );
+
+                    // Mise à jour du status en BDD
+                    try {
+                        await updateBookStatus(id, status);
+                        console.log("Status mis à jour en BDD");
+                    } catch (err) {
+                        console.error("Erreur update BDD", err);
+                    }
+                }}
+            />
         </div>
     {/each}
 </div>
 
 <!-- Message de suppression avec annulation et barre de progression -->
 {#if showDeleteMessage}
-	<div 
+    <div
         in:fly={{ y: 20, duration: 300 }}
         out:fly={{ y: -20, duration: 300 }}
-        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-3 rounded-lg shadow-lg w-[300px]">
-
+        class="fixed bottom-5 right-5 bg-[#590212] text-white px-4 py-3 rounded-lg shadow-lg w-[300px]"
+    >
         <div class="flex items-center justify-between">
             <span>Le livre "{lastDeletedBook.title}" a été supprimé</span>
-            <button class="underline cursor-pointer" on:click={restoreDeletedBook}>
+            <button
+                class="underline cursor-pointer"
+                on:click={restoreDeletedBook}
+            >
                 Annuler
             </button>
         </div>
@@ -164,5 +216,5 @@ lastDeletedBook = null;
                 style="width: {progressBar}%"
             ></div>
         </div>
-	</div>
+    </div>
 {/if}

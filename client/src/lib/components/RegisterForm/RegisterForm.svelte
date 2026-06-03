@@ -2,6 +2,7 @@
     import Input from "../ui/Input.svelte";
     import PasswordInput from "../ui/PasswordInput.svelte";
     import Button from "../ui/Button.svelte";
+    import Checkbox from "../ui/Checkbox.svelte";
     import { registerUser } from "../../../../services/auth.service.js";
 
     let username = "";
@@ -25,10 +26,9 @@
 
         try {
             await registerUser({ username, email, password, confirmPassword });
-        window.location.hash = "/profile";
+            success = "Compte créé avec succès ! Penses à vérifier ta boîte mail pour valider ton compte.";
         } catch (err) {
-            console.error("Erreur inscription :", err);
-            error = err.message || "Erreur lors de l'inscription";
+            error = "Erreur lors de l'inscription";
         } finally {
             loading = false;
         }
@@ -47,16 +47,18 @@
     {/if}
 
     <p class="text-center">Pseudo</p>
-    <Input bind:value={username} />
+    <Input bind:value={username}/>
 
     <p class="text-center">Email</p>
-    <Input bind:value={email} />
+    <Input bind:value={email}/>
 
     <p class="text-center">Mot de passe</p>
     <PasswordInput bind:value={password} />
 
     <p class="text-center">Confirmer le mot de passe</p>
     <PasswordInput bind:value={confirmPassword} />
+
+    <Checkbox />
 
     <Button btnType="submit" disabled={loading}>
         {#if loading}Création...{:else}Créer un compte{/if}

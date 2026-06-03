@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 export function validateUserRegistration(req, res, next) {
     const userRegisterSchema = Joi.object({
         username: Joi.string()
-            .pattern(/^[a-zA-Z0-9_.-]+$/)
+            .pattern(/^[\p{L}0-9_.-]+$/u)
             // .pattern = minuscule, majuscule, chiffre + _, -, . autorisé dans le username
             .min(3).max(30)
             .required(),
@@ -32,7 +32,7 @@ export function validateUserRegistration(req, res, next) {
                 'any.required': 'Veuillez confirmer le mot de passe'
                 // permet d'afficher un message côté serveur
             })
-    });
+    })
 
     checkBody(userRegisterSchema, req.body, res, next);
 };

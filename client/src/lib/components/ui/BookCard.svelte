@@ -1,8 +1,9 @@
 <script>
 	export let id;
+	export let googleBookId;
 	export let title = "Titre du livre";
 	export let author = "Nom de l’auteur";
-	export let cover = "/book.jpg";
+	export let cover = "/couverture.jpg";
 	export let description =
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 	
@@ -32,7 +33,7 @@
 		{#if showButton}
 			<!-- bouton ouvre la page de détail du livre -->
 			<a
-				href={`#/books/${id}`}
+				href={`#/books/${googleBookId}`}
 				class="mt-3 w-full rounded-2xl border px-3 py-2 text-sm bg-[#BF9075] text-[#FFF7F1] cursor-pointer hover:bg-[#590212] hover:text-white transition text-center"
 			>
 				Voir plus

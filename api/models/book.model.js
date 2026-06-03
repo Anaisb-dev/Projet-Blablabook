@@ -6,7 +6,7 @@ export class Book extends Model { }
 Book.init(
     {
         google_book_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: true,
             unique: true,
         },
@@ -16,7 +16,7 @@ Book.init(
             unique: true,
         },
         title: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         year: {
@@ -32,7 +32,7 @@ Book.init(
             allowNull: false,
         },
         cover_image: {
-            type: DataTypes.STRING, // URL de l'image
+            type: DataTypes.TEXT, // URL de l'image
             allowNull: true,
         },
     },
