@@ -15,7 +15,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: 'http://localhost:5173', // ton frontend
+    origin: ['http://localhost:5173', 'https://blablabook-client-pj37.onrender.com'] // ton frontend
     methods: ['GET','POST','PUT','DELETE','OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
