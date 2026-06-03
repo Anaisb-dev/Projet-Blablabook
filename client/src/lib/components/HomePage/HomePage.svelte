@@ -25,7 +25,7 @@
 	/>
 
 	<div class="w-full md:w-1/2">
-		<h2 class="text-4xl font-bold mb-4">blalbabook</h2>
+		<h2 class="text-4xl font-bold mb-4">blablabook</h2>
 		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur laborum repellendus illo similique
 			maiores fuga sequi quaerat praesentium, voluptas distinctio optio culpa omnis tempora ratione quibusdam
