@@ -12,15 +12,13 @@ import { sendVerificationEmail } from "../services/mailer.js";
 export async function registerUser(req, res) {
     // fonction pour l'inscription d'un utilisateur
     try {
-        const { username, last_name, first_name, email, password } = req.body;
+        const { username, email, password } = req.body;
         // Cette variable récupére tous les élements pour le req.body, on appelle ça la "destructuration d’objet".
         const hashedPassword = await argon2.hash(password);
         // Stockage du password hasher via Argon2 dans une variable
 
         const userCreate = await User.create({
             username,
-            last_name,
-            first_name,
             email,
             password: hashedPassword,
         });
