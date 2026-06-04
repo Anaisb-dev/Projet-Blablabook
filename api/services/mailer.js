@@ -1,6 +1,6 @@
 import "dotenv/config";
 // import nodemailer from "nodemailer";
-import { resend } from "resend";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
