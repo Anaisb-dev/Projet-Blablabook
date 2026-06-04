@@ -6,7 +6,9 @@ import argon2 from "argon2";
 // Fonction test pour afficher tous les users
 export async function getAllUsers(req, res) {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            attributes: ["id", "username", "email", "is_verified"]
+        });
 
         return res.json(users);
     } catch (error) {
@@ -182,8 +184,6 @@ export async function addGoogleBookToLibrary(req, res) {
         const googleBookId = req.params.googleBookId; // depuis l'URL (via page détail bibliothèque publique)
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
-        console.log("User:", req.user);
-        console.log("GoogleBookId:", req.params.googleBookId);
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }

@@ -25,13 +25,13 @@ router.get('/profile', getProfile);
 router.get('/settings', getSettings);
 // Infos perso de l'utilisateur
 
-router.patch('/settings', authenticate, validateUserSettings, updateSettings);
+router.patch('/settings', validateUserSettings, updateSettings);
 // Modification des infos perso de l'utilisateur
 
-router.patch('/password', authenticate, validatePasswordUpdate, updatePassword);
+router.patch('/password', validatePasswordUpdate, updatePassword);
 // Modification du mot de passe avec hash de l'utilisateur
 
-router.delete('/profile', authenticate, deleteUser)
+router.delete('/profile', deleteUser)
 // Permet de supprimer un compte
 
 router.get('/books', getUserBooks);

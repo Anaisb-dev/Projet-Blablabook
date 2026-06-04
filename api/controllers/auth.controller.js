@@ -74,8 +74,6 @@ export async function confirmEmail(req, res) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // On vérifie que le token présent dans la requete correspond
-        console.log(decoded);
 
         if (decoded.type !== "email_verification") {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "Authentifacion échouée." });

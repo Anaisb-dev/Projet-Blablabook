@@ -37,12 +37,6 @@ export const getRandomBooks = async () => {
     // Filtre date (>= 2000)
     let filtered = allBooks.filter(book => book.year && book.year >= 2000);
 
-// 🔹 Log après filtrage
-    console.log("Livres filtrés (year >= 2000) :");
-    filtered.forEach(book => {
-        console.log(`Titre: ${book.title} | Year: ${book.year}`);
-    });
-
     // si trop peu de livres récents
     if (filtered.length < 10) {
         filtered = allBooks;

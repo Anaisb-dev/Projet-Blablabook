@@ -20,7 +20,7 @@
     }
 
     try {
-        const url = `http://localhost:3000/api/auth/confirm?token=${token}`;
+        const url = `${import.meta.env.VITE_API_URL}/api/auth/confirm?token=${token}`;
         console.log("FETCH URL 👉", url);
 
         const res = await fetch(url, {

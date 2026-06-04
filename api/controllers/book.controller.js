@@ -12,8 +12,6 @@ export async function searchBooks(req, res) {
         const response = await fetch(
             `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes?q=${query}&key=${process.env.GOOGLE_BOOKS_API_KEY}`
         );
-
-                console.log("réponse", response);
         const data = await response.json();
         const books = data.items || [];
 
