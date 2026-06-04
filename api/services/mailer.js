@@ -1,32 +1,25 @@
 import "dotenv/config";
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
+import { resend } from "resend";
 
-
-export const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // true pour le port 465
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail(to, link) {
-    return transporter.sendMail({
-        from: process.env.EMAIL_USER,
+    await resend.emails.send({
+        from: 'BlablaBook <onboarding@resend.dev>',
         to,
-        subject: "Confirme ton compte",
+        subject: 'Confirme ton compte',
         html: `
-            <h2>Bienvenue parmis nous ! 👋🏻</h2>
-            <p> Prêt à dévorer tous nos livres ? Clique ici pour activer ton compte :</p>
-            <a href="${link}">Confirmer mon compte</a>`
+            <h2>Bienvenue parmi nous ! 👋🏻</h2>
+            <p>Prêt à dévorer tous nos livres ? Clique ici pour activer ton compte :</p>
+            <a href="${link}">Confirmer mon compte</a>
+        `
     });
 };
 
 export async function sendContactMessage({ email, subject, message }) {
-    return transporter.sendMail({
-        from: process.env.EMAIL_USER,
+    await resend.emails.send({
+        from: 'BlablaBook <onboarding@resend.dev>',
         to: process.env.EMAIL_USER,
         subject: `Nouveau message ${subject}`,
         html: `
@@ -38,4 +31,3 @@ export async function sendContactMessage({ email, subject, message }) {
         `
     });
 }
-
