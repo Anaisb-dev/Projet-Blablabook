@@ -14,7 +14,7 @@
 
     let user = null;
     let books = [];
-    let activeFilter = "to-read";
+    let activeFilter = "à lire";
     let lastDeletedBook = null;
     let showDeleteMessage = false;
     let progressBar = 0;

@@ -12,15 +12,13 @@ import { sendVerificationEmail } from "../services/mailer.js";
 export async function registerUser(req, res) {
     // fonction pour l'inscription d'un utilisateur
     try {
-        const { username, last_name, first_name, email, password } = req.body;
+        const { username, email, password } = req.body;
         // Cette variable récupére tous les élements pour le req.body, on appelle ça la "destructuration d’objet".
         const hashedPassword = await argon2.hash(password);
         // Stockage du password hasher via Argon2 dans une variable
 
         const userCreate = await User.create({
             username,
-            last_name,
-            first_name,
             email,
             password: hashedPassword,
         });
@@ -32,7 +30,7 @@ export async function registerUser(req, res) {
             { expiresIn: "1h" }
         );
 
-        const link = `http://localhost:5173/#/confirm?token=${emailToken}`;
+        const link = `${process.env.FRONTEND_URL}/#/confirm?token=${emailToken}`;
         // Lien retourner par email pour valider le compte, il contient le "emailToken" créé plus haut
 
         await sendVerificationEmail(userCreate.email, link);
@@ -74,8 +72,6 @@ export async function confirmEmail(req, res) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // On vérifie que le token présent dans la requete correspond
-        console.log(decoded);
 
         if (decoded.type !== "email_verification") {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "Authentifacion échouée." });

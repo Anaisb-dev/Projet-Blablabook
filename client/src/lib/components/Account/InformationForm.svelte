@@ -60,23 +60,36 @@
         }
     });
 
-    // Fonction pour gérer la mise à jour des informations de l'utilisateur
+    // Fonction pour gérer la mise à jour des informations de l’utilisateur
     async function handleUpdate() {
 
-        // Validation pour s'assurer que les champs obligatoires sont remplis avant de tenter de mettre à jour le profil
+        // Validation pour s’assurer que les champs obligatoires sont remplis avant de tenter de mettre à jour le profil
         if (!user.email.trim() || !user.username.trim()) {
             showUpdateMessage("Le pseudo et l’email sont obligatoires.");
-            user = { ...originalUser }; // Réinitialiser les champs du formulaire avec les données originales en cas d'erreur de validation
+            user = { ...originalUser };
             return;
         }
 
-        // Message en cas non respect des conditions du format d'email
         const emailError = validateEmail(user.email);
-            if (emailError) {
-                showUpdateMessage(emailError);
-                user = { ...originalUser };
-                return;
-            }
+        if (emailError) {
+            showUpdateMessage(emailError);
+            user = { ...originalUser };
+            return;
+        }
+
+        const usernameError = validateUsername(user.username);
+        if (usernameError) {
+            showUpdateMessage(usernameError);
+            user = { ...originalUser };
+            return;
+        }
+
+        const firstAndLastNameError = validateFirstAndLastName(user.first_name, user.last_name);
+        if (firstAndLastNameError) {
+            showUpdateMessage(firstAndLastNameError);
+            user = { ...originalUser };
+            return;
+        }
 
         try {
             await updateUser(user);
@@ -84,24 +97,6 @@
         } catch (err) {
             console.error(err);
             showUpdateMessage("Erreur lors de la mise à jour");
-        }
-
-        // Message en cas de non respect du format du pseudo
-        const usernameError = validateUsername(user.username)
-
-        if(usernameError) {
-            showUpdateMessage(usernameError)
-            user = { ...originalUser}
-            return;
-        }
-
-        // Message en cas de non respect du format du pseudo
-        const firstAndLastNameError = validateFirstAndLastName(user.first_name, user.last_name)
-
-        if(firstAndLastNameError) {
-            showUpdateMessage(firstAndLastNameError)
-            user= { ...originalUser}
-            return;
         }
     }
 

@@ -3,8 +3,7 @@
     import Icon from "@iconify/svelte";
     import { authStore } from "../store/auth.svelte";   
 
-    const bio =
-        "Passionné de lecture et de voyages. J'aime découvrir de nouveaux auteurs et partager mes coups de cœur littéraires avec mes amis.";
+    const bio = authStore.user?.bio || "";
 </script>
 
 <div class="border p-4 rounded-xl w-2/3 mx-auto bg-white">

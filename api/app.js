@@ -14,10 +14,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://blablabook-client-pj37.onrender.com'], // ton frontend
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    origin: ['http://localhost:5173', 'https://blablabook-client-pj37.onrender.com'],
+    methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(express.json());
 
 /* ROUTES PUBLIQUES */

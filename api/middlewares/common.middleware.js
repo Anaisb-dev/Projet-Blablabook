@@ -1,11 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 
 
-export function errorHandler(err, _req, res, next) {
+export function errorHandler(err, _req, res, _next) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: true,
         message: err.message,
         details: err.stack
     });
-    next();
 }
