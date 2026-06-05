@@ -83,42 +83,38 @@
 
 <style>
 	.carousel {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-	padding-left: 10rem;
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+		padding: 0 2rem; /* padding symétrique gauche et droite */
+		box-sizing: border-box;
 	}
 
-	/* Bande qui contient les slides */
 	.track {
-    display: grid;
-    grid-auto-flow: column;
-    transition: transform 0.4s ease;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: calc(25% - 12px); /* 4 cartes visibles avec gap */
+		gap: 2rem; /* espace entre les cartes */
+		transition: transform 0.4s ease;
 	}
 
-	/* Boutons gauche et droite */
 	.nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 32px;
-    height: 32px;
-    border-radius: 9999px;
-    border: none;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 32px;
+		height: 32px;
+		border-radius: 9999px;
+		border: none;
+		background: rgba(0, 0, 0, 0.5);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 10;
 	}
 
-	.nav.left {
-    left: 8px;
-	}
-
-	.nav.right {
-    right: 8px;
-	}
+	.nav.left { left: 8px; }
+	.nav.right { right: 8px; }
 </style>

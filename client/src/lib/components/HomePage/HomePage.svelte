@@ -64,7 +64,7 @@
 </section>
 
 <!-- Titre carousel -->
-<h3 class="text-3xl font-bold text-center my-8" style="color: #590212;">
+<h3 class="h3-home text-3xl font-bold text-center my-8" style="color: #590212;">
 	Livre aléatoire
 </h3>
 
@@ -88,3 +88,13 @@
 		</Carousel>
 	</div>
 {/if}
+
+<style>
+	.h3-home {
+		color: #590212;
+	}
+
+	:global(body.dark-mode) .h3-home {
+		color: #bf9075;
+	}
+</style>
