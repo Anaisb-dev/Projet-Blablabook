@@ -3,23 +3,23 @@
 	export let googleBookId;
 	export let title = "Titre du livre";
 	export let author = "Nom de l'auteur";
-	export let cover = null; // gardé pour compatibilité mais non utilisé
+	export let cover = null;
 	export let description =
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 	export let showDescription = true;
 	export let showButton = true;
 
 	// Génère une couleur de fond unique basée sur le titre du livre
+	// On retire #BF9075 car trop clair pour le texte blanc
 	function getColorFromTitle(title) {
 		const colors = [
-			{ bg: "#590212", text: "#FFF7F1" },
-			{ bg: "#BF9075", text: "#FFF7F1" },
-			{ bg: "#2C3E50", text: "#FFF7F1" },
-			{ bg: "#8B4513", text: "#FFF7F1" },
-			{ bg: "#4A4A6A", text: "#FFF7F1" },
-			{ bg: "#2E4057", text: "#FFF7F1" },
-			{ bg: "#6B4226", text: "#FFF7F1" },
+			"#590212",
+			"#2C3E50",
+			"#8B4513",
+			"#4A4A6A",
+			"#2E4057",
+			"#6B4226",
+			"#3D2B1F",
 		];
 		const index =
 			title.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
@@ -34,25 +34,37 @@
 			: title;
 	}
 
-	$: color = getColorFromTitle(title);
+	$: bgColor = getColorFromTitle(title);
 </script>
 
 <div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
-	<!-- Couverture générique avec titre et auteur -->
+	<!-- Couverture style vintage -->
 	<div
-		class="w-[250px] aspect-[2/3] rounded-xl flex flex-col items-center justify-center p-3"
-		style="background-color: {color.bg};"
+		class="w-[250px] aspect-[2/3] rounded-xl flex items-center justify-center p-3"
+		style="background-color: {bgColor};"
 	>
+		<!-- Cadre intérieur -->
 		<div
-			style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 10px 8px; box-sizing: border-box;"
+			style="
+			width: 100%;
+			height: 100%;
+			border: 1px solid rgba(255,255,255,0.25);
+			border-radius: 4px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			padding: 12px 10px;
+			box-sizing: border-box;
+		"
 		>
-			<!-- Haut : BlablaBook avec traits décoratifs -->
-			<div style="text-align: center;">
+			<!-- Haut : BLABLABOOK avec traits -->
+			<div style="text-align: center; width: 100%;">
 				<div
 					style="width: 20px; height: 1px; background: #BF9075; margin: 0 auto 4px;"
 				></div>
 				<p
-					style="font-size: 8px; color: #BF9075; margin: 0; letter-spacing: 1px;"
+					style="font-size: 8px; color: #BF9075; margin: 0; letter-spacing: 2px;"
 				>
 					✦ BLABLABOOK ✦
 				</p>
@@ -63,11 +75,21 @@
 
 			<!-- Titre centré -->
 			<p
-				style="font-size: 12px; font-weight: 500; text-align: center; margin: 0; line-height: 1.5; color: {color.text};"
+				style="
+				font-size: 12px;
+				font-weight: 500;
+				color: #FFF7F1;
+				text-align: center;
+				margin: 0;
+				line-height: 1.5;
+				padding: 0 4px;
+			"
 			>
-				<!-- Bas : auteur avec trait -->
+				{truncateTitle(title)}
 			</p>
-			<div style="text-align: center;">
+
+			<!-- Bas : auteur avec trait -->
+			<div style="text-align: center; width: 100%;">
 				<div
 					style="width: 40px; height: 1px; background: rgba(255,255,255,0.3); margin: 0 auto 6px;"
 				></div>
@@ -80,6 +102,7 @@
 		</div>
 	</div>
 
+	<!-- Infos sous la couverture -->
 	<div class="mt-3">
 		<h3 class="text-sm font-semibold">{title}</h3>
 		<p class="text-xs">{author}</p>
