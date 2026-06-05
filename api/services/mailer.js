@@ -19,8 +19,8 @@ export async function sendVerificationEmail(to, link) {
 
 export async function sendContactMessage({ email, subject, message }) {
     await resend.emails.send({
-        from: 'BlablaBook <onboarding@resend.dev>',
-        to: process.env.EMAIL_USER,
+        from: 'BlablaBook <onboarding@resend.dev>', // expéditeur = Resend
+        to: process.env.EMAIL_USER, // destinataire = brnt.anais@gmail.com / blablabook.contact@gmail.com
         subject: `Nouveau message ${subject}`,
         html: `
             <h2>Nouveau message utilisateur</h2>
