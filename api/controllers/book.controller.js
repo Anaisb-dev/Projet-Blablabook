@@ -19,28 +19,31 @@ export async function searchBooks(req, res) {
 
         // Ne garder que les infos essentielles
         const simplifiedBooks = books.slice(0, 10) // Limite de 10 livres max
-        .map(book => {
-        const info = book.volumeInfo;
-        // Trouver le ISBN
-        const isbnObj = info.industryIdentifiers?.find(id => id.type === "ISBN_13");
-        const isbn = isbnObj ? isbnObj.identifier : book.id;
-         // Extraire l'année
-        const year = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4)) : null;
-    
-        return {
-        google_book_id: book.id,
-        code_isbn: isbn,
-        title: info.title,
-        year: year,
-        summary: info.description || "Pas de description",
-        page_number: info.pageCount || 0, // 0 si inconnu
-        cover_image: info.imageLinks?.extraLarge || info.imageLinks?.large || info.imageLinks?.medium || info.imageLinks?.thumbnail || null,
-        genres: info.categories || [],
-        authors: info.authors || []
-    };
-});
+            .map(book => {
+                const info = book.volumeInfo;
+                // Trouver le ISBN
+                const isbnObj = info.industryIdentifiers?.find(id => id.type === "ISBN_13");
+                const isbn = isbnObj ? isbnObj.identifier : book.id;
+                const coverImage = isbn
+                    ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+                    : info.imageLinks?.thumbnail || null;
+                // Extraire l'année
+                const year = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4)) : null;
 
-    res.json(simplifiedBooks);
+                return {
+                    google_book_id: book.id,
+                    code_isbn: isbn,
+                    title: info.title,
+                    year: year,
+                    summary: info.description || "Pas de description",
+                    page_number: info.pageCount || 0, // 0 si inconnu
+                    cover_image: coverImage,
+                    genres: info.categories || [],
+                    authors: info.authors || []
+                };
+            });
+
+        res.json(simplifiedBooks);
     } catch (error) {
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur API Google Books" });
@@ -57,11 +60,11 @@ export async function getBookById(req, res) {
         const response = await fetch(
             `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes/${id}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
         );
-        
+
         const data = await response.json();
         const info = data.volumeInfo || {};
 
-       // Vérifie que industryIdentifiers existe avant de prendre l'ISBN
+        // Vérifie que industryIdentifiers existe avant de prendre l'ISBN
         const isbn = info.industryIdentifiers?.[0]?.identifier || null;
 
         const year = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4)) : null;
@@ -73,11 +76,13 @@ export async function getBookById(req, res) {
             year: year,
             summary: info.description || "Pas de description",
             page_number: info.pageCount || 0,
-            cover_image: info.imageLinks?.extraLarge || info.imageLinks?.large || info.imageLinks?.medium || info.imageLinks?.thumbnail || null,
+            cover_image: isbn
+                ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+                : info.imageLinks?.thumbnail || null,
             authors: info.authors || [],
             genres: info.categories || [],
         };
-        
+
         res.json(bookDetail);
     } catch (error) {
         console.error(error);
