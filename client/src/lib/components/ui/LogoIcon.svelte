@@ -5,4 +5,4 @@
 </script>
 
 <!-- HTML -->
-<img src="/logo.png" alt="Logo BlablaBook" style="width: {width}px; height: {height}px;"/>
+<img src="/logo-icon.png" alt="Logo BlablaBook" style="width: {width}px; height: {height}px;"/>

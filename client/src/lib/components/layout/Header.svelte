@@ -12,14 +12,12 @@
     <!-- Logo et Nom de la Marque -->
     <div class="flex items-center gap-2">
         <a href="/">
-        <LogoIcon width={70} height={48} />
+            <LogoIcon width={70} height={48} />
         </a>
     </div>
 
     <div class="absolute left-1/2 -translate-x-1/2">
-        <a href="/">
-            <BrandName />
-        </a>
+        <a href="/"><BrandName /></a>
     </div>
 
     <!-- Theme et Menu de navigation mobile, tablette et desktop -->
@@ -27,14 +25,15 @@
         <ThemeToggle />
 
         <!-- Mobile et tablette -->
-        <div class="block lg:hidden"> <!-- lg = 1024px (invisible en grand écran)-->
+        <div class="block lg:hidden">
+            <!-- lg = 1024px (invisible en grand écran)-->
             <DropdownMenu />
         </div>
 
         <!-- Desktop -->
-        <div class="hidden lg:block"> <!-- invisible en petit écran, visible en grand écran -->
+        <div class="hidden lg:block">
+            <!-- invisible en petit écran, visible en grand écran -->
             <NavigationMenu />
         </div>
     </div>
 </header>
-

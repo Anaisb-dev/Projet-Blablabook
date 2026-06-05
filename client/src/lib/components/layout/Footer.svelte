@@ -12,10 +12,10 @@
   <nav class="flex flex-wrap justify-center gap-4 md:flex-1">
     <a href="/#/contact" class="hover:underline">Contact</a>
     <a href="/#/faq" class="hover:underline">FAQ</a>
-    <a href="#mentions" class="hover:underline">Mentions légales</a>
-    <a href="#conditions" class="hover:underline">Conditions générales</a>
-    <a href="#mentions" class="hover:underline">Politique de confidentialité</a>
-    <a href="#mentions" class="hover:underline">Politique des cookies</a>
+    <a href="/#/mentions-legales" class="hover:underline">Mentions légales</a>
+    <a href="/#/cgu" class="hover:underline">Conditions générales</a>
+    <a href="/#/privacy-policy" class="hover:underline">Politique de confidentialité</a>
+    <a href="/#/cookies-policy" class="hover:underline">Politique des cookies</a>
   </nav>
 
   <div class="flex items-center justify-center gap-4 md:justify-end">
