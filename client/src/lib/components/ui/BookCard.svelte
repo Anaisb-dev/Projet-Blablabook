@@ -37,10 +37,10 @@
 	$: bgColor = getColorFromTitle(title);
 </script>
 
-<div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full">
+<div class="w-[250px] rounded-2xl border p-3 flex flex-col h-full overflow-hidden">
 	<!-- Couverture style vintage -->
 	<div
-		class="w-[250px] aspect-[2/3] rounded-xl flex items-center justify-center p-3"
+		class="w-full aspect-[2/3] rounded-xl flex items-center justify-center p-3"
 		style="background-color: {bgColor};"
 	>
 		<!-- Cadre intérieur -->
