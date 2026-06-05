@@ -37,28 +37,31 @@
 
 	<!-- Couverture générique avec titre et auteur -->
 	<div
-		class="w-[250px] aspect-[2/3] rounded-xl flex flex-col items-center justify-between p-4"
-		style="background-color: {color.bg};"
-	>
-		<!-- Trait décoratif en haut -->
-		<div class="w-full flex flex-col gap-1 mt-2">
-			<div class="h-[2px] w-full rounded opacity-40" style="background-color: {color.text};"></div>
-			<div class="h-[1px] w-3/4 rounded opacity-30" style="background-color: {color.text};"></div>
-		</div>
+    class="w-[250px] aspect-[2/3] rounded-xl flex flex-col items-center justify-center p-3"
+    style="background-color: {color.bg};"
+>
+    <div style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 10px 8px; box-sizing: border-box;">
+        
+        <!-- Haut : BlablaBook avec traits décoratifs -->
+        <div style="text-align: center;">
+            <div style="width: 20px; height: 1px; background: #BF9075; margin: 0 auto 4px;"></div>
+            <p style="font-size: 8px; color: #BF9075; margin: 0; letter-spacing: 1px;">✦ BLABLABOOK ✦</p>
+            <div style="width: 20px; height: 1px; background: #BF9075; margin: 4px auto 0;"></div>
+        </div>
 
-		<!-- Titre du livre centré -->
-		<p class="text-center font-bold text-sm leading-snug px-2" style="color: {color.text};">
-			{truncateTitle(title)}
-		</p>
+        <!-- Titre centré -->
+        <p style="font-size: 12px; font-weight: 500; text-align: center; margin: 0; line-height: 1.5;" style="color: {color.text};">
+            {truncateTitle(title)}
+        </p>
 
-		<!-- Auteur + trait décoratif en bas -->
-		<div class="w-full flex flex-col items-center gap-1 mb-2">
-			<div class="h-[1px] w-3/4 rounded opacity-30" style="background-color: {color.text};"></div>
-			<p class="text-xs opacity-70 text-center" style="color: {color.text};">
-				{author}
-			</p>
-		</div>
-	</div>
+        <!-- Bas : auteur avec trait -->
+        <div style="text-align: center;">
+            <div style="width: 40px; height: 1px; background: rgba(255,255,255,0.3); margin: 0 auto 6px;"></div>
+            <p style="font-size: 9px; color: rgba(255,255,255,0.6); margin: 0;">{author}</p>
+        </div>
+
+    </div>
+</div>
 
 	<div class="mt-3">
 		<h3 class="text-sm font-semibold">{title}</h3>
