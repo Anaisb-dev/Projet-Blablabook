@@ -21,11 +21,11 @@
 </script>
 
 <section class="flex flex-col md:flex-row items-center gap-4 mt-6 mb-8">
-	<img src="/photo-home-page.jpg" alt="Accueil" class="w-full md:w-1/2 h-120 object-cover rounded-lg"
+	<img src="/test1.jpg" alt="Accueil" class="w-full md:w-1/2 h-120 object-cover rounded-lg"
 	/>
 
 	<div class="w-full md:w-1/2">
-		<p class="text-justify text-lg">
+		<p class="text-justify text-lg bg-amber-100 p-6 rounded-lg">
 			Bienvenue sur BlablaBook, votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, 
 			gérez vos lectures et partagez vos coups de cœur. Que vous soyez un lecteur occasionnel ou 
 			un grand dévoreur de livres, BlablaBook vous accompagne dans toutes vos aventures littéraires.
