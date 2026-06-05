@@ -189,7 +189,7 @@ export async function addGoogleBookToLibrary(req, res) {
         }
 
         // Récupère les infos depuis Google Books
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
+        const response = await fetch(`${process.env.GOOGLE_BOOKS_BASE_URL}/volumes/${googleBookId}?key=${process.env.GOOGLE_BOOKS_API_KEY}`);
         const googleBook = await response.json();
 
         if (!googleBook || !googleBook.volumeInfo) {
