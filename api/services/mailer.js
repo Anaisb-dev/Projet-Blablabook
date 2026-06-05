@@ -21,6 +21,7 @@ export async function sendContactMessage({ email, subject, message }) {
     await resend.emails.send({
         from: 'BlablaBook <onboarding@resend.dev>', // expéditeur = Resend
         to: process.env.EMAIL_USER, // destinataire = brnt.anais@gmail.com / blablabook.contact@gmail.com
+        reply_to: email,
         subject: `Nouveau message ${subject}`,
         html: `
             <h2>Nouveau message utilisateur</h2>
