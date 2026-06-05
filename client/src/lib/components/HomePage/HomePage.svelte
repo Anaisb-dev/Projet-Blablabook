@@ -6,7 +6,6 @@
 
 	let books = [];
 
-	// Récupérer des livres aléatoires pour le carrousel
 	onMount(async () => {
 		try {
 			books = await getRandomBooks();
@@ -20,48 +19,54 @@
 	}
 </script>
 
-<!-- Hero section — Mosaïque 3 photos -->
-<section class="px-8 py-10 max-w-6xl mx-auto">
-	<div class="grid gap-2 rounded-2xl overflow-hidden" style="grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; height: 480px;">
-
-		<!-- Grande image gauche avec texte en overlay -->
-		<div class="relative row-span-2 overflow-hidden">
-			<img src="/test1.jpg" alt="Bibliothèque" class="w-full h-full object-cover" />
-			<!-- Overlay sombre -->
-			<div class="absolute inset-0" style="background: rgba(89,2,18,0.45);"></div>
-			<!-- Texte par-dessus -->
-			<div class="absolute bottom-0 left-0 p-8 flex flex-col gap-3">
-				<h2 class="text-5xl font-bold">
-					<span style="color: #FFF7F1;">Blabla</span><span style="color: #BF9075;">Book</span>
-				</h2>
-				<p class="text-base leading-relaxed text-justify" style="color: rgba(255,255,255,0.85); max-width: 380px;">
-					Votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, gérez vos lectures et partagez vos coups de cœur.
-				</p>
-				<a
-					href="/#/books"
-					class="w-fit px-6 py-3 rounded-2xl text-sm font-medium transition"
-					style="background: #BF9075; color: #FFF7F1;"
+<!-- Hero section — Grande image centrée avec texte en overlay -->
+<section class="flex justify-center px-8 py-10">
+	<div
+		class="relative w-full max-w-5xl rounded-2xl overflow-hidden"
+		style="height: 480px;"
+	>
+		<img
+			src="/test2.jpg"
+			alt="Bibliothèque"
+			class="w-full h-full object-cover"
+		/>
+		<!-- Overlay -->
+		<div
+			class="overlay absolute inset-0"
+			style="background: rgba(89,2,18,0.65);"
+		></div>
+		<!-- Texte centré par-dessus -->
+		<div
+			class="absolute inset-0 flex flex-col items-center justify-center gap-4 px-8 text-center"
+		>
+			<h2 class="text-6xl font-bold">
+				<span class="blabla"style="color: #FFFFFF;">Blabla</span><span
+					style="color: #BF9075;">Book</span
 				>
-					Découvrir les livres
-				</a>
-			</div>
-		</div>
+			</h2>
+			<p
+				class="text-lg leading-relaxed"
+				style="color: #FFFFFF; max-width: 600px;"
+			>
+				Votre bibliothèque personnelle en ligne. Découvrez des milliers
+				de livres, gérez vos lectures et partagez vos coups de cœur.
+			</p>
 
-		<!-- Petite image haut droite -->
-		<div class="overflow-hidden rounded-tr-2xl">
-			<img src="/test3.jpg" alt="Bibliothèque ancienne" class="w-full h-full object-cover" />
+			<a
+				href="/#/books"
+				class="px-8 py-3 rounded-2xl text-sm font-medium transition hover:opacity-90"
+				style="background: #BF9075; color: #FFF7F1;"
+			>
+				Découvrir les livres</a
+			>
 		</div>
-
-		<!-- Petite image bas droite -->
-		<div class="overflow-hidden rounded-br-2xl">
-			<img src="/test4.jpg" alt="Bibliothèque moderne" class="w-full h-full object-cover" />
-		</div>
-
 	</div>
 </section>
 
 <!-- Titre carousel -->
-<h3 class="text-3xl font-bold text-center my-8" style="color: #590212;">Livre aléatoire</h3>
+<h3 class="text-3xl font-bold text-center my-8" style="color: #590212;">
+	Livre aléatoire
+</h3>
 
 <!-- Carousel de livres -->
 {#if books.length}
