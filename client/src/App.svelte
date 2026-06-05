@@ -17,6 +17,10 @@ if (window.location.pathname === "/" && !window.location.hash) {
   import ContactForm from "./lib/components/ContactForm/ContactForm.svelte";
   import FAQ from "./lib/components/FAQ/FAQ.svelte";
   import ConfirmAccount from "./lib/components/ConfirmAccount/ConfirmAccount.svelte";
+  import LegalNotice from "./lib/components/LegalNotice/LegalNotice.svelte"; // Page des mentions légales
+  import GeneralTermsAndConditions from "./lib/components/GeneralTermsAndConditions/GeneralTermsAndConditions.svelte"; // Page des CGU
+  import PrivacyPolicy from "./lib/components/PrivacyPolicy/PrivacyPolicy.svelte"; // Page de la politique de confidentialité
+  import CookiesPolicy from "./lib/components/CookiesPolicy/CookiesPolicy.svelte"; // Redirige vers la même page que la politique de confidentialité
 
   const routes = {
     "/": HomePage,
@@ -29,6 +33,10 @@ if (window.location.pathname === "/" && !window.location.hash) {
     "/contact": ContactForm,
     "/faq": FAQ,
     "/confirm": ConfirmAccount,
+    "/mentions-legales": LegalNotice,
+    "/cgu": GeneralTermsAndConditions,
+    "/privacy-policy": PrivacyPolicy,
+    "/cookies-policy": CookiesPolicy, // Redirige vers la même page que la politique de confidentialité
     "*": NotFound // Route pour les pages non trouvées
   };
 </script>
