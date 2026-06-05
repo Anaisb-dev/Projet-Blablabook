@@ -25,10 +25,7 @@
 	/>
 
 	<div class="w-full md:w-1/2">
-		<h2 class="text-6xl font-bold mb-4">
-    <span class="text-[#BF9075]">Blabla</span><span class="text-[#590212]">Book</span>
-		</h2>
-		<p>
+		<p class="text-justify text-lg">
 			Bienvenue sur BlablaBook, votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, 
 			gérez vos lectures et partagez vos coups de cœur. Que vous soyez un lecteur occasionnel ou 
 			un grand dévoreur de livres, BlablaBook vous accompagne dans toutes vos aventures littéraires.
