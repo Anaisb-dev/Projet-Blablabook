@@ -25,11 +25,13 @@
 	/>
 
 	<div class="w-full md:w-1/2">
-		<h2 class="text-4xl font-bold mb-4">Blablabook</h2>
+		<h2 class="text-6xl font-bold mb-4">
+    <span class="text-[#BF9075]">Blabla</span><span class="text-[#590212]">Book</span>
+		</h2>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur laborum repellendus illo similique
-			maiores fuga sequi quaerat praesentium, voluptas distinctio optio culpa omnis tempora ratione quibusdam
-			placeat officia corporis dolorum.
+			Bienvenue sur BlablaBook, votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, 
+			gérez vos lectures et partagez vos coups de cœur. Que vous soyez un lecteur occasionnel ou 
+			un grand dévoreur de livres, BlablaBook vous accompagne dans toutes vos aventures littéraires.
 		</p>
 	</div>
 </section>
