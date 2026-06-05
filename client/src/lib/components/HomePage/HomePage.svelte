@@ -20,37 +20,48 @@
 	}
 </script>
 
-<!-- Hero section -->
-<section class="flex flex-col md:flex-row items-center gap-8 px-8 py-10 max-w-6xl mx-auto">
-	
-	<!-- Image -->
-	<img
-		src="/test1.jpg"
-		alt="Accueil"
-		class="w-full md:w-1/2 h-80 object-cover rounded-2xl shadow-md"
-	/>
+<!-- Hero section — Mosaïque 3 photos -->
+<section class="px-8 py-10 max-w-6xl mx-auto">
+	<div class="grid gap-2 rounded-2xl overflow-hidden" style="grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; height: 480px;">
 
-	<!-- Texte -->
-	<div class="w-full md:w-1/2 flex flex-col gap-4 px-4">
-		<h2 class="text-6xl font-bold">
-			<span class="text-[#BF9075]">Blabla</span><span class="text-[#590212]">Book</span>
-		</h2>
-		<p class="text-justify text-base leading-relaxed text-gray-700">
-			Bienvenue sur BlablaBook, votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, 
-			gérez vos lectures et partagez vos coups de cœur. Que vous soyez un lecteur occasionnel ou 
-			un grand dévoreur de livres, BlablaBook vous accompagne dans toutes vos aventures littéraires.
-		</p>
-		<a
-			href="/#/books"
-			class="w-fit px-6 py-3 rounded-2xl bg-[#590212] text-white text-sm hover:bg-[#BF9075] transition"
-		>
-			Découvrir les livres
-		</a>
+		<!-- Grande image gauche avec texte en overlay -->
+		<div class="relative row-span-2 overflow-hidden">
+			<img src="/test1.jpg" alt="Bibliothèque" class="w-full h-full object-cover" />
+			<!-- Overlay sombre -->
+			<div class="absolute inset-0" style="background: rgba(89,2,18,0.45);"></div>
+			<!-- Texte par-dessus -->
+			<div class="absolute bottom-0 left-0 p-8 flex flex-col gap-3">
+				<h2 class="text-5xl font-bold">
+					<span style="color: #FFF7F1;">Blabla</span><span style="color: #BF9075;">Book</span>
+				</h2>
+				<p class="text-base leading-relaxed text-justify" style="color: rgba(255,255,255,0.85); max-width: 380px;">
+					Votre bibliothèque personnelle en ligne. Découvrez des milliers de livres, gérez vos lectures et partagez vos coups de cœur.
+				</p>
+				<a
+					href="/#/books"
+					class="w-fit px-6 py-3 rounded-2xl text-sm font-medium transition"
+					style="background: #BF9075; color: #FFF7F1;"
+				>
+					Découvrir les livres
+				</a>
+			</div>
+		</div>
+
+		<!-- Petite image haut droite -->
+		<div class="overflow-hidden rounded-tr-2xl">
+			<img src="/test3.jpg" alt="Bibliothèque ancienne" class="w-full h-full object-cover" />
+		</div>
+
+		<!-- Petite image bas droite -->
+		<div class="overflow-hidden rounded-br-2xl">
+			<img src="/test4.jpg" alt="Bibliothèque moderne" class="w-full h-full object-cover" />
+		</div>
+
 	</div>
 </section>
 
 <!-- Titre carousel -->
-<h3 class="text-3xl font-bold text-center text-[#590212] my-8">Livre aléatoire</h3>
+<h3 class="text-3xl font-bold text-center my-8" style="color: #590212;">Livre aléatoire</h3>
 
 <!-- Carousel de livres -->
 {#if books.length}
