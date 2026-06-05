@@ -28,7 +28,7 @@
 	}
 
 	// Raccourcit le titre s'il est trop long pour la couverture
-	function truncateTitle(title, maxLength = 60) {
+	function truncateTitle(title, maxLength = 40) {
 		return title.length > maxLength
 			? title.slice(0, maxLength) + "…"
 			: title;
@@ -83,6 +83,8 @@
 				margin: 0;
 				line-height: 1.5;
 				padding: 0 4px;
+				max-height: 80px;
+				overflow: hidden;
 			"
 			>
 				{truncateTitle(title)}
