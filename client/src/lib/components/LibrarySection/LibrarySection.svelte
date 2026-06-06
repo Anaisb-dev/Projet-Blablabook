@@ -1,7 +1,7 @@
 <script>
-    // ============================================================
+
     // IMPORTS — On importe les composants et fonctions dont on a besoin
-    // ============================================================
+
 
     // SearchBar : le composant barre de recherche (le champ + bouton loupe)
     import SearchBar from "../ui/SearchBar.svelte";
@@ -25,9 +25,9 @@
         getRandomBooks,
     } from "../../../../services/bookService.js";
 
-    // ============================================================
+
     // VARIABLES RÉACTIVES — Svelte met à jour l'affichage automatiquement quand elles changent
-    // ============================================================
+
 
     // La valeur tapée dans la barre de recherche (non utilisée directement ici, gérée par l'événement)
     let query = "";
@@ -38,9 +38,9 @@
     // Indique si une requête est en cours (pour afficher "Chargement...")
     let loading = false;
 
-    // ============================================================
+
     // FONCTIONS
-    // ============================================================
+  
 
     /**
      * handleSearch — Lancée quand l'utilisateur soumet une recherche
@@ -95,9 +95,9 @@
     }
 </script>
 
-<!-- ============================================================ -->
+
 <!-- TEMPLATE — Ce que l'utilisateur voit dans le navigateur      -->
-<!-- ============================================================ -->
+
 
 <!-- Titre de la page -->
 <h1 class="text-2xl font-bold mb-4 text-center p-10"> Bibliothèque </h1>

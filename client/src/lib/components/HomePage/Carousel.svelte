@@ -86,9 +86,8 @@
 	.track {
 		display: grid;
 		grid-auto-flow: column;
+		grid-auto-columns: 25%;
 		gap: 12px;
-		transition: transform 0.4s ease;
-		align-items: start;
 	}
 
 	.nav {
