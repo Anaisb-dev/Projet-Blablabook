@@ -1,8 +1,8 @@
-<!-- ============================================================ -->
+
 <!-- CARTE LIVRE — Composant réutilisable                        -->
 <!-- Affiche une couverture générique + infos + bouton           -->
 <!-- Utilisé dans le carousel (HomePage) et la grille (Library) -->
-<!-- ============================================================ -->
+
 
 <script>
 	// Props reçues depuis le composant parent
@@ -45,7 +45,7 @@
 <!-- Carte principale -->
 <!-- w-full : la carte s'adapte à la largeur du carousel (responsive) -->
 <!-- h-full : permet à toutes les cartes d'avoir la même hauteur -->
-<div class="w-full rounded-2xl border p-3 flex flex-col h-full overflow-hidden">
+<div class="w-full rounded-2xl border p-3 flex flex-col overflow-hidden" style="height: 480px;">
 
 	<!-- Couverture générique style vintage -->
 	<!-- aspect-[2/3] : ratio portrait comme une vraie couverture de livre -->

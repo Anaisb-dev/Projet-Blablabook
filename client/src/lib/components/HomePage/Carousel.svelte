@@ -88,6 +88,7 @@
 		grid-auto-flow: column;
 		gap: 12px;
 		transition: transform 0.4s ease;
+		align-items: start;
 	}
 
 	.nav {
