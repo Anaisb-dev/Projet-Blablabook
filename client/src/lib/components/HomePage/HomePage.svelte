@@ -65,7 +65,7 @@
 
 <!-- Titre carousel -->
 <h3 class="h3-home text-3xl font-bold text-center my-8" style="color: #590212;">
-	Livre aléatoire
+	Livres aléatoires
 </h3>
 
 <!-- Carousel de livres -->
