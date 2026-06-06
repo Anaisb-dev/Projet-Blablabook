@@ -43,7 +43,7 @@
 	<!-- Couverture vintage — prend tout l'espace disponible -->
 	<div style="
 		width: 100%;
-		flex: 1;
+		ratio: 2/3;
 		border-radius: 10px;
 		background-color: {bgColor};
 		display: flex;
