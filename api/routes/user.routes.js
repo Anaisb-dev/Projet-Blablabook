@@ -16,9 +16,6 @@ import { validateUserSettings, validatePasswordUpdate} from "../middlewares/user
 
 const router = express.Router();
 
-router.get('/all', getAllUsers);
-// route test all user
-
 router.get('/profile', getProfile);
 // Compte de l'utilisateur
 
