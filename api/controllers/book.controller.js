@@ -19,7 +19,7 @@ export async function searchBooks(req, res) {
 
         // Appel à l'API Google Books avec le mot-clé et la clé API
         const response = await fetch(
-            `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes?q=${query}&key=${process.env.GOOGLE_BOOKS_API_KEY}`
+            `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes?q=${query}&langRestrict=fr&key=${process.env.GOOGLE_BOOKS_API_KEY}`
         );
         const data = await response.json();
 
