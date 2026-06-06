@@ -1,7 +1,8 @@
 <script>
 </script>
 
-<p class="text-6xl font-bold brand-name">
+<!-- text-2xl sur mobile, text-4xl sur tablette, text-5xl sur desktop -->
+<p class="text-2xl sm:text-4xl lg:text-5xl font-bold brand-name">
     <span class="blabla">Blabla</span><span class="book">Book</span>
 </p>
 
