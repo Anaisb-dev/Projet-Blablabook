@@ -1,30 +1,25 @@
 <script>
     import { onMount, onDestroy } from "svelte";
 
-	// vitesse de défilement en ms 
 	export let autoplay = 3000;
-
-	// nombre d'images visibles en même temps (valeur par défaut sur grand écran)
 	export let itemsVisible = 4;
-
-	// nombre total d'éléments dans le carrousel
 	export let totalItems = 0;
 
 	let currentIndex = 0;
 	let intervalId;
 	let currentItemsVisible = itemsVisible;
 
-	// Met à jour le nombre de cartes visibles selon la largeur d'écran
+	// Breakpoints responsifs
 	function updateItemsVisible() {
 		if (typeof window === "undefined") return;
 		if (window.innerWidth < 480) {
-			currentItemsVisible = 1; // mobile : 1 carte
+			currentItemsVisible = 1;      // Mobile : 1 carte centrée
 		} else if (window.innerWidth < 768) {
-			currentItemsVisible = 2; // petite tablette : 2 cartes
+			currentItemsVisible = 2;      // Petite tablette : 2 cartes
 		} else if (window.innerWidth < 1024) {
-			currentItemsVisible = 3; // tablette : 3 cartes
+			currentItemsVisible = 3;      // Tablette : 3 cartes
 		} else {
-			currentItemsVisible = itemsVisible; // desktop : valeur par défaut (4)
+			currentItemsVisible = itemsVisible; // Desktop : 4 cartes
 		}
 	}
 
@@ -60,6 +55,11 @@
 			intervalId = setInterval(() => { next(); }, autoplay);
 		}
 	}
+
+	// Calcul de la largeur de chaque carte selon le nombre visible
+	// On soustrait le gap total réparti entre les cartes
+	$: cardWidth = `calc(${100 / currentItemsVisible}% - ${(currentItemsVisible - 1) * 12 / currentItemsVisible}px)`;
+	$: translateX = `translateX(calc(-${currentIndex * (100 / currentItemsVisible)}% - ${currentIndex * 12 / currentItemsVisible * (currentItemsVisible - 1)}px))`;
 </script>
 
 <div class="carousel">
@@ -68,7 +68,7 @@
 
 	<div
 		class="track"
-		style={`grid-auto-columns: calc(${100 / currentItemsVisible}% - ${(currentItemsVisible - 1) * 16 / currentItemsVisible}px); transform: translateX(-${currentIndex * (100 / currentItemsVisible)}%);`}
+		style={`grid-auto-columns: ${cardWidth}; transform: translateX(-${currentIndex * (100 / currentItemsVisible)}%);`}
 	>
 		<slot />
 	</div>
@@ -79,14 +79,14 @@
 		position: relative;
 		width: 100%;
 		overflow: hidden;
-		padding: 0 2.5rem;
+		padding: 0 2rem;
 		box-sizing: border-box;
 	}
 
 	.track {
 		display: grid;
 		grid-auto-flow: column;
-		gap: 1rem;
+		gap: 12px;
 		transition: transform 0.4s ease;
 	}
 
