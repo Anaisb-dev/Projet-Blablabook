@@ -163,12 +163,12 @@
                 <div class="flex flex-wrap gap-3">
                     {#if book.year}
                         <span class="px-3 py-1 rounded-full text-sm border" style="border-color: #F2E0D0; color: #590212;">
-                            📅 {book.year}
+                            Année {book.year}
                         </span>
                     {/if}
                     {#if book.page_number}
                         <span class="px-3 py-1 rounded-full text-sm border" style="border-color: #F2E0D0; color: #590212;">
-                            📖 {book.page_number} pages
+                            {book.page_number} pages
                         </span>
                     {/if}
                     {#if book.genres?.length}
