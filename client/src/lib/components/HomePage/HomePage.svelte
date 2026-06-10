@@ -2,7 +2,7 @@
 	import Carousel from "./Carousel.svelte";
 	import BookCard from "../ui/BookCard.svelte";
 	import { onMount } from "svelte";
-	import { getRandomBooks } from "../../../../services/bookService.js";
+	import { getRandomBooks } from "../../../../services/book.service.js";
 
 	let books = [];
 

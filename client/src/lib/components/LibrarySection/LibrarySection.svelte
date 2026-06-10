@@ -13,7 +13,7 @@
     import BookDetail from "./BookDetail.svelte";
 
     // addBookToPersonalLibrary : fonction pour ajouter un livre à la bibliothèque de l'utilisateur
-    import { addBookToPersonalLibrary } from "../../../../services/bookService.js";
+    import { addBookToPersonalLibrary } from "../../../../services/book.service.js";
 
     // onMount : fonction Svelte qui s'exécute automatiquement quand le composant est chargé dans la page
     import { onMount } from "svelte";
@@ -23,7 +23,7 @@
     import {
         searchBooks,
         getRandomBooks,
-    } from "../../../../services/bookService.js";
+    } from "../../../../services/book.service.js";
 
 
     // VARIABLES RÉACTIVES — Svelte met à jour l'affichage automatiquement quand elles changent

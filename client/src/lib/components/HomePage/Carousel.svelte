@@ -1,5 +1,5 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
+	import { onMount, onDestroy } from "svelte";
 
 	export let autoplay = 3000;
 	export let itemsVisible = 4;
@@ -13,11 +13,11 @@
 	function updateItemsVisible() {
 		if (typeof window === "undefined") return;
 		if (window.innerWidth < 480) {
-			currentItemsVisible = 1;      // Mobile : 1 carte centrée
+			currentItemsVisible = 1; // Mobile : 1 carte centrée
 		} else if (window.innerWidth < 768) {
-			currentItemsVisible = 2;      // Petite tablette : 2 cartes
+			currentItemsVisible = 2; // Petite tablette : 2 cartes
 		} else if (window.innerWidth < 1024) {
-			currentItemsVisible = 3;      // Tablette : 3 cartes
+			currentItemsVisible = 3; // Tablette : 3 cartes
 		} else {
 			currentItemsVisible = itemsVisible; // Desktop : 4 cartes
 		}
@@ -52,19 +52,46 @@
 	$: {
 		clearInterval(intervalId);
 		if (autoplay > 0) {
-			intervalId = setInterval(() => { next(); }, autoplay);
+			intervalId = setInterval(() => {
+				next();
+			}, autoplay);
 		}
 	}
 
 	// Calcul de la largeur de chaque carte selon le nombre visible
 	// On soustrait le gap total réparti entre les cartes
-	$: cardWidth = `calc(${100 / currentItemsVisible}% - ${(currentItemsVisible - 1) * 12 / currentItemsVisible}px)`;
-	$: translateX = `translateX(calc(-${currentIndex * (100 / currentItemsVisible)}% - ${currentIndex * 12 / currentItemsVisible * (currentItemsVisible - 1)}px))`;
+	$: cardWidth = `calc(${100 / currentItemsVisible}% - ${((currentItemsVisible - 1) * 12) / currentItemsVisible}px)`;
+	$: translateX = `translateX(calc(-${currentIndex * (100 / currentItemsVisible)}% - ${((currentIndex * 12) / currentItemsVisible) * (currentItemsVisible - 1)}px))`;
+
+	// Position du doigt au début du swipe
+	let touchStartX = 0;
+
+	// Enregistre la position initiale du doigt
+	function handleTouchStart(e) {
+		touchStartX = e.touches[0].clientX;
+	}
+
+	// Calcule la direction du swipe et navigue
+	function handleTouchEnd(e) {
+		const touchEndX = e.changedTouches[0].clientX;
+		const diff = touchStartX - touchEndX;
+
+		if (diff > 50) {
+			// Swipe vers la gauche → carte suivante
+			next();
+		} else if (diff < -50) {
+			// Swipe vers la droite → carte précédente
+			prev();
+		}
+	}
 </script>
 
 <div class="carousel">
 	<button class="nav left" on:click={prev} aria-label="Précédent">‹</button>
 	<button class="nav right" on:click={next} aria-label="Suivant">›</button>
+	
+	on:touchstart={handleTouchStart}
+	on:touchend={handleTouchEnd}
 
 	<div
 		class="track"
@@ -109,6 +136,11 @@
 		font-size: 1.2rem;
 	}
 
-	.nav.left { left: 4px; }
-	.nav.right { right: 4px; }
+	.nav.left {
+		left: 4px;
+	}
+	.nav.right {
+		right: 4px;
+	}
+
 </style>

@@ -7,9 +7,9 @@
     import { push } from "svelte-spa-router"; // Pour permettre de retourner à la bibliothèque après modification des infos
     import { AlertDialog } from "bits-ui";
     import { authStore } from "../store/auth.svelte";
-    import { updateUser } from "../../../../services/user.services.js";
-    import { updatePassword } from "../../../../services/user.services.js";
-    import { deleteUser } from "../../../../services/user.services.js";
+    import { updateUser } from "../../../../services/user.service.js";
+    import { updatePassword } from "../../../../services/user.service.js";
+    import { deleteUser } from "../../../../services/user.service.js";
     import { clearAuth } from "../store/auth.svelte";
 
     // Stocker les informations originelles de l'utilisateur, utilisé pour réinitialiser le formulaire en cas d'erreur de validation

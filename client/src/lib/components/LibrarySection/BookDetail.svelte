@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { getBookDetail, addBookToPersonalLibrary } from "../../../../services/bookService.js";
+    import { getBookDetail, addBookToPersonalLibrary } from "../../../../services/book.service.js";
     import { authStore } from "../store/auth.svelte";
 
     export let params;

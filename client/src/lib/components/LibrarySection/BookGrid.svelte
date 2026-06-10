@@ -5,7 +5,7 @@
 	import BookCard from "../ui/BookCard.svelte";
 	import PopUp from "../ui/PopUp.svelte";
 	import Icon from "@iconify/svelte";
-	import { addBookToPersonalLibrary } from "../../../../services/bookService.js";
+	import { addBookToPersonalLibrary } from "../../../../services/book.service.js";
 	import { authStore } from "../store/auth.svelte";
 	import { AlertDialog } from "bits-ui";
 
