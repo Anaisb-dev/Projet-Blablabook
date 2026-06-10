@@ -40,9 +40,7 @@ export async function searchBooks(req, res) {
 
                 // Pour la couverture : on privilégie Open Library (meilleure qualité)
                 // Si pas d'ISBN disponible, on utilise la miniature Google Books en fallback
-                const coverImage = isbn
-                    ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
-                    : info.imageLinks?.thumbnail || null;
+                const coverImage = info.imageLinks?.thumbnail || null;
 
                 // On extrait uniquement l'année depuis la date de publication
                 // Exemple : "2005-03-17" → 2005
@@ -56,7 +54,8 @@ export async function searchBooks(req, res) {
                     year: year,
                     summary: info.description || "Pas de description",
                     page_number: info.pageCount || 0, // 0 si le nombre de pages est inconnu
-                    cover_image: coverImage,
+                    // Remplace la ligne cover_image par :
+                    cover_image: info.imageLinks?.thumbnail || null,
                     genres: info.categories || [],    // Tableau vide si aucun genre
                     authors: info.authors || []       // Tableau vide si aucun auteur
                 };
