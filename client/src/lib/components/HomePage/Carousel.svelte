@@ -88,6 +88,7 @@
 		grid-auto-flow: column;
 		grid-auto-columns: 25%;
 		gap: 12px;
+		height: 450px;
 	}
 
 	.nav {

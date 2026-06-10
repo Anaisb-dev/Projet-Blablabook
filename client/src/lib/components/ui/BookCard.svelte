@@ -31,7 +31,7 @@
 <!-- Carte à hauteur fixe — toutes les cartes ont exactement la même taille -->
 <div style="
 	width: 100%;
-	height: 380px;
+	height: 450px;
 	border-radius: 16px;
 	border: 0.5px solid #F2E0D0;
 	padding: 12px;
