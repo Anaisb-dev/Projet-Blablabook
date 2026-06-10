@@ -8,7 +8,7 @@ export const contact = async (req, res) => {
             return res.status(400).json({ error: "Tous les champs sont requis" });
         }
 
-        // Envoi du mail via le service mailer (Nodemailer)
+        // Envoi du mail via le service mailer (Nodemailer en local, Resend lors du déploiement)
         await sendContactMessage({ email, subject, message });
 
         console.log("Headers reçus :", req.headers);

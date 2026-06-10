@@ -1,4 +1,3 @@
-<!-- JS-->
 <script>
     import LogoIcon from "../ui/LogoIcon.svelte";
     import BrandName from "../ui/BrandName.svelte";
@@ -7,34 +6,32 @@
     import ThemeToggle from "../ui/ThemeToggle.svelte";
 </script>
 
-<!-- HTML -->
-<header class="flex items-center justify-between p-4 border-b border-[#F2E0D0]">
-    <!-- Logo et Nom de la Marque -->
-    <div class="flex items-center gap-2">
+<header class="flex items-center justify-between p-4 border-b border-[#F2E0D0] relative z-50">
+
+    <!-- Logo -->
+    <div class="flex items-center">
         <a href="/">
-        <LogoIcon width={70} height={48} />
+            <LogoIcon width={48} height={36} />
         </a>
     </div>
 
+    <!-- Nom de la marque centré -->
     <div class="absolute left-1/2 -translate-x-1/2">
-        <a href="/">
-            <BrandName />
-        </a>
+        <a href="/"><BrandName /></a>
     </div>
 
-    <!-- Theme et Menu de navigation mobile, tablette et desktop -->
-    <div class="flex items-center gap-4">
+    <!-- Theme + Navigation -->
+    <div class="flex items-center gap-3">
         <ThemeToggle />
 
-        <!-- Mobile et tablette -->
-        <div class="block lg:hidden"> <!-- lg = 1024px (invisible en grand écran)-->
+        <!-- Mobile et tablette (< 1024px) -->
+        <div class="block lg:hidden">
             <DropdownMenu />
         </div>
 
-        <!-- Desktop -->
-        <div class="hidden lg:block"> <!-- invisible en petit écran, visible en grand écran -->
+        <!-- Desktop (>= 1024px) -->
+        <div class="hidden lg:block">
             <NavigationMenu />
         </div>
     </div>
 </header>
-

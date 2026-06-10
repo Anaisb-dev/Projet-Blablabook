@@ -1,34 +1,34 @@
+// Codes de statut HTTP (200, 404, 500, etc.)
 import { StatusCodes } from "http-status-codes";
+// Modèles Sequelize utilisés dans ce controller
 import { User, UserBook, Book, Author } from "../models/index.js";
+// Argon2 : librairie de hashage des mots de passe
 import argon2 from "argon2";
 
 
-// Fonction test pour afficher tous les users
-export async function getAllUsers(req, res) {
-    try {
-        const users = await User.findAll({
-            attributes: ["id", "username", "email", "is_verified"]
-        });
 
-        return res.json(users);
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-}
+// PROFIL UTILISATEUR — GET /api/users/profile
+// Retourne les informations de base de l'utilisateur connecté
 
-// Afficher le profil de l'utilisateur connecté
 export async function getProfile(req, res) {
     try {
+        // req.user.id est injecté par le middleware JWT authenticate
+        // On ne retourne que les infos non sensibles (pas le mot de passe)
         const user = await User.findByPk(req.user.id, {
-    attributes: ["id", "username", "email"] // info à afficher
-});
+            attributes: ["id", "username", "email"]
+        });
         res.json(user);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
 }
 
-// Afficher les infos perso de l'utilisateur connecté
+
+
+// PARAMÈTRES — GET /api/users/settings
+// Retourne toutes les infos de l'utilisateur connecté
+// (pour pré-remplir le formulaire de paramètres)
+
 export async function getSettings(req, res) {
     try {
         const user = await User.findByPk(req.user.id);
@@ -38,11 +38,16 @@ export async function getSettings(req, res) {
     }
 }
 
-// Modifier les infos perso de l'utilisateur connecté
+
+
+// MODIFIER LES INFOS — PUT /api/users/settings
+// Met à jour les informations personnelles de l'utilisateur
+
 export async function updateSettings(req, res) {
     try {
         const user = await User.findByPk(req.user.id);
 
+        // user.update() met à jour uniquement les champs envoyés dans req.body
         await user.update(req.body);
 
         res.json(user);
@@ -51,43 +56,58 @@ export async function updateSettings(req, res) {
     }
 }
 
-// Modifier le mot de passe de l'utilisateur connecté
-    export async function updatePassword(req, res) {
-        try {
-            const user = await User.findByPk(req.user.id);
-            const { password } = req.body;
 
-            if (!password) {
-                return res.status(400).json({ error: "Mot de passe requis" });
-            }
 
-            // HASH OBLIGATOIRE
-            const hashedPassword = await argon2.hash(password);
+// MODIFIER LE MOT DE PASSE — PATCH /api/users/password
+// Hash le nouveau mot de passe avant de le sauvegarder
+// Le mot de passe ne doit JAMAIS être stocké en clair
 
-            // update UNIQUEMENT le password
-            await user.update({ password: hashedPassword });
+export async function updatePassword(req, res) {
+    try {
+        const user = await User.findByPk(req.user.id);
+        const { password } = req.body;
 
-            res.json({ message: "Mot de passe mis à jour" });
-
-        } catch (err) {
-            console.error(err);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+        // Vérification que le champ password est bien présent
+        if (!password) {
+            return res.status(400).json({ error: "Mot de passe requis" });
         }
-    }
 
-// Afficher tous les livres de l'utilisateur connecté
+        // On hash le nouveau mot de passe avec Argon2 avant stockage
+        const hashedPassword = await argon2.hash(password);
+
+        // On met à jour uniquement le mot de passe, pas les autres champs
+        await user.update({ password: hashedPassword });
+
+        res.json({ message: "Mot de passe mis à jour" });
+
+    } catch (err) {
+        console.error(err);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+    }
+}
+
+
+
+// BIBLIOTHÈQUE PERSONNELLE — GET /api/users/books
+// Retourne tous les livres de la bibliothèque de l'utilisateur
+// avec leur statut de lecture (à lire, en cours, lu)
+
 export async function getUserBooks(req, res) {
     try {
+        // On cherche toutes les entrées UserBook de l'utilisateur connecté
+        // et on y inclut les infos du livre associé (jointure SQL)
         const books = await UserBook.findAll({
             where: { user_id: req.user.id },
-            attributes: ["status"], // on garde l'attribut status de UserBook
+            attributes: ["status"],
             include: [{
                 model: Book,
                 as: "book",
-                attributes: ["id", "title", "google_book_id", "summary", "cover_image"] // on garde seulement ces attributs du livre
+                attributes: ["id", "title", "google_book_id", "summary", "cover_image"]
             }]
         });
 
+        // On aplatit le résultat pour retourner un tableau propre
+        // { status: "lu", id: 1, title: "...", ... }
         const result = books.map(b => ({
             status: b.status,
             ...b.book.toJSON()
@@ -100,44 +120,42 @@ export async function getUserBooks(req, res) {
     }
 }
 
-// Récupérer un livre de l'utilisateur via son id
+
+
+// DÉTAIL D'UN LIVRE — GET /api/users/books/:id
+// Retourne les détails d'un livre spécifique de la bibliothèque
+// avec ses auteurs
+
 export async function getUserBookById(req, res) {
     try {
         const { id } = req.params;
 
         const userBook = await UserBook.findOne({
             where: {
-                user_id: req.user.id,
+                user_id: req.user.id, // Sécurité : on vérifie que le livre appartient bien à cet utilisateur
                 book_id: id
             },
             attributes: ["status"],
             include: [{
                 model: Book,
                 as: "book",
-                attributes: ["id", "title", "summary", "cover_image"], // on affiche seulement ces attributs du livre
+                attributes: ["id", "title", "summary", "cover_image"],
                 include: [{
                     model: Author,
                     as: "authors",
-                    attributes: ["last_name", "first_name"], // adapte selon ton modèle
-                    through: { attributes: [] } //  supprime le bloc book_author
+                    attributes: ["last_name", "first_name"],
+                    through: { attributes: [] } // On exclut les colonnes de la table de liaison book_author
                 }]
             }]
         });
 
+        // Si le livre n'est pas dans la bibliothèque de l'utilisateur → 404
         if (!userBook) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé dans ta bibliothèque" });
         }
 
-//         const result = {
-//     status: userBook.status,
-//     id: userBook.book.id,
-//     title: userBook.book.title,
-//     summary: userBook.book.summary,
-//     cover_image: userBook.book.cover_image,
-//     google_book_id: userBook.book.google_book_id, // <--- ajouter ça !
-//     authors: userBook.book.authors // si tu veux
-// };
-    const result = {
+        // On formate la réponse en fusionnant le statut et les infos du livre
+        const result = {
             status: userBook.status,
             ...userBook.book.toJSON()
         };
@@ -151,7 +169,11 @@ export async function getUserBookById(req, res) {
 }
 
 
-// Modifier le statut d'un livre présent dans notre compte
+
+// MODIFIER LE STATUT — PATCH /api/users/books/:id
+// Met à jour le statut de lecture d'un livre
+// (à lire → en cours → lu)
+
 export async function updateUserBook(req, res) {
     try {
         const { id } = req.params;
@@ -164,10 +186,12 @@ export async function updateUserBook(req, res) {
             }
         });
 
+        // Si le livre n'existe pas dans la bibliothèque → 404
         if (!userBook) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé" });
         }
 
+        // On met à jour uniquement le statut
         await userBook.update({ status });
 
         res.json(userBook);
@@ -177,37 +201,44 @@ export async function updateUserBook(req, res) {
 }
 
 
- // Ajouter un livre Google à la bibliothèque privée de l'utilisateur connecté
+
+// AJOUTER UN LIVRE — POST /api/users/books/:googleBookId
+// Récupère les infos depuis Google Books, sauvegarde le livre
+// en BDD si nécessaire, puis l'associe à l'utilisateur
+
 export async function addGoogleBookToLibrary(req, res) {
     try {
-        
-        const googleBookId = req.params.googleBookId; // depuis l'URL (via page détail bibliothèque publique)
+        // L'id Google Books vient de l'URL
+        const googleBookId = req.params.googleBookId;
+        // Statut par défaut si non précisé dans le body
         const { status = "à lire" } = req.body;
         const userId = req.user.id;
+
         if (!googleBookId) {
             return res.status(400).json({ error: "L'id du livre Google est requis" });
         }
 
-        // Récupère les infos depuis Google Books
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
+        // Étape 1 : on récupère les informations du livre depuis l'API Google Books
+        const response = await fetch(
+            `${process.env.GOOGLE_BOOKS_BASE_URL}/volumes/${googleBookId}?key=${process.env.GOOGLE_BOOKS_API_KEY}`
+        );
         const googleBook = await response.json();
 
         if (!googleBook || !googleBook.volumeInfo) {
             return res.status(404).json({ error: "Livre introuvable via Google Books" });
         }
 
-        // On récupère l'ISBN principal du livre si disponible, sinon on prend l'ID Google Books comme identifiant unique
+        // On récupère l'ISBN, ou l'ID Google Books si pas d'ISBN disponible
         const isbn = googleBook.volumeInfo.industryIdentifiers?.[0]?.identifier || googleBook.id;
 
-        // Cherche d'abord par Google Book ID
+        // Étape 2 : on vérifie si le livre existe déjà en BDD
+        // pour éviter les doublons (cherche d'abord par google_book_id puis par ISBN)
         let book = await Book.findOne({ where: { google_book_id: googleBook.id } });
-
-        // puis on cherche par ISBN
         if (!book) {
             book = await Book.findOne({ where: { code_isbn: isbn } });
         }
 
-        // Si toujours pas trouvé, on crée le livre
+        // Étape 3 : si le livre n'existe pas encore en BDD, on le crée
         if (!book) {
             book = await Book.create({
                 title: googleBook.volumeInfo.title,
@@ -219,14 +250,15 @@ export async function addGoogleBookToLibrary(req, res) {
                 code_isbn: isbn,
             });
         } else {
-            // Si le livre existe mais que google_book_id est null, on l'ajoute
+            // Si le livre existe mais sans google_book_id, on le complète
             if (!book.google_book_id) {
                 book.google_book_id = googleBook.id;
                 await book.save();
             }
         }
 
-        // Associe les auteurs
+        // Étape 4 : on associe les auteurs au livre
+        // findOrCreate évite les doublons si l'auteur existe déjà en BDD
         if (googleBook.volumeInfo.authors?.length) {
             for (const authorName of googleBook.volumeInfo.authors) {
                 const [firstName, ...rest] = authorName.split(" ");
@@ -238,12 +270,14 @@ export async function addGoogleBookToLibrary(req, res) {
             }
         }
 
-        // Ajoute le livre à la bibliothèque de l'utilisateur
+        // Étape 5 : on ajoute le livre à la bibliothèque de l'utilisateur
+        // findOrCreate évite d'ajouter le même livre deux fois
         await UserBook.findOrCreate({
             where: { user_id: userId, book_id: book.id },
             defaults: { status }
         });
 
+        // Réponse 201 Created avec le livre créé/trouvé
         res.status(201).json({ message: "Livre ajouté à la bibliothèque", book });
 
     } catch (err) {
@@ -252,7 +286,12 @@ export async function addGoogleBookToLibrary(req, res) {
     }
 }
 
-// Supprimer un livre de sa bibliothèque
+
+
+// SUPPRIMER UN LIVRE — DELETE /api/users/books/:id
+// Supprime un livre de la bibliothèque personnelle
+// (supprime uniquement la liaison UserBook, pas le livre lui-même)
+
 export async function deleteUserBook(req, res) {
     try {
         const { id } = req.params;
@@ -268,6 +307,7 @@ export async function deleteUserBook(req, res) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé" });
         }
 
+        // destroy() supprime l'entrée en BDD
         await userBook.destroy();
 
         res.json({ message: "Livre supprimé de ta bibliothèque" });
@@ -276,8 +316,12 @@ export async function deleteUserBook(req, res) {
     }
 }
 
-// Supprimer un compte utilisateur 
-// Supprimer le compte de l'utilisateur connecté
+
+
+// SUPPRIMER LE COMPTE — DELETE /api/users/account
+// Supprime définitivement le compte de l'utilisateur connecté
+// ainsi que toutes ses données associées (cascade BDD)
+
 export async function deleteUser(req, res) {
     try {
         const user = await User.findByPk(req.user.id);
@@ -288,6 +332,7 @@ export async function deleteUser(req, res) {
             });
         }
 
+        // Suppression définitive de l'utilisateur en BDD
         await user.destroy();
 
         return res.status(StatusCodes.OK).json({

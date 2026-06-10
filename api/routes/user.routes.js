@@ -1,23 +1,21 @@
 // Router concernant l'utilisateur
 
 import express from "express";
-import { getProfile, 
-    getSettings, 
-    updateSettings, 
-    getUserBooks, 
-    getUserBookById, 
+import {
+    getProfile,
+    getSettings,
+    updateSettings,
+    getUserBooks,
+    getUserBookById,
     updateUserBook,
-    deleteUserBook,addGoogleBookToLibrary, 
-    getAllUsers,
-    deleteUser } from "../controllers/user.controller.js";
+    deleteUserBook, addGoogleBookToLibrary,
+    deleteUser
+} from "../controllers/user.controller.js";
 import { updatePassword } from "../controllers/user.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
-import { validateUserSettings, validatePasswordUpdate} from "../middlewares/user.middleware.js"
+import { validateUserSettings, validatePasswordUpdate } from "../middlewares/user.middleware.js"
 
 const router = express.Router();
-
-router.get('/all', getAllUsers);
-// route test all user
 
 router.get('/profile', getProfile);
 // Compte de l'utilisateur
